@@ -31,6 +31,10 @@ export const routes: Routes = [
         path: 'accounts',
         loadChildren: ()=> import('./feature/account/account.routes')
       },
+      {
+        path: 'transactions',
+        loadChildren: ()=> import('./feature/transaction/transaction.routes')
+      }
     ],
   },
 ];

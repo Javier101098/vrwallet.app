@@ -50,5 +50,4 @@ export const AccountStore = signalStore(
       store.loadAccounts()
     }
   })
-  
 )

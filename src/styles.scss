@@ -7,3 +7,8 @@ $background-color_1: color-mix(in srgb, var(--p-primary-color) 70%, transparent)
 .bg-primary\/70 {
   background-color: $background-color_1;
 }
+
+
+.kt-card-accent .kt-card-content{
+  border-radius: 1.5rem !important;
+}

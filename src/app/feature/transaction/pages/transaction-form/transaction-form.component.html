@@ -1,0 +1,78 @@
+<div class="kt-container-fixed">
+  <div class="kt-card">
+    <div class="kt-card-header">
+      <div class="kt-card-heading">
+        <h2 class="kt-card-title">
+          Transaction Form
+        </h2>
+      </div>
+    </div>
+    <div class="kt-card-content py-3 grid gap-5">
+      <div class="grid grid-cols-3 gap-4">
+        <div class="flex items-center flex-col gap-2">
+          <span class="kt-form-label w-full">
+           Cuenta
+          </span>
+          <div class="grow w-full">
+            <select
+                class="kt-select"
+                data-kt-select="true"
+                data-kt-select-placeholder="Select a framework"
+                data-kt-select-config='{
+                  "optionsClass": "kt-scrollable overflow-auto max-h-[250px]"
+                }'
+            >
+              @for (account of accountStore.accounts(); track account.id) {
+                <option value="react">{{account.name}}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="flex items-center flex-col gap-2">
+          <span class="kt-form-label w-full">
+           Monto
+          </span>
+          <div class="grow w-full">
+            <p-inputnumber inputId="currency-us" size="small" mode="currency" class="w-full" currency="MXN" locale="en-US"></p-inputnumber>
+          </div>
+        </div>
+        <div class="flex items-center flex-col gap-2">
+          <span class="kt-form-label w-full">
+           Categoria
+          </span>
+          <div class="grow w-full">
+            <input class="kt-input w-full" placeholder="" type="text" value="jason@studio.io">
+          </div>
+        </div>
+        <div class="flex items-center flex-col gap-2">  
+          <span class="kt-form-label w-full">
+           Fecha
+          </span>
+          <div class="grow w-full">
+            <input class="kt-input w-full" placeholder="" type="text" value="jason@studio.io">
+          </div>
+        </div>
+        <div class="flex items-center flex-col gap-2">  
+          <span class="kt-form-label w-full">
+           Nota
+          </span>
+          <div class="grow w-full">
+            <input class="kt-input w-full" placeholder="" type="text" value="jason@studio.io">
+          </div>
+        </div>
+        <div class="flex items-center flex-col gap-2">  
+          <span class="kt-form-label w-full">
+           Pagador
+          </span>
+          <div class="grow w-full">
+            <input class="kt-input w-full" placeholder="" type="text" value="jason@studio.io">
+          </div>
+        </div>
+        <div class="flex flex-nowrap justify-between items-center col-span-3 gap-2">
+          <button type="button" class="kt-btn kt-btn-secondary w-1/2">Cancelar</button>
+          <button type="button" class="kt-btn w-1/2">Agregar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
