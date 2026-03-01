@@ -7,6 +7,7 @@ import {providePrimeNG} from "primeng/config";
 import {definePreset} from "@primeuix/themes";
 import {authInterceptor} from "@core/interceptors/auth.interceptor";
 import {unauthorizedInterceptor} from "@core/interceptors/unauthorized.interceptor";
+import {MessageService} from "primeng/api";
 
 const Noir = definePreset(Aura, {
   semantic: {
@@ -60,6 +61,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    MessageService,
     provideHttpClient(
       withInterceptors([
         authInterceptor,

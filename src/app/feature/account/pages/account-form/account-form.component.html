@@ -1,0 +1,136 @@
+<p-toast position="top-center" size="small"></p-toast>
+<div class="kt-container-fixed">
+  <div class="kt-card">
+    <div class="kt-card-header">
+      <div class="kt-card-heading">
+        <h2 class="kt-card-title">
+          Create Account
+        </h2>
+      </div>
+    </div>
+    <div class="kt-card-content py-3 grid gap-5">
+      <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="grid grid-cols-6 gap-4">
+        <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
+          <span class="kt-form-label w-full">
+            Name
+            <span class="text-red-600">
+              *
+            </span>
+          </span>
+          <div class="grow w-full">
+            <input 
+                formControlName="name"
+                class="kt-input w-full" 
+                placeholder="tarjeta principal" 
+                type="text">
+            <app-form-error-label [control]="form.get('name')" ></app-form-error-label>
+          </div>
+        </div>
+        <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
+          <span class="kt-form-label w-full">
+           Account Type
+          <span class="text-red-600">
+            *
+          </span>
+          </span>
+          <div class="grow w-full">
+            <select
+                formControlName="accountTypeId"
+                class="kt-select"
+                data-kt-select="true"
+                data-kt-select-placeholder="Select a framework"
+                data-kt-select-config='{
+                  "optionsClass": "kt-scrollable overflow-auto max-h-[250px]"
+                }'
+            >
+              @for (accountType of accountTypes(); track accountType.id) {
+                <option [value]="accountType.id">{{accountType.name}}</option>
+              }
+            </select>
+            <app-form-error-label [control]="form.get('accountTypeId')" ></app-form-error-label>
+          </div>
+        </div>
+        <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
+          <span class="kt-form-label w-full">
+           Currency
+          <span class="text-red-600">
+              *
+          </span>
+          </span>
+          <div class="grow w-full">
+            <select
+                formControlName="currencyId"
+                class="kt-select"
+                data-kt-select="true"
+                data-kt-select-placeholder="Select a framework"
+                data-kt-select-config='{
+                  "optionsClass": "kt-scrollable overflow-auto max-h-[250px]"
+                }'
+            >
+              @for (currency of currencies(); track currency.id) {
+                <option [value]="currency.id">{{currency.name}}</option>
+              }
+            </select>
+            <app-form-error-label [control]="form.get('currencyId')" ></app-form-error-label>
+          </div>
+        </div>
+        <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
+          <span class="kt-form-label w-full">
+          Institution
+            <span class="text-red-600">*</span>
+          </span>
+          <div class="grow w-full">
+            <select
+                formControlName="institutionId"
+                class="kt-select"
+                data-kt-select="true"
+                data-kt-select-placeholder="Select a framework"
+                data-kt-select-config='{
+                  "optionsClass": "kt-scrollable overflow-auto max-h-[250px]"
+                }'
+            >
+              @for (institution of institutions(); track institution.id) {
+                <option [value]="institution.id">{{institution.name}}</option>
+              }
+            </select>
+            <app-form-error-label [control]="form.get('institutionId')" ></app-form-error-label>
+          </div>
+        </div>
+        <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
+          <span class="kt-form-label w-full">
+           Color
+              <span class="text-red-600">*</span>
+          </span>
+          <div class="grow w-full">
+            <div class="kt-input">
+              <input 
+                  class="form-control" 
+                  formControlName="color"
+                  data-kt-color-picker="true"
+                  data-kt-color-picker-default="#4CAF50"
+                  data-kt-color-picker-input-mode="true"
+                  id="color-picker-input"
+                  placeholder="Select a color"
+                  type="text"
+              />
+            </div>
+            <app-form-error-label [control]="form.get('color')" ></app-form-error-label>
+          </div>
+        </div>
+        <div class="flex flex-nowrap justify-between items-center col-span-6 gap-2 mt-4">
+          <button type="button" 
+                  (click)="handleGoOut()" 
+                  class="kt-btn kt-btn-secondary w-1/2">
+            Cancelar
+          </button>
+          <button
+              [disabled]="form.invalid" 
+              type="submit" 
+              class="kt-btn w-1/2">
+            Agregar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> 

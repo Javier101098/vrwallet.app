@@ -8,7 +8,7 @@ import {AbstractControl, ValidationErrors} from "@angular/forms";
   styles: ``
 })
 export class FormErrorLabelComponent {
-  control = input<AbstractControl|null>();
+  control = input.required<AbstractControl|null>();
   
   get isValid() : boolean {
     const control = this.control();

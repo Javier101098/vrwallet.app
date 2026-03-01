@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="kt-card-content py-3 grid gap-5">
-      <div class="grid grid-cols-6 gap-4">
+      <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="grid grid-cols-6 gap-4">
         <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
           <span class="kt-form-label w-full">
             Monto
@@ -17,7 +17,7 @@
             </span>
           </span>
           <div class="grow w-full">
-            <p-selectbutton 
+            <p-selectbutton
                 [options]="stateOptions" 
                 size="small"
                 fluid 
@@ -33,6 +33,7 @@
           </span>
           <div class="grow w-full">
             <select
+                formControlName="accountId"
                 class="kt-select"
                 data-kt-select="true"
                 data-kt-select-placeholder="Select a framework"
@@ -41,7 +42,7 @@
                 }'
             >
               @for (account of accountStore.accounts(); track account.id) {
-                <option value="react">{{account.name}}</option>
+                <option [value]="account.id">{{account.name}}</option>
               }
             </select>
           </div>
@@ -51,7 +52,15 @@
            Monto
           </span>
           <div class="grow w-full">
-            <p-inputnumber inputId="currency-us" size="small" mode="currency" class="w-full" currency="MXN" locale="en-US"></p-inputnumber>
+            <p-inputNumber 
+                inputId="currency-us"
+                formControlName="amount"
+                size="small"
+                mode="currency" 
+                class="w-full" 
+                currency="MXN" 
+                locale="en-US">
+            </p-inputNumber>
           </div>
         </div>
         <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
@@ -67,7 +76,12 @@
            Fecha
           </span>
           <div class="grow w-full">
-            <input class="kt-input w-full" placeholder="" type="text" value="jason@studio.io">
+            <input 
+                formControlName="date"
+                class="kt-input w-full" 
+                placeholder="" 
+                type="datetime-local" 
+                value="jason@studio.io">
           </div>
         </div>
         <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">  
@@ -75,7 +89,10 @@
            Nota
           </span>
           <div class="grow w-full">
-            <input class="kt-input w-full" placeholder="" type="text" value="jason@studio.io">
+            <input 
+                formControlName="note"
+                class="kt-input w-full" 
+                placeholder="" type="text" value="jason@studio.io">
           </div>
         </div>
         <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">  
@@ -83,14 +100,22 @@
            Pagador
           </span>
           <div class="grow w-full">
-            <input class="kt-input w-full" placeholder="" type="text" value="jason@studio.io">
+            <input 
+                formControlName="payer"
+                class="kt-input w-full" 
+                placeholder="" type="text" value="jason@studio.io">
           </div>
         </div>
-        <div class="flex flex-nowrap justify-between items-center col-span-6 gap-2">
+        <div class="flex flex-nowrap justify-between items-center col-span-6 gap-2 mt-4">
           <button type="button" class="kt-btn kt-btn-secondary w-1/2">Cancelar</button>
-          <button type="button" class="kt-btn w-1/2">Agregar</button>
+          <button
+              [disabled]="form.invalid"
+              type="submit" 
+              class="kt-btn w-1/2">
+            Agregar
+          </button>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </div> 

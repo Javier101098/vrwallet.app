@@ -5,6 +5,9 @@ import {distinctUntilChanged, pipe, switchMap, tap} from "rxjs";
 import {inject} from "@angular/core";
 import {AccountService} from "./account.service";
 import { tapResponse } from '@ngrx/operators';
+import {AccountCreate} from "../interfaces/account-create.interface";
+import {MessageService} from "primeng/api";
+import {Router} from "@angular/router";
 
 type AccountState = {
   accounts: Account[];
@@ -17,6 +20,7 @@ const initialState: AccountState = {
 };
 
 export const AccountStore = signalStore(
+  { providedIn: 'root' },
   withState(initialState),
   withComputed((store)=>({
     balance:() => {
@@ -25,7 +29,12 @@ export const AccountStore = signalStore(
       )
     }
   })),
-  withMethods((store, accountService = inject(AccountService))=>({
+  withMethods((
+    store, 
+    accountService = inject(AccountService),
+    messageService = inject(MessageService),
+    router = inject(Router)
+  )=>({
     loadAccounts: rxMethod<void>(
       pipe(
         distinctUntilChanged(),
@@ -41,6 +50,36 @@ export const AccountStore = signalStore(
               }
             })
           ); 
+        })
+      )
+    ),
+    addAccount: rxMethod<AccountCreate>(
+      pipe(
+        distinctUntilChanged(),
+        tap(() => patchState(store, { isLoading: true })),
+        switchMap((account)=>{
+          return accountService.add(account).pipe(
+            tapResponse({
+              next: (newAccount: Account) => {
+                patchState(store, (state) => ({
+                  accounts: [...state.accounts, newAccount],
+                  isLoading: false
+                }));
+                
+                messageService.add({
+                  severity: 'success',
+                  summary: 'Éxito',
+                  detail: 'Cuenta creada correctamente'
+                });   
+                
+                router.navigate(['/accounts']).then();
+              },
+              error: () => {
+                patchState(store, {isLoading: false});
+                console.log("error")
+              }
+            })
+          );
         })
       )
     )

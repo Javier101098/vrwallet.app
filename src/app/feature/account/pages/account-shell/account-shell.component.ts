@@ -10,7 +10,6 @@ import {CurrencyPipe} from "@angular/common";
     CurrencyPipe
   ],
   providers:[
-    AccountStore
   ],
   templateUrl: './account-shell.component.html',
   styles: ``,
