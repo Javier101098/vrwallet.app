@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-user-dropdown',
+  selector: 'vrw-user-dropdown',
   imports: [],
   templateUrl: './user-dropdown.component.html',
   styleUrl: './user-dropdown.component.scss'

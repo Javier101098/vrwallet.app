@@ -18,9 +18,9 @@
           </span>
           <div class="grow w-full">
             <input formControlName="name" class="kt-input w-full" type="text" />
-            <app-form-error-label
+            <vrw-form-error-label
               [control]="form.get('name')"
-            ></app-form-error-label>
+            ></vrw-form-error-label>
           </div>
         </div>
         <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
@@ -42,9 +42,9 @@
                 <option [value]="accountType.id">{{ accountType.name }}</option>
               }
             </select>
-            <app-form-error-label
+            <vrw-form-error-label
               [control]="form.get('accountTypeId')"
-            ></app-form-error-label>
+            ></vrw-form-error-label>
           </div>
         </div>
         <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
@@ -66,9 +66,9 @@
                 <option [value]="currency.id">{{ currency.name }}</option>
               }
             </select>
-            <app-form-error-label
+            <vrw-form-error-label
               [control]="form.get('currencyId')"
-            ></app-form-error-label>
+            ></vrw-form-error-label>
           </div>
         </div>
         <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
@@ -90,9 +90,9 @@
                 <option [value]="institution.id">{{ institution.name }}</option>
               }
             </select>
-            <app-form-error-label
+            <vrw-form-error-label
               [control]="form.get('institutionId')"
-            ></app-form-error-label>
+            ></vrw-form-error-label>
           </div>
         </div>
         <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
@@ -114,9 +114,9 @@
                 readonly
               />
             </div>
-            <app-form-error-label
+            <vrw-form-error-label
               [control]="form.get('color')"
-            ></app-form-error-label>
+            ></vrw-form-error-label>
           </div>
         </div>
         <div

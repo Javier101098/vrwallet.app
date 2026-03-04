@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {RouterLink, RouterLinkActive} from "@angular/router";
 
 @Component({
-  selector: '[app-navbar]',
+  selector: '[vrw-navbar]',
   imports: [
     RouterLink,
     RouterLinkActive

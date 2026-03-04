@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 import { ColorPickerModule } from 'primeng/colorpicker';
 
 @Component({
-  selector: 'app-account-form',
+  selector: 'vrw-account-form',
   imports: [
     FormsModule,
     ReactiveFormsModule,

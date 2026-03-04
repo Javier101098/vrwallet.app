@@ -4,7 +4,7 @@ import { CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-account-item',
+  selector: 'vrw-account-item',
   imports: [CurrencyPipe, RouterLink],
   templateUrl: './account-item.component.html',
   styles: ``,

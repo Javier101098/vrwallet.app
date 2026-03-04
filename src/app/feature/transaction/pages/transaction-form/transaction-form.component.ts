@@ -14,7 +14,7 @@ import { Transaction } from '../../interfaces/transaction.interface';
 import { MessageService } from 'primeng/api';
 
 @Component({
-  selector: 'app-transaction-form',
+  selector: 'vrw-transaction-form',
   imports: [
     FormsModule,
     InputNumberModule,
@@ -54,7 +54,7 @@ export default class TransactionFormComponent {
     if (this.form.invalid) return;
 
     this.transactionService.add(this.currentDeposit).subscribe({
-      next: (transaction: Transaction) => {
+      next: () => {
         this.messageService.add({
           severity: 'success',
           detail: 'El deposito se ha llevado acabo con exito.',

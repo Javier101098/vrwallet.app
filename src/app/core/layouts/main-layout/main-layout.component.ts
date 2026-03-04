@@ -7,7 +7,7 @@ import {ToolbarComponent} from "@shared/components/toolbar/toolbar.component";
 import {FooterComponent} from "@shared/components/footer/footer.component";
 
 @Component({
-  selector: 'app-main-layout',
+  selector: 'vrw-main-layout',
   imports: [RouterOutlet,HeaderComponent, NavbarComponent, ToolbarComponent, FooterComponent, HeaderComponent],
   templateUrl: './main-layout.component.html',
   styles: ``

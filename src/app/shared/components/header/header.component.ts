@@ -4,7 +4,7 @@ import { NotificationComponent } from '../partials/notification/notification.com
 import {RouterLink} from "@angular/router";
 
 @Component({
-  selector: '[app-header]',
+  selector: '[vrw-header]',
   imports: [NotificationComponent, UserDropdownComponent, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'

@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { MetronicInitService } from '@core/services/metronic-init.service';
 import { filter } from 'rxjs';
 import { Toast } from 'primeng/toast';
 
 @Component({
-  selector: 'body[app-root]',
+  selector: '[vrw-root]',
   imports: [RouterOutlet, Toast],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

@@ -2,7 +2,7 @@ import { Component, input } from '@angular/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Component({
-  selector: 'app-form-error-label',
+  selector: 'vrw-form-error-label',
   imports: [],
   templateUrl: './form-error-label.component.html',
   styles: ``,

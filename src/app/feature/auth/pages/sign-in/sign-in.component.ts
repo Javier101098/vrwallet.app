@@ -8,7 +8,7 @@ import { ToastModule } from 'primeng/toast';
 import { finalize } from 'rxjs';
 
 @Component({
-  selector: 'app-sign-in',
+  selector: 'vrw-sign-in',
   imports: [
     RouterLink,
     ReactiveFormsModule,

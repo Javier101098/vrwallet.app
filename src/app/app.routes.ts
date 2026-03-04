@@ -4,7 +4,6 @@ import { DashboardPageComponent } from './feature/dashboard/pages/dashboard-page
 import AuthLayoutComponent from '@core/layouts/auth-layout/auth-layout.component';
 import { authenticatedGuard } from '@core/guards/authenticated.guard';
 import { noAuthenticatedGuard } from '@core/guards/no-authenticated.guard';
-import AccountShellComponent from './feature/account/pages/account-shell/account-shell.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '' },

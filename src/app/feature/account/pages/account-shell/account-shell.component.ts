@@ -4,7 +4,7 @@ import { AccountStore } from '../../services/account-store.service';
 import { CurrencyPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-account-shell',
+  selector: 'vrw-account-shell',
   imports: [AccountListComponent, CurrencyPipe],
   providers: [],
   templateUrl: './account-shell.component.html',

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: '[app-toolbar]',
+  selector: '[vrw-toolbar]',
   imports: [],
   templateUrl: './toolbar.component.html',
   styleUrl: './toolbar.component.scss'

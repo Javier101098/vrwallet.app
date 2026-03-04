@@ -11,7 +11,7 @@
         Cargando detalles de la cuenta...
       </p>
     </div>
-  } @else if (accountRx.hasValue() && accountRx.value() != null) {
+  } @else if (accountRx.hasValue() && accountRx.value() !== null) {
     <div class="grid grid-cols-5 gap-4">
       <div class="flex flex-col w-full gap-4 sm:col-span-2 col-span-5">
         <div
@@ -110,7 +110,7 @@
               </div>
             </vrw-card>
           } @else if (
-            transactionsRx.hasValue() && transactionsRx.value()?.length
+            transactionsRx.hasValue() && transactionsRx.value() !== null
           ) {
             <vrw-card>
               <div class="flex flex-col gap-6 w-full">

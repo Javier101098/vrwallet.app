@@ -8,7 +8,7 @@ import { ProgressSpinner } from 'primeng/progressspinner';
 import { AccountTransactionItemComponent } from '../../components/account-transaction-item/account-transaction-item.component';
 
 @Component({
-  selector: 'app-account-detail',
+  selector: 'vrw-account-detail',
   standalone: true,
   imports: [
     CardComponent,
