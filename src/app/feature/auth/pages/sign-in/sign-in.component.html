@@ -14,19 +14,23 @@
     </div>
   </div>
   <div class="flex flex-col gap-1">
-    <label class="kt-form-label font-normal text-mono"> Email </label>
+    <label class="kt-form-label font-normal text-mono" for="email">
+      Email
+    </label>
     <input
       class="kt-input"
       formControlName="email"
       placeholder="email@email.com"
       type="text"
-      value=""
+      id="email"
     />
     <vrw-form-error-label [control]="form.get('email')" />
   </div>
   <div class="flex flex-col gap-1">
     <div class="flex items-center justify-between gap-1">
-      <label class="kt-form-label font-normal text-mono"> Password </label>
+      <label class="kt-form-label font-normal text-mono" for="password">
+        Password
+      </label>
       <a class="text-sm kt-link shrink-0"> Forgot Password? </a>
     </div>
     <div class="kt-input" data-kt-toggle-password="true">
@@ -34,7 +38,7 @@
         formControlName="password"
         placeholder="Enter Password"
         type="password"
-        value=""
+        id="password"
       />
       <button
         class="kt-btn kt-btn-sm kt-btn-ghost kt-btn-icon bg-transparent! -me-1.5"

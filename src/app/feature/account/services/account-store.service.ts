@@ -15,11 +15,12 @@ import { tapResponse } from '@ngrx/operators';
 import { AccountCreate } from '../interfaces/account-create.interface';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
-type AccountState = {
+interface AccountState {
   accounts: Account[];
   isLoading: boolean;
-};
+}
 
 const initialState: AccountState = {
   accounts: [],
@@ -81,7 +82,7 @@ export const AccountStore = signalStore(
 
                   router.navigate(['/accounts']).then();
                 },
-                error: (error: any) => {
+                error: (error: HttpErrorResponse) => {
                   const message = error.error.errors
                     ? Object.values(error.error.errors).find((x) =>
                         Array.isArray(x),

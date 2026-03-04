@@ -10,7 +10,6 @@ import { AccountStore } from '../../../account/services/account-store.service';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TransactionService } from '../../services/transaction.service';
 import { Deposit } from '../../interfaces/deposit.interface';
-import { Transaction } from '../../interfaces/transaction.interface';
 import { MessageService } from 'primeng/api';
 
 @Component({
