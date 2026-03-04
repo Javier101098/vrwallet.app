@@ -1,33 +1,42 @@
 <div class="kt-container-fixed">
   <div class="grid grid-cols-4 gap-4">
     <div class="col-span-4 md:col-span-2">
-      <app-account-list/>
+      <app-account-list />
     </div>
     <div class="col-span-4 md:col-span-1">
       <div class="kt-card">
         <div class="kt-card-content flex flex-col gap-2 px-5 lg:px-7.5 pt-5">
-           <span class="text-sm font-normal text-foreground">
-             Balance total
-           </span>
+          <span class="text-sm font-normal text-foreground">
+            Balance total
+          </span>
           <span class="text-3xl font-semibold text-mono mb-3">
-            {{accountStore.balance() | currency}}
+            {{ accountStore.balance() | currency }}
           </span>
         </div>
-       </div>
+      </div>
     </div>
     <div class="col-span-4 md:col-span-1">
-      <div class="kt-card"> 
+      <div class="kt-card">
         <div class="kt-card-content pb-4 pt-4">
           <div class="grid grid-cols-2 gap-4">
-            <button type="button" class="kt-btn p-9 rounded-3xl kt-btn-secondary flex flex-col gap-1">
+            <button
+              type="button"
+              class="kt-btn p-9 rounded-3xl kt-btn-secondary flex flex-col gap-1"
+            >
               <i class="ki-filled ki-arrow-up-refraction"></i>
               <span class="text-xs">Transfer</span>
             </button>
-            <button type="button" class="kt-btn p-8 rounded-3xl kt-btn-secondary flex flex-col gap-1">
+            <button
+              type="button"
+              class="kt-btn p-8 rounded-3xl kt-btn-secondary flex flex-col gap-1"
+            >
               <i class="ki-filled ki-arrow-down-refraction"></i>
               <span class="text-xs">Transfer</span>
             </button>
-            <button type="button" class="kt-btn p-8 rounded-3xl kt-btn-secondary flex flex-col gap-1">
+            <button
+              type="button"
+              class="kt-btn p-8 rounded-3xl kt-btn-secondary flex flex-col gap-1"
+            >
               <i class="ki-filled ki-phone"></i>
               <span class="text-xs">Transfer</span>
             </button>

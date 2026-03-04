@@ -1,31 +1,31 @@
-import {Component, input} from '@angular/core';
-import {AbstractControl, ValidationErrors} from "@angular/forms";
+import { Component, input } from '@angular/core';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Component({
   selector: 'app-form-error-label',
   imports: [],
   templateUrl: './form-error-label.component.html',
-  styles: ``
+  styles: ``,
 })
 export class FormErrorLabelComponent {
-  control = input.required<AbstractControl|null>();
-  
-  get isValid() : boolean {
+  control = input.required<AbstractControl | null>();
+
+  get isValid(): boolean {
     const control = this.control();
     return !!control && control.valid && control.touched;
   }
-  
+
   get errorMessage(): string {
     const errors: ValidationErrors = this.control()?.errors ?? {};
-    
+
     return this.control()?.touched && Object.keys(errors).length > 0
       ? this.getErrorMessage(errors)
       : '';
   }
-  
-  getErrorMessage(control : ValidationErrors) : string {
-    const firstError : string = Object.keys(control)[0];
-    
+
+  getErrorMessage(control: ValidationErrors): string {
+    const firstError: string = Object.keys(control)[0];
+
     switch (firstError) {
       case 'required':
         return '* Este campo es requerido';

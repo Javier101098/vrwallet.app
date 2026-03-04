@@ -1,13 +1,13 @@
-import {Component, computed, input} from '@angular/core';
-import {Transaction, Type} from "../../../transaction/interfaces/transaction.interface";
-import {CurrencyPipe, DatePipe} from "@angular/common";
+import { Component, computed, input } from '@angular/core';
+import {
+  Transaction,
+  Type,
+} from '../../../transaction/interfaces/transaction.interface';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'vrw-account-transaction-item',
-  imports: [
-    DatePipe,
-    CurrencyPipe
-  ],
+  imports: [DatePipe, CurrencyPipe],
   templateUrl: './account-transaction-item.component.html',
   styles: ``,
 })
@@ -15,18 +15,18 @@ export class AccountTransactionItemComponent {
   transaction = input.required<Transaction>();
 
   icon = computed(() => {
-    const type  = this.transaction().type;
-    
+    const type = this.transaction().type;
+
     switch (type) {
       case Type.Income:
         return 'ki-arrow-up-right';
-        
+
       case Type.Expense:
         return 'ki-arrow-down-left';
-        
+
       case Type.Transfer:
         return 'ki-arrow-up-right';
-        
+
       default:
         return 'ki-arrow-up-right';
     }
@@ -71,5 +71,4 @@ export class AccountTransactionItemComponent {
         return 'bg-slate-50 text-slate-600 group-hover:bg-slate-100';
     }
   });
-
 }

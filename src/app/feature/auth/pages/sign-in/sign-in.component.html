@@ -1,57 +1,69 @@
 <p-toast position="top-center" [baseZIndex]="5000" />
-<form [formGroup]="form" class="kt-card-content flex flex-col gap-5 p-10" (ngSubmit)="handleSubmit()">
+<form
+  [formGroup]="form"
+  class="kt-card-content flex flex-col gap-5 p-10"
+  (ngSubmit)="handleSubmit()"
+>
   <div class="text-center mb-2.5">
-    <h3 class="text-lg font-medium text-mono leading-none mb-2.5">
-      Sign in
-    </h3>
+    <h3 class="text-lg font-medium text-mono leading-none mb-2.5">Sign in</h3>
     <div class="flex items-center justify-center font-medium">
-       <span class="text-sm text-secondary-foreground me-1.5">
+      <span class="text-sm text-secondary-foreground me-1.5">
         Need an account?
-       </span>
-      <a class="text-sm link" routerLink="/auth/sign-up">
-        Sign up
-      </a> 
+      </span>
+      <a class="text-sm link" routerLink="/auth/sign-up"> Sign up </a>
     </div>
   </div>
   <div class="flex flex-col gap-1">
-    <label class="kt-form-label font-normal text-mono">
-      Email
-    </label>
-    <input class="kt-input" formControlName="email" placeholder="email@email.com" type="text" value=""/>
+    <label class="kt-form-label font-normal text-mono"> Email </label>
+    <input
+      class="kt-input"
+      formControlName="email"
+      placeholder="email@email.com"
+      type="text"
+      value=""
+    />
     <app-form-error-label [control]="form.get('email')" />
   </div>
   <div class="flex flex-col gap-1">
     <div class="flex items-center justify-between gap-1">
-      <label class="kt-form-label font-normal text-mono">
-        Password
-      </label>
-      <a class="text-sm kt-link shrink-0">
-        Forgot Password?
-      </a>
+      <label class="kt-form-label font-normal text-mono"> Password </label>
+      <a class="text-sm kt-link shrink-0"> Forgot Password? </a>
     </div>
     <div class="kt-input" data-kt-toggle-password="true">
-      <input formControlName="password" placeholder="Enter Password" type="password" value=""/>
-      <button class="kt-btn kt-btn-sm kt-btn-ghost kt-btn-icon bg-transparent! -me-1.5" data-kt-toggle-password-trigger="true" type="button">
+      <input
+        formControlName="password"
+        placeholder="Enter Password"
+        type="password"
+        value=""
+      />
+      <button
+        class="kt-btn kt-btn-sm kt-btn-ghost kt-btn-icon bg-transparent! -me-1.5"
+        data-kt-toggle-password-trigger="true"
+        type="button"
+      >
         <span class="kt-toggle-password-active:hidden">
-         <i class="ki-filled ki-eye text-muted-foreground">
-         </i>
+          <i class="ki-filled ki-eye text-muted-foreground"> </i>
         </span>
         <span class="hidden kt-toggle-password-active:block">
-         <i class="ki-filled ki-eye-slash text-muted-foreground"></i>
+          <i class="ki-filled ki-eye-slash text-muted-foreground"></i>
         </span>
       </button>
     </div>
     <app-form-error-label [control]="form.get('password')" />
   </div>
   <label class="kt-label">
-    <input class="kt-checkbox kt-checkbox-sm" name="check" type="checkbox" value="1"/>
-    <span class="kt-checkbox-label">
-     Remember me
-    </span>
+    <input
+      class="kt-checkbox kt-checkbox-sm"
+      name="check"
+      type="checkbox"
+      value="1"
+    />
+    <span class="kt-checkbox-label"> Remember me </span>
   </label>
   <button
-      [disabled]="form.invalid || loading()"
-      class="kt-btn kt-btn-primary flex justify-center grow">
+    [disabled]="form.invalid || loading()"
+    class="kt-btn kt-btn-primary flex justify-center grow"
+  >
     Sign In
   </button>
 </form>

@@ -1,23 +1,22 @@
-@if (account() !=  null) {
-    <div
-        class="flex items-center justify-between gap-2 py-2 border-b border-border border-dashed last:border-none"
-    >
-      <div class="flex items-center gap-3">
-        <div>
-          <a
-              [routerLink]="['/accounts', account().id]"
-              class="text-sm font-medium text-foreground hover:text-primary"
-          >
-            {{ account().name }} 
-          </a
-          >
-          <div class="text-sm font-normal text-muted-foreground">
-            {{ account().accountNumber }}
-          </div>
+@if (account() != null) {
+  <div
+    class="flex items-center justify-between gap-2 py-2 border-b border-border border-dashed last:border-none"
+  >
+    <div class="flex items-center gap-3">
+      <div>
+        <a
+          [routerLink]="['/accounts', account().id]"
+          class="text-sm font-medium text-foreground hover:text-primary"
+        >
+          {{ account().name }}
+        </a>
+        <div class="text-sm font-normal text-muted-foreground">
+          {{ account().accountNumber }}
         </div>
       </div>
-      <span class="kt-badge kt-badge-outline kt-badge-primary">
-        {{ account().balance | currency }}
-      </span>
     </div>
+    <span class="kt-badge kt-badge-outline kt-badge-primary">
+      {{ account().balance | currency }}
+    </span>
+  </div>
 }

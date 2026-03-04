@@ -1,4 +1,4 @@
-import {Component, HostBinding} from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 
 @Component({
   selector: 'vrw-card',
@@ -7,5 +7,5 @@ import {Component, HostBinding} from '@angular/core';
   styleUrl: './card.component.scss',
 })
 export class CardComponent {
-  @HostBinding("class") class = "w-full";
+  @HostBinding('class') class = 'w-full';
 }

@@ -2,120 +2,123 @@
   <div class="kt-card">
     <div class="kt-card-header">
       <div class="kt-card-heading">
-        <h2 class="kt-card-title">
-          Transaction Form
-        </h2>
+        <h2 class="kt-card-title">Transaction Form</h2>
       </div>
     </div>
     <div class="kt-card-content py-3 grid gap-5">
-      <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="grid grid-cols-6 gap-4">
+      <form
+        [formGroup]="form"
+        (ngSubmit)="handleSubmit()"
+        class="grid grid-cols-6 gap-4"
+      >
         <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
           <span class="kt-form-label w-full">
             Monto
-            <span class="text-red-600">
-              *
-            </span>
+            <span class="text-red-600"> * </span>
           </span>
           <div class="grow w-full">
             <p-selectbutton
-                [options]="stateOptions" 
-                size="small"
-                fluid 
-                optionLabel="label" 
-                optionValue="value" 
-                aria-labelledby="basic">
+              [options]="stateOptions"
+              size="small"
+              fluid
+              optionLabel="label"
+              optionValue="value"
+              aria-labelledby="basic"
+            >
             </p-selectbutton>
           </div>
         </div>
         <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
-          <span class="kt-form-label w-full">
-           Cuenta
-          </span>
+          <span class="kt-form-label w-full"> Cuenta </span>
           <div class="grow w-full">
             <select
-                formControlName="accountId"
-                class="kt-select"
-                data-kt-select="true"
-                data-kt-select-placeholder="Select a framework"
-                data-kt-select-config='{
+              formControlName="accountId"
+              class="kt-select"
+              data-kt-select="true"
+              data-kt-select-placeholder="Select a framework"
+              data-kt-select-config='{
                   "optionsClass": "kt-scrollable overflow-auto max-h-[250px]"
                 }'
             >
               @for (account of accountStore.accounts(); track account.id) {
-                <option [value]="account.id">{{account.name}}</option>
+                <option [value]="account.id">{{ account.name }}</option>
               }
             </select>
           </div>
         </div>
         <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
-          <span class="kt-form-label w-full">
-           Monto
-          </span>
+          <span class="kt-form-label w-full"> Monto </span>
           <div class="grow w-full">
-            <p-inputNumber 
-                inputId="currency-us"
-                formControlName="amount"
-                size="small"
-                mode="currency" 
-                class="w-full" 
-                currency="MXN" 
-                locale="en-US">
+            <p-inputNumber
+              inputId="currency-us"
+              formControlName="amount"
+              size="small"
+              mode="currency"
+              class="w-full"
+              currency="MXN"
+              locale="en-US"
+            >
             </p-inputNumber>
           </div>
         </div>
         <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
-          <span class="kt-form-label w-full">
-           Categoria
-          </span>
+          <span class="kt-form-label w-full"> Categoria </span>
           <div class="grow w-full">
-            <input class="kt-input w-full" placeholder="" type="text" value="jason@studio.io">
+            <input
+              class="kt-input w-full"
+              placeholder=""
+              type="text"
+              value="jason@studio.io"
+            />
           </div>
         </div>
-        <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">  
-          <span class="kt-form-label w-full">
-           Fecha
-          </span>
+        <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
+          <span class="kt-form-label w-full"> Fecha </span>
           <div class="grow w-full">
-            <input 
-                formControlName="date"
-                class="kt-input w-full" 
-                placeholder="" 
-                type="datetime-local" 
-                value="jason@studio.io">
+            <input
+              formControlName="date"
+              class="kt-input w-full"
+              placeholder=""
+              type="datetime-local"
+              value="jason@studio.io"
+            />
           </div>
         </div>
-        <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">  
-          <span class="kt-form-label w-full">
-           Nota
-          </span>
+        <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">
+          <span class="kt-form-label w-full"> Nota </span>
           <div class="grow w-full">
-            <input 
-                formControlName="note"
-                class="kt-input w-full" 
-                placeholder="" type="text" value="jason@studio.io">
+            <input
+              formControlName="note"
+              class="kt-input w-full"
+              placeholder=""
+              type="text"
+              value="jason@studio.io"
+            />
           </div>
         </div>
-        <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">  
-          <span class="kt-form-label w-full">
-           Pagador
-          </span>
+        <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">
+          <span class="kt-form-label w-full"> Pagador </span>
           <div class="grow w-full">
-            <input 
-                formControlName="payer"
-                class="kt-input w-full" 
-                placeholder="" type="text" value="jason@studio.io">
+            <input
+              formControlName="payer"
+              class="kt-input w-full"
+              placeholder=""
+              type="text"
+              value="jason@studio.io"
+            />
           </div>
         </div>
-        <div class="flex flex-nowrap justify-between items-center col-span-6 gap-2 mt-4">
-          <button type="button" class="kt-btn kt-btn-secondary w-1/2">Cancelar</button>
-          <button
-              [disabled]="form.invalid"
-              type="submit" 
-              class="kt-btn w-1/2">
+        <div
+          class="flex flex-nowrap justify-between items-center col-span-6 gap-2 mt-4"
+        >
+          <button type="button" class="kt-btn kt-btn-secondary w-1/2">
+            Cancelar
+          </button>
+          <button [disabled]="form.invalid" type="submit" class="kt-btn w-1/2">
             Agregar
           </button>
         </div>
       </form>
     </div>
   </div>
-</div> 
+</div>

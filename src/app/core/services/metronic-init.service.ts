@@ -30,8 +30,7 @@ declare var KTColorPicker: any;
   providedIn: 'root',
 })
 export class MetronicInitService {
-  constructor() {
-  }
+  constructor() {}
 
   init() {
     this.initToggles();

@@ -1,13 +1,13 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
-import {provideHttpClient, withInterceptors} from "@angular/common/http";
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import Aura from '@primeuix/themes/aura';
-import {providePrimeNG} from "primeng/config";
-import {definePreset} from "@primeuix/themes";
-import {authInterceptor} from "@core/interceptors/auth.interceptor";
-import {unauthorizedInterceptor} from "@core/interceptors/unauthorized.interceptor";
-import {MessageService} from "primeng/api";
+import { providePrimeNG } from 'primeng/config';
+import { definePreset } from '@primeuix/themes';
+import { authInterceptor } from '@core/interceptors/auth.interceptor';
+import { unauthorizedInterceptor } from '@core/interceptors/unauthorized.interceptor';
+import { MessageService } from 'primeng/api';
 
 const Noir = definePreset(Aura, {
   semantic: {
@@ -22,7 +22,7 @@ const Noir = definePreset(Aura, {
       700: '{surface.700}',
       800: '{surface.800}',
       900: '{surface.900}',
-      950: '{surface.950}'
+      950: '{surface.950}',
     },
     colorScheme: {
       light: {
@@ -30,31 +30,31 @@ const Noir = definePreset(Aura, {
           color: '{surface.950}',
           inverseColor: '#ffffff',
           hoverColor: '{surface.900}',
-          activeColor: '{surface.800}'
+          activeColor: '{surface.800}',
         },
         highlight: {
           background: '{zinc.950}',
           focusBackground: '{zinc.700}',
           color: '#ffffff',
-          focusColor: '#ffffff'
-        }
+          focusColor: '#ffffff',
+        },
       },
       dark: {
         primary: {
           color: '{zinc.50}',
           inverseColor: '{zinc.950}',
           hoverColor: '{zinc.100}',
-          activeColor: '{zinc.200}'
+          activeColor: '{zinc.200}',
         },
         highlight: {
           background: 'rgba(250, 250, 250, .16)',
           focusBackground: 'rgba(250, 250, 250, .24)',
           color: 'rgba(255,255,255,.87)',
-          focusColor: 'rgba(255,255,255,.87)'
-        }
-      }
-    }
-  }
+          focusColor: 'rgba(255,255,255,.87)',
+        },
+      },
+    },
+  },
 });
 
 export const appConfig: ApplicationConfig = {
@@ -63,19 +63,15 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     MessageService,
     provideHttpClient(
-      withInterceptors([
-        authInterceptor,
-        unauthorizedInterceptor
-      ])
+      withInterceptors([authInterceptor, unauthorizedInterceptor]),
     ),
     providePrimeNG({
       theme: {
         preset: Noir,
         options: {
           darkModeSelector: '.my-app-dark',
-        }
+        },
       },
-    })
+    }),
   ],
 };
-

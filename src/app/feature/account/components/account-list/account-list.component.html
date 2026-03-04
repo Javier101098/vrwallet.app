@@ -4,10 +4,11 @@
       <h2 class="kt-card-title">My accounts</h2>
     </div>
     <div class="kt-card-toolbar">
-      <button 
-          routerLink="/accounts/create"
-          type="button"
-          class="kt-btn kt-btn-xs kt-btn-outline kt-btn-icon">
+      <button
+        routerLink="/accounts/create"
+        type="button"
+        class="kt-btn kt-btn-xs kt-btn-outline kt-btn-icon"
+      >
         <i class="ki-filled ki-additem"></i>
       </button>
     </div>
@@ -15,16 +16,19 @@
   <div class="kt-card-content py-1">
     @if (accountStore.isLoading()) {
       <div class="flex justify-center items-center h-full py-2">
-        <p-progress-spinner strokeWidth="8" fill="transparent" animationDuration=".5s" [style]="{ width: '20px', height: '20px' }" />
+        <p-progress-spinner
+          strokeWidth="8"
+          fill="transparent"
+          animationDuration=".5s"
+          [style]="{ width: '20px', height: '20px' }"
+        />
       </div>
-    }@else{
-      @for (account of accountStore.accounts(); track account.id){
+    } @else {
+      @for (account of accountStore.accounts(); track account.id) {
         <app-account-item [account]="account" />
       } @empty {
         <div class="flex justify-center items-center h-full py-2">
-          <span class="text-sm text-muted-foreground">
-            No accounts found
-          </span>
+          <span class="text-sm text-muted-foreground"> No accounts found </span>
         </div>
       }
     }

@@ -1,14 +1,11 @@
-import {Component, input} from '@angular/core';
-import {Account} from "../../interfaces/account.interface";
-import {CurrencyPipe} from "@angular/common";
-import {RouterLink} from "@angular/router";
+import { Component, input } from '@angular/core';
+import { Account } from '../../interfaces/account.interface';
+import { CurrencyPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-account-item',
-  imports: [
-    CurrencyPipe,
-    RouterLink
-  ],
+  imports: [CurrencyPipe, RouterLink],
   templateUrl: './account-item.component.html',
   styles: ``,
 })

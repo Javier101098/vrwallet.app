@@ -1,5 +1,5 @@
 export interface Deposit {
-  accountId : string;
+  accountId: string;
   categoryId?: string;
   amount: number;
   date: string;

@@ -1,58 +1,76 @@
-<form action="#" class="kt-card-content flex flex-col gap-5 p-10" id="sign_up_form" method="post">
+<form
+  action="#"
+  class="kt-card-content flex flex-col gap-5 p-10"
+  id="sign_up_form"
+  method="post"
+>
   <div class="text-center mb-2.5">
-    <h3 class="text-lg font-medium text-mono leading-none mb-2.5">
-      Sign up
-    </h3>
+    <h3 class="text-lg font-medium text-mono leading-none mb-2.5">Sign up</h3>
     <div class="flex items-center justify-center">
-       <span class="text-sm text-secondary-foreground me-1.5">
+      <span class="text-sm text-secondary-foreground me-1.5">
         Already have an Account ?
-       </span>
-      <a class="text-sm link" routerLink="/auth/sign-in">
-        Sign In
-      </a>
+      </span>
+      <a class="text-sm link" routerLink="/auth/sign-in"> Sign In </a>
     </div>
   </div>
   <div class="grid grid-cols-2 gap-2.5">
     <a class="kt-btn kt-btn-outline justify-center" href="#">
-      <img alt="" class="size-3.5 shrink-0" src="assets/media/brand-logos/google.svg"/>
+      <img
+        alt=""
+        class="size-3.5 shrink-0"
+        src="assets/media/brand-logos/google.svg"
+      />
       Use Google
     </a>
     <a class="kt-btn kt-btn-outline justify-center" href="#">
-      <img alt="" class="size-3.5 shrink-0 dark:hidden" src="assets/media/brand-logos/apple-black.svg"/>
-      <img alt="" class="size-3.5 shrink-0 light:hidden" src="assets/media/brand-logos/apple-white.svg"/>
+      <img
+        alt=""
+        class="size-3.5 shrink-0 dark:hidden"
+        src="assets/media/brand-logos/apple-black.svg"
+      />
+      <img
+        alt=""
+        class="size-3.5 shrink-0 light:hidden"
+        src="assets/media/brand-logos/apple-white.svg"
+      />
       Use Apple
     </a>
   </div>
   <div class="flex items-center gap-2">
-      <span class="border-t border-border w-full">
-      </span>
-    <span class="text-xs text-secondary-foreground uppercase">
-       or
-      </span>
-    <span class="border-t border-border w-full">
-      </span>
+    <span class="border-t border-border w-full"> </span>
+    <span class="text-xs text-secondary-foreground uppercase"> or </span>
+    <span class="border-t border-border w-full"> </span>
   </div>
   <div class="flex flex-col gap-1">
-    <label class="kt-form-label text-mono">
-      Email
-    </label>
-    <input class="kt-input" name="user_email" placeholder="email@email.com" type="text" value=""/>
+    <label class="kt-form-label text-mono"> Email </label>
+    <input
+      class="kt-input"
+      name="user_email"
+      placeholder="email@email.com"
+      type="text"
+      value=""
+    />
   </div>
   <div class="flex flex-col gap-1">
-    <label class="kt-form-label font-normal text-mono">
-      Password
-    </label>
+    <label class="kt-form-label font-normal text-mono"> Password </label>
     <div class="kt-input" data-kt-toggle-password="true">
-      <input name="user_password" placeholder="Enter Password" type="password" value="">
-      <button class="kt-btn kt-btn-sm kt-btn-ghost kt-btn-icon bg-transparent! -me-1.5" data-kt-toggle-password-trigger="true" type="button">
-         <span class="kt-toggle-password-active:hidden">
-          <i class="ki-filled ki-eye text-muted-foreground">
-          </i>
-         </span>
+      <input
+        name="user_password"
+        placeholder="Enter Password"
+        type="password"
+        value=""
+      />
+      <button
+        class="kt-btn kt-btn-sm kt-btn-ghost kt-btn-icon bg-transparent! -me-1.5"
+        data-kt-toggle-password-trigger="true"
+        type="button"
+      >
+        <span class="kt-toggle-password-active:hidden">
+          <i class="ki-filled ki-eye text-muted-foreground"> </i>
+        </span>
         <span class="hidden kt-toggle-password-active:block">
-          <i class="ki-filled ki-eye-slash text-muted-foreground">
-          </i>
-         </span>
+          <i class="ki-filled ki-eye-slash text-muted-foreground"> </i>
+        </span>
       </button>
     </div>
   </div>
@@ -61,27 +79,37 @@
       Confirm Password
     </label>
     <div class="kt-input" data-kt-toggle-password="true">
-      <input name="user_password" placeholder="Re-enter Password" type="password" value=""/>
-      <button class="kt-btn kt-btn-sm kt-btn-ghost kt-btn-icon bg-transparent! -me-1.5" data-kt-toggle-password-trigger="true" type="button">
+      <input
+        name="user_password"
+        placeholder="Re-enter Password"
+        type="password"
+        value=""
+      />
+      <button
+        class="kt-btn kt-btn-sm kt-btn-ghost kt-btn-icon bg-transparent! -me-1.5"
+        data-kt-toggle-password-trigger="true"
+        type="button"
+      >
         <span class="kt-toggle-password-active:hidden">
-         <i class="ki-filled ki-eye text-muted-foreground">
-         </i>
+          <i class="ki-filled ki-eye text-muted-foreground"> </i>
         </span>
         <span class="hidden kt-toggle-password-active:block">
-         <i class="ki-filled ki-eye-slash text-muted-foreground">
-         </i>
+          <i class="ki-filled ki-eye-slash text-muted-foreground"> </i>
         </span>
       </button>
     </div>
   </div>
   <label class="kt-checkbox-group">
-    <input class="kt-checkbox kt-checkbox-sm" name="check" type="checkbox" value="1"/>
+    <input
+      class="kt-checkbox kt-checkbox-sm"
+      name="check"
+      type="checkbox"
+      value="1"
+    />
     <span class="kt-checkbox-label">
-       I accept
-       <a class="text-sm link" href="#">
-        Terms & Conditions
-       </a>
-      </span>
+      I accept
+      <a class="text-sm link" href="#"> Terms & Conditions </a>
+    </span>
   </label>
   <button class="kt-btn kt-btn-primary flex justify-center grow">
     Sign up

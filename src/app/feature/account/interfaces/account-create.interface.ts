@@ -1,4 +1,4 @@
-export interface AccountCreate{
+export interface AccountCreate {
   name: string;
   accountTypeId: string;
   currencyId: string;
