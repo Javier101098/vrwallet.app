@@ -118,7 +118,7 @@
                   transaction of transactionsRx.value();
                   track transaction.id
                 ) {
-                  <vrw-account-transaction-item [transaction]="transaction" />
+                  <vrw-account-transaction-item [transaction]="transaction"  [accountId]="id()"/>
                 }
               </div>
             </vrw-card>

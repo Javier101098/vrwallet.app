@@ -21,9 +21,9 @@ import { AccountTransactionItemComponent } from '../../components/account-transa
   styles: ``,
 })
 export default class AccountDetailComponent {
-  private accountService = inject(AccountService);
-
   public id = input.required<string>();
+  
+  private accountService = inject(AccountService);
 
   accountRx = rxResource({
     params: () => ({ id: this.id() }),

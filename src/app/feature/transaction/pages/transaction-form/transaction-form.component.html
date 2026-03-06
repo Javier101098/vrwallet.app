@@ -146,7 +146,10 @@
         <div
           class="flex flex-nowrap justify-between items-center col-span-6 gap-2 mt-4"
         >
-          <button type="button" class="kt-btn kt-btn-secondary w-1/2">
+          <button
+              (click)="handleCancel()"
+              type="button" 
+              class="kt-btn kt-btn-secondary w-1/2">
             Cancelar
           </button>
           <button 

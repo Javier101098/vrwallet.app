@@ -5,6 +5,7 @@ export interface Transaction {
   note?: string;
   payer?: string;
   createdAt: string;
+  destinationAccountId?: string;
   type: Type;
 }
 

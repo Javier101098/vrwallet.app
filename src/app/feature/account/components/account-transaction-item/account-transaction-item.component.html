@@ -13,14 +13,21 @@
       <div class="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
         <span>{{ typeName() }}</span>
         <span>•</span>
-        <span>{{ transaction().date | date: "short" }}</span>
+        <span>{{ transaction().date | date: "medium" }}</span>
       </div>
     </div>
   </div>
   <div
-    class="text-sm font-semibold whitespace-nowrap"
-    [class]="transaction().amount < 0 ? 'text-red-500' : 'text-green-600'"
+    class="text-sm font-semibold whitespace-nowrap tracking-wide"
+    [class]="amountColorClass()"
   >
-    {{ transaction().amount | currency }}
+    <span class="font-bold text-sm">
+      @if (typeOperation() == 0) {
+        <i class="ki-filled ki-plus"></i>
+      }@else{
+        <i class="ki-filled ki-minus"></i>
+      }
+    </span>
+     {{ transaction().amount | currency:'MXN' }}
   </div>
 </div>

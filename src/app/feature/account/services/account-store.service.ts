@@ -46,7 +46,6 @@ export const AccountStore = signalStore(
     ) => ({
       loadAccounts: rxMethod<void>(
         pipe(
-          take(1),
           tap(() => patchState(store, { isLoading: true })),
           switchMap(() => {
             return accountService.getAccounts().pipe(
@@ -64,7 +63,6 @@ export const AccountStore = signalStore(
       ),
       addAccount: rxMethod<AccountCreate>(
         pipe(
-          take(1),
           tap(() => patchState(store, { isLoading: true })),
           switchMap((account) => {
             return accountService.add(account).pipe(

@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {CommonModule, Location} from '@angular/common';
 import {Component, inject} from '@angular/core';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
 import {InputNumberModule} from 'primeng/inputnumber';
@@ -11,6 +11,7 @@ import {Account} from "../../../account/interfaces/account.interface";
 import {FormErrorLabelComponent} from "@shared/components/form-error-label/form-error-label.component";
 import {Transaction, Type} from "../../interfaces/transaction.interface";
 import {Observable, take} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'vrw-transaction-form',
@@ -30,7 +31,6 @@ export default class TransactionFormComponent {
   private transactionService = inject(TransactionService);
   private messageService = inject(MessageService);
   protected readonly Type = Type;
-
   accountStore = inject(AccountStore);
   
   form = this.fb.group({
@@ -81,6 +81,8 @@ export default class TransactionFormComponent {
     return statusClasses[type] || 'kt-btn-default';
   }
 
+  constructor(private location: Location) {}
+
   onChange({ value }: any) {
     const destControl = this.form.get('destinationAccountId');
     if (value === Type.Transfer) {
@@ -102,18 +104,17 @@ export default class TransactionFormComponent {
     }
 
     request$[this.form.get('type')?.value!]
-      .pipe(
-        take(1)
-      )
       .subscribe({
         next: () => {
           this.messageService.add({
             severity: 'success',
             detail: 'La transaccion se ha llevado acabo con exito.',
           });
+          this.accountStore.loadAccounts();
+          this.location.back();
         },
         error: (error: any) => {
-          //todo error aplicar interceptor, mensaje de error por cantidad insuficuiente 
+          //todo error aplicar interceptor, mensaje de error por cantidad insuficiente 
           console.error('Error:', error);
           this.messageService.add({
             severity: 'error',
@@ -122,5 +123,9 @@ export default class TransactionFormComponent {
           });
         },
       });
+  }
+  
+  handleCancel(){
+    this.location.back();
   }
 }
