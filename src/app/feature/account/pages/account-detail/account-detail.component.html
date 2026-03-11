@@ -41,32 +41,7 @@
       </div>
 
       <div class="flex flex-col w-full gap-4 sm:col-span-3 col-span-5">
-        <div class="flex flex-col sm:flex-row justify-between gap-4">
-          <vrw-card>
-            <div [style.color]="accountStyle().primary" [style.background-color]="accountStyle().light"
-                 class="w-12 h-12 rounded-full flex items-center justify-center shrink-0 text-xl font-bold">
-              <i class="ki-filled ki-arrow-up-right"></i>
-            </div>
-            <div class="flex flex-col">
-              <span class="text-slate-500 text-sm font-medium">Ingresos este mes</span>
-              <span class="text-[#0f172a] text-[22px] font-semibold tracking-tight mt-0.5">
-                {{ currentSummary().income | currency }}
-              </span>
-            </div>
-          </vrw-card>
-
-          <vrw-card>
-            <div class="bg-[#dddddd] w-12 h-12 rounded-full flex items-center justify-center shrink-0 text-gray-600 text-xl font-bold">
-              <i class="ki-filled ki-arrow-down-left"></i>
-            </div>
-            <div class="flex flex-col">
-              <span class="text-slate-500 text-sm font-medium">Gastos este mes</span>
-              <span class="text-[#0f172a] text-[22px] font-semibold tracking-tight mt-0.5">
-                {{ currentSummary().expense | currency }}
-              </span>
-            </div>
-          </vrw-card>
-        </div>
+        <vrw-account-summary-card [id]="id()" [style]="accountStyle()" />
 
         <div class="flex flex-col gap-4">
           @if (transactionsResource.isLoading()) {

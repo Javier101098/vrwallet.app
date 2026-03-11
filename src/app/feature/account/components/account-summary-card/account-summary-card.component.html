@@ -1,0 +1,51 @@
+<div class="flex flex-col sm:flex-row justify-between gap-4">
+
+  <vrw-card>
+    <div [style.color]="style().primary" [style.background-color]="style().light"
+         class="w-12 h-12 rounded-full flex items-center justify-center shrink-0 text-xl font-bold">
+      <i class="ki-filled ki-arrow-up-right"></i>
+    </div>
+    <div class="flex flex-col">
+      <span class="text-slate-500 text-sm font-medium">Ingresos este mes</span>
+      <span class="text-[#0f172a] text-[22px] font-semibold tracking-tight mt-0.5">
+        {{ currentSummary().income | currency }}
+      </span>
+
+      @if (incomeStats().change !== 0) {
+        <div class="flex items-center gap-2 mt-1">
+          <div [style.color]="incomeStats().color"
+               [style.background-color]="style().light"
+               class="px-2 py-0.5 rounded-md flex items-center gap-0.5 text-xs font-bold">
+            <i [class]="incomeStats().change < 0 ? 'ki-filled ki-arrow-down-refraction' : 'ki-filled ki-arrow-up-refraction'"></i>
+            {{ incomeStats().change | percent:'1.1-1' }}
+          </div>
+          <span class="text-slate-400 text-sm">vs mes anterior</span>
+        </div>
+      }
+    </div>
+  </vrw-card>
+
+  <vrw-card>
+    <div class="bg-[#dddddd] w-12 h-12 rounded-full flex items-center justify-center shrink-0 text-gray-600 text-xl font-bold">
+      <i class="ki-filled ki-arrow-down-left"></i>
+    </div>
+    <div class="flex flex-col">
+      <span class="text-slate-500 text-sm font-medium">Gastos este mes</span>
+      <span class="text-[#0f172a] text-[22px] font-semibold tracking-tight mt-0.5">
+        {{ currentSummary().expense | currency }}
+      </span>
+
+      @if (expenseStats().change !== 0) {
+        <div class="flex items-center gap-2 mt-1">
+          <div [style.color]="expenseStats().color"
+               [style.background-color]="style().light"
+               class="px-2 py-0.5 rounded-md flex items-center gap-0.5 text-xs font-bold">
+            <i [class]="expenseStats().change < 0 ? 'ki-filled ki-arrow-down-refraction' : 'ki-filled ki-arrow-up-refraction'"></i>
+            {{ expenseStats().change | percent:'1.1-1' }}
+          </div>
+          <span class="text-slate-400 text-sm">vs mes anterior</span>
+        </div>
+      }
+    </div>
+  </vrw-card>
+</div>

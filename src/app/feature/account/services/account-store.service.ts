@@ -8,7 +8,7 @@ import {
   withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { pipe, switchMap, take, tap} from 'rxjs';
+import { pipe, switchMap, tap} from 'rxjs';
 import { inject } from '@angular/core';
 import { AccountService } from './account.service';
 import { tapResponse } from '@ngrx/operators';
