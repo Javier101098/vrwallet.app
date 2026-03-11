@@ -16,6 +16,7 @@ import {CategoryService} from "@core/services/category.service";
 import {AutoComplete, AutoCompleteCompleteEvent, AutoCompleteSelectEvent} from "primeng/autocomplete";
 import {Category} from "@core/Interfaces/category.interface";
 import { DatePickerModule } from 'primeng/datepicker';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'vrw-transaction-form',
@@ -37,7 +38,9 @@ export default class TransactionFormComponent {
   private transactionService = inject(TransactionService);
   private categoryService = inject(CategoryService);
   private messageService = inject(MessageService);
+  private router = inject(Router);
   protected readonly Type = Type;
+  
   accountStore = inject(AccountStore);
 
   maxDate = signal<Date>(new Date());
@@ -169,13 +172,13 @@ export default class TransactionFormComponent {
         finalize(()=>this.loading.set(false))
       )
       .subscribe({
-        next: () => {
+        next: (transaction:Transaction) => {
           this.messageService.add({
             severity: 'success',
             detail: 'La transaccion se ha llevado acabo con exito.',
           });
           this.accountStore.loadAccounts();
-          this.location.back();
+          this.router.navigate(['/accounts',transaction.accountId]).then();
         },
         error: (error: any) => {
           //todo error aplicar interceptor, mensaje de error por cantidad insuficiente 
