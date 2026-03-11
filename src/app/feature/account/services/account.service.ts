@@ -6,6 +6,7 @@ import { map, Observable } from 'rxjs';
 import { ApiResponse } from '@core/Interfaces/api-response.interface';
 import { AccountCreate } from '../interfaces/account-create.interface';
 import { Transaction } from '../../transaction/interfaces/transaction.interface';
+import {AccountBalanceComparison} from "../interfaces/account-balance-comparison.interface";
 
 @Injectable({
   providedIn: 'root',
@@ -39,5 +40,12 @@ export class AccountService {
         ApiResponse<Transaction[]>
       >(`${this.baseUrl}/account/${id}/transactions`)
       .pipe(map((res) => res.data));
+  }
+  
+  public getMonthlySummary(id: string){
+    return this.http.get<ApiResponse<AccountBalanceComparison>>(`${this.baseUrl}/account/${id}/monthly-balance`)
+      .pipe(
+        map(res=>res.data)
+      );
   }
 }

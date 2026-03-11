@@ -10,10 +10,10 @@ import {MessageService} from 'primeng/api';
 import {Account} from "../../../account/interfaces/account.interface";
 import {FormErrorLabelComponent} from "@shared/components/form-error-label/form-error-label.component";
 import {Transaction, Type} from "../../interfaces/transaction.interface";
-import {Observable} from "rxjs";
+import {finalize, Observable} from "rxjs";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {CategoryService} from "@core/services/category.service";
-import {AutoComplete, AutoCompleteCompleteEvent} from "primeng/autocomplete";
+import {AutoComplete, AutoCompleteCompleteEvent, AutoCompleteSelectEvent} from "primeng/autocomplete";
 import {Category} from "@core/Interfaces/category.interface";
 import { DatePickerModule } from 'primeng/datepicker';
 
@@ -40,6 +40,9 @@ export default class TransactionFormComponent {
   protected readonly Type = Type;
   accountStore = inject(AccountStore);
 
+  maxDate = signal<Date>(new Date());
+  loading = signal<boolean>(false);
+  accountSelected = signal<Account|null>(null);
   filteredCategories  = signal<Category[]>([]);
   filteredAccounts = signal<Account[]>([]);
   categories = toSignal(this.categoryService.get(), {
@@ -129,27 +132,42 @@ export default class TransactionFormComponent {
     this.filteredAccounts.set(filtered);
   }
   
+  handleChangeAccount(account: AutoCompleteSelectEvent){
+    this.accountSelected.set(account.value);
+  }
+  
   onChange({ value }: any) {
     const destControl = this.form.get('destinationAccountId');
+    const categoryControl = this.form.get('categoryId');
+    
     if (value === Type.Transfer) {
       destControl?.setValidators([Validators.required]);
+      categoryControl?.clearValidators();
+      categoryControl?.setValue(null);
     } else {
+      categoryControl?.setValidators([Validators.required]);
       destControl?.clearValidators();
       destControl?.setValue(null);
     }
     destControl?.updateValueAndValidity();
+    categoryControl?.updateValueAndValidity();
   }
 
   handleSubmit(): void {
     if (this.form.invalid) return;
+    
+    this.loading.set(true);
     
     const request$: Record<Type,Observable<Transaction>> = {
       [Type.Expense]: this.transactionService.expense(this.currentExpense),
       [Type.Income]:this.transactionService.add(this.currentIncome),
       [Type.Transfer]:this.transactionService.transfer(this.currentTransfer)
     }
-
+    
     request$[this.form.get('type')?.value!]
+      .pipe(
+        finalize(()=>this.loading.set(false))
+      )
       .subscribe({
         next: () => {
           this.messageService.add({
@@ -161,7 +179,6 @@ export default class TransactionFormComponent {
         },
         error: (error: any) => {
           //todo error aplicar interceptor, mensaje de error por cantidad insuficiente 
-          console.error('Error:', error);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',

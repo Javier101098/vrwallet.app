@@ -30,24 +30,37 @@
           </div>
         </div>
         <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
-          <label class="kt-form-label w-full" for="account"> 
-            Cuenta
-            <span class="text-red-600">*</span>
-          </label>
+          <div class="flex flex-row items-center justify-between w-full">
+            <label class="kt-form-label w-full" for="account"> 
+              Cuenta
+              <span class="text-red-600">*</span>
+            </label>
+            <span class="text-[10px] font-bold">
+              {{ accountSelected()?.balance | currency:'MXN' }}
+            </span>
+          </div>
           <div class="grow w-full">
             <p-autocomplete
                 size="small"
                 fluid
+                [typeahead]="false"
                 inputId="account"
                 optionValue="id"
                 formControlName="accountId"
                 [dropdown]="true"
                 [suggestions]="filteredAccounts()"
                 (completeMethod)="filterAccount($event)"
-                optionLabel="name">
-              <ng-template let-account #item>
-                <div class="flex items-center gap-2">
-                  <div>{{ account.name }}</div>
+                (onSelect)="handleChangeAccount($event)"
+                optionLabel="name"
+            >
+              <ng-template let-account pTemplate="item">
+                <div class="flex items-center justify-between gap-2">
+                  <span>
+                    {{ account.name }}
+                  </span>
+                  <span class="kt-badge kt-badge-stroke">
+                    {{account.balance | currency:'MXN'}}
+                  </span>
                 </div>
               </ng-template>
             </p-autocomplete>
@@ -91,7 +104,7 @@
                   [suggestions]="filteredAccounts()"
                   (completeMethod)="filterAccount($event, true)"
                   optionLabel="name">
-                <ng-template let-account #item>
+                <ng-template let-account>
                   <div class="flex items-center gap-2">
                     <div>{{ account.name }}</div>
                   </div>
@@ -129,7 +142,10 @@
             <span class="text-red-600">*</span>
           </label>
           <div class="grow w-full">
-            <p-datepicker size="small" inputId="date" formControlName="date" [showTime]="true" hourFormat="12"></p-datepicker>
+            <p-datepicker 
+                fluid
+                size="small" inputId="date" formControlName="date"
+                          [showTime]="true" hourFormat="24" [maxDate]="maxDate()"></p-datepicker>
             <vrw-form-error-label [control]="form.get('date')"/>
           </div>
         </div> 
@@ -170,22 +186,26 @@
             Cancelar
           </button>
           <button 
-              [disabled]="form.invalid" 
+              [disabled]="form.invalid || loading()" 
               type="submit" 
               class="kt-btn w-1/2"
               [ngClass]="buttonClass">
-            @switch (form.get('type')?.value) {
-              @case (Type.Income) {
-                <span class="font-semibold">Registrar Ingreso</span>
-              }
-              @case (Type.Expense) {
-                <span class="font-semibold">Registrar Gasto</span>
-              }
-              @case (Type.Transfer) {
-                <span class="font-semibold">Registrar Transferencia</span>
-              }
-              @default {
-                <span class="font-semibold">Selecciona el tipo de transacción</span>
+            @if (loading()) {
+              <span>Registrando...</span>
+            }@else{
+              @switch (form.get('type')?.value) {
+                @case (Type.Income) {
+                  <span class="font-semibold">Registrar Ingreso</span>
+                }
+                @case (Type.Expense) {
+                  <span class="font-semibold">Registrar Gasto</span>
+                }
+                @case (Type.Transfer) {
+                  <span class="font-semibold">Registrar Transferencia</span>
+                }
+                @default {
+                  <span class="font-semibold">Selecciona el tipo de transacción</span>
+                }
               }
             }
           </button>
