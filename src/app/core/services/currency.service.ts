@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
-import { distinctUntilChanged, map, Observable } from 'rxjs';
-import { ApiResponse } from '@core/Interfaces/api-response.interface';
+import { Observable } from 'rxjs';
 import { Currency } from '@core/Interfaces/currency.interface';
 
 @Injectable({
@@ -14,10 +13,6 @@ export class CurrencyService {
 
   get(): Observable<Currency[]> {
     return this.http
-      .get<ApiResponse<Currency[]>>(`${this.baseUrl}/currency`)
-      .pipe(
-        distinctUntilChanged(),
-        map((res) => res.data),
-      );
+      .get<Currency[]>(`${this.baseUrl}/currency`);
   }
 }
