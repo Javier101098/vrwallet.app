@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 env:
-  DOCKER_IMAGE: javierdevjs/vrwallet.api
+  DOCKER_IMAGE: javierdevjs/vrwallet.app
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
