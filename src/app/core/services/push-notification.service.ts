@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class PushNotificationService {
   private http = inject(HttpClient);
-  private readonly endpoint = `${environment.baseUrl}/push-notifications`;
+  private readonly endpoint = `${environment.baseUrl}/push-subscription`;
 
   subscribe(subscription: PushSubscription): Observable<any> {
     return this.http.post(`${this.endpoint}`, subscription);
