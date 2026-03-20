@@ -7,7 +7,8 @@
 			<a class="kt-menu-link lg:py-3.5 border-b border-b-transparent kt-menu-item-active:border-b-mono text-foreground kt-menu-item-hover:text-mono kt-menu-item-active:text-mono kt-menu-item-here:border-b-mono kt-menu-item-here:text-mono"
          routerLinkActive="kt-menu-item-active:border-b-mono kt-menu-item-active:text-mono"
          [routerLinkActiveOptions]="{ exact: true }"
-				 routerLink="/">
+         data-kt-drawer-dismiss="true"
+         routerLink="/">
 				<span class="kt-menu-title font-medium text-foreground text-sm">
 					Panel
 				</span>
@@ -17,6 +18,7 @@
 			<a class="kt-menu-link lg:py-3.5 border-b border-b-transparent  text-foreground kt-menu-item-hover:text-mono kt-menu-item-here:border-b-mono kt-menu-item-here:text-mono"
          routerLinkActive="kt-menu-item-active:border-b-mono kt-menu-item-active:text-mono"
          [routerLinkActiveOptions]="{ exact: true }"
+         data-kt-drawer-dismiss="true"
          routerLink="/accounts">
 				<span class="kt-menu-title font-medium text-foreground text-sm">
 					Cuentas
@@ -27,6 +29,7 @@
 			<a class="kt-menu-link lg:py-3.5 border-b border-b-transparent  text-foreground kt-menu-item-hover:text-mono kt-menu-item-here:border-b-mono kt-menu-item-here:text-mono"
          routerLinkActive="kt-menu-item-active:border-b-mono kt-menu-item-active:text-mono"
          [routerLinkActiveOptions]="{ exact: true }"
+         data-kt-drawer-dismiss="true"
          routerLink="/transactions">
 				<span class="kt-menu-title font-medium text-foreground text-sm">
 					Transacciones
