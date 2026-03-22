@@ -1,8 +1,13 @@
 import { Component } from '@angular/core';
+import {
+  AccountBalanceCardComponent
+} from "../../../account/components/account-balance-card/account-balance-card.component";
 
 @Component({
   selector: 'vrw-dashboard-page',
-  imports: [],
+  imports: [
+    AccountBalanceCardComponent
+  ],
   templateUrl: './dashboard-page.component.html',
   styles: ``,
 })

@@ -10,9 +10,9 @@
       <p class="text-sm font-medium text-slate-900 line-clamp-1">
         {{ transaction().note || transaction().payer || "Sin descripción" }}
       </p>
-      <div class="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
+      <div class="flex flex-col md:flex-row items-start md:items-center md:gap-2 text-xs text-slate-500 mt-0.5">
         <span>{{ typeName() }}</span>
-        <span>•</span>
+        <span class="hidden md:block">•</span>
         <span>{{ transaction().date | date: "medium" }}</span>
       </div>
     </div>
