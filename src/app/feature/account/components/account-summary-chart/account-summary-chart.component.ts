@@ -57,20 +57,18 @@ export class AccountSummaryChartComponent {
         enabled: false
       },
       chart: {
+        selection: {
+          enabled: true
+        },
         height: 350,
         stacked: false,
         type: 'area',
         zoom: {
-          type: "x",
-          enabled: true,
-          autoScaleYaxis: true
+          enabled: false,
         },
         toolbar: {
           autoSelected: "zoom"
         }
-      },
-      title: {
-        text: 'Account Balance (Last 7 Days)',
       },
       xaxis: {
         categories: categories,
