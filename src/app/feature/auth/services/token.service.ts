@@ -33,7 +33,6 @@ export class TokenService {
   }
 
   public IsValid(): boolean {
-    if (this.token() == null) return false;
-    return true;
+    return this.token() != null;
   }
 }

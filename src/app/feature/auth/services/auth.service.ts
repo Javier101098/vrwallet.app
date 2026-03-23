@@ -4,6 +4,7 @@ import { environment } from '@env/environment';
 import { LoginResponse } from '../interfaces/login-response.interface';
 import { catchError, map, Observable, of } from 'rxjs';
 import { TokenService } from './token.service';
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,8 @@ import { TokenService } from './token.service';
 export class AuthService {
   private http = inject(HttpClient);
   private tokenService = inject(TokenService);
-
+  private router = inject(Router);
+  
   private readonly baseUrl = environment.baseUrl;
 
   public login(email: string, password: string): Observable<boolean> {
@@ -42,8 +44,11 @@ export class AuthService {
     return of(false);
   }
 
-  public logout() {
+  public logout(refresh: boolean = false) {
     this.tokenService.clearTokens();
-    return of(true);
+    if (refresh){
+      this.router.navigate(['/']).then();
+    }
+      
   }
 }

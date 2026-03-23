@@ -1,5 +1,4 @@
 import {Component, computed, inject, input, signal} from '@angular/core';
-import { CardComponent } from '@shared/components/card/card.component';
 
 import {
   ChartComponent,
@@ -22,7 +21,7 @@ export type ChartOptions = {
 
 @Component({
   selector: 'vrw-account-summary-chart',
-  imports: [CardComponent, ChartComponent, SelectButton],
+  imports: [ChartComponent, SelectButton],
   templateUrl: './account-summary-chart.component.html',
 })
 export class AccountSummaryChartComponent {

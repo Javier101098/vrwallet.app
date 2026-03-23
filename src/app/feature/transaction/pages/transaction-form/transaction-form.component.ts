@@ -52,13 +52,13 @@ export default class TransactionFormComponent{
 
   typeParam = toSignal(
     this.routerActivated.queryParams.pipe(
-    map(({ type }) => {
-      const parsed = Number(type);
-      return Object.values(Type).includes(parsed) ? (parsed as Type) : Type.Income;
-    }),
-  ),
-  { initialValue: Type.Income },
-);
+      map(({ type }) => {
+        const parsed = Number(type);
+        return Object.values(Type).includes(parsed) ? (parsed as Type) : Type.Income;
+      }),
+    ),
+    { initialValue: Type.Income },
+  );
   categories = toSignal(this.categoryService.get(), {
     initialValue: [],
   });

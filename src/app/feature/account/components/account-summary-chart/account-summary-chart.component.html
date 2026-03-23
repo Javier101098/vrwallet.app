@@ -1,6 +1,5 @@
-<vrw-card>
-  <div style="text-align: center; width: 100%">
-    <div class="w-full my-4">
+  <div class="border-gray-100 rounded-2xl text-center w-full shadow-sm border bg-white">
+    <div class="w-full mb-4">
       <p-selectButton
           fluid 
           size="small" 
@@ -8,6 +7,9 @@
           optionLabel="label"
           (onChange)="changeOption($event.value)"
           optionValue="value">
+        <ng-template let-item>
+          <button>{{item.label}}</button>
+        </ng-template>
       </p-selectButton>
     </div>
 
@@ -19,5 +21,4 @@
     >
     </apx-chart>
   </div>
-</vrw-card>
         

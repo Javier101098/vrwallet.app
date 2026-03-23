@@ -8,6 +8,11 @@ import { CurrencyPipe, PercentPipe } from '@angular/common';
   selector: 'vrw-account-summary-card',
   imports: [CardComponent, CurrencyPipe, PercentPipe],
   templateUrl: './account-summary-card.component.html',
+  styles: `
+    ::ng-deep .p-togglebutton .p-togglebutton-content {
+      padding: 5px 0 !important;
+    }
+  `,
 })
 export class AccountSummaryCardComponent {
   id = input.required<string>();

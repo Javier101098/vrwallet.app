@@ -38,9 +38,8 @@ export class MainLayoutComponent {
       .then(sub => {
         this.pushService.subscribe(sub).subscribe({
           next: () => console.log("Suscripción enviada al servidor con éxito"),
-          error: (err) => console.error("Error al enviar la suscripción al servidor", err)
         });
       })
-      .catch(err => console.error("El usuario denegó el permiso o hubo un error:", err));
+      .catch(err => console.info("El usuario denegó el permiso o hubo un error:", err));
   }
 }
