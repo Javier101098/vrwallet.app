@@ -5,7 +5,7 @@ import {
   ApexAxisChartSeries,
   ApexChart,
   ApexXAxis,
-  ApexTitleSubtitle, ApexDataLabels, ApexYAxis, ApexTooltip, ApexAnnotations,
+  ApexTitleSubtitle, ApexDataLabels, ApexYAxis, ApexTooltip, ApexAnnotations, ApexGrid,
 } from 'ng-apexcharts';
 import {rxResource} from "@angular/core/rxjs-interop";
 import {AccountService} from "../../services/account.service";
@@ -13,6 +13,7 @@ import {SelectButton} from "primeng/selectbutton";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
+  grid :ApexGrid;
   chart: ApexChart;
   tooltip: ApexTooltip;
   xaxis: ApexXAxis;
@@ -63,19 +64,20 @@ export class AccountSummaryChartComponent {
           enabled: true
         },
         height: 350,
+        width: '100%',
         stacked: false,
         type: 'area',
         zoom: {
           enabled: false,
         },
-        toolbar: {
-          autoSelected: "zoom"
-        }
+        toolbar: { show: false },
       },
       tooltip:{
         
       },
       yaxis: {
+        min: function(min) { return min * 0.9995 },
+        max: function(max) { return max * 1.0005 },
         labels: {
           show: true ,
           formatter: function(value) {
@@ -101,6 +103,12 @@ export class AccountSummaryChartComponent {
       },
       annotations:{
 
+      },
+      grid:{
+        padding: {
+          left: 5,
+          right: 10
+        }
       }
     };
   });
