@@ -15,6 +15,8 @@ import {
 import {rxResource} from "@angular/core/rxjs-interop";
 import {AccountService} from "../../services/account.service";
 import {SelectButton} from "primeng/selectbutton";
+import {delay} from "rxjs";
+import {ProgressSpinner} from "primeng/progressspinner";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -30,8 +32,7 @@ export type ChartOptions = {
 
 @Component({
   selector: 'vrw-account-summary-chart',
-  
-  imports: [ChartComponent, SelectButton],
+  imports: [ChartComponent, SelectButton, ProgressSpinner],
   templateUrl: './account-summary-chart.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -51,13 +52,13 @@ export class AccountSummaryChartComponent {
   ]
 
   chartOpts = computed<Partial<ChartOptions>>(() => {
-    const data = this.dailyBalanceResource.value() || [];
+    const data = this.dailyBalanceRx.value() || [];
 
-    const normalized = data.length > 0 ? data : [...data,this.today()];
+    const normalized = data.length > 0 ? [...data,this.today()] : [];
     
     const seriesData = normalized.map((b) => b.balance)
     const categories = normalized.map((b) => b.date);
-
+    
     return {
       series: [
         {
@@ -128,7 +129,7 @@ export class AccountSummaryChartComponent {
     this.optionSelected.set(value)
   }
   
-  dailyBalanceResource = rxResource({
+  dailyBalanceRx = rxResource({
     params: () => ({ 
       id: this.id(),
       days : this.optionSelected()
@@ -138,7 +139,7 @@ export class AccountSummaryChartComponent {
       const lastWeek = new Date(today);
       lastWeek.setDate(today.getDate() - params.days);
       const startDate = lastWeek.toISOString().split('T')[0];
-      return this.accountService.getDailyBalance(params.id, startDate);
+      return this.accountService.getDailyBalance(params.id, startDate).pipe(delay(1000));
     },
   });
 }

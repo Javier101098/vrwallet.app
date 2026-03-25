@@ -14,4 +14,4 @@ export class AccountTypeService {
   get(): Observable<AccountType[]> {
     return this.http.get<AccountType[]>(`${this.baseUrl}/account-type`);
   }
-}
+} 

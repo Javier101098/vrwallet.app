@@ -1,10 +1,10 @@
 <div class="kt-card">
   <div class="kt-card-content flex flex-col gap-2 px-5 lg:px-7.5 pt-5">
-          <span class="text-sm font-normal text-foreground">
-            Balance total
-          </span>
+    <span class="text-sm font-normal text-foreground">
+      Balance total
+    </span>
     <span class="text-3xl font-semibold text-mono mb-3">
-      {{ accountStore.balance() | currency }}
+      {{ displayBalance() | currency }}
     </span>
   </div>
 </div>

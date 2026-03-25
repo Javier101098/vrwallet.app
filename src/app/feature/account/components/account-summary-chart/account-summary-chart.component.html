@@ -1,26 +1,38 @@
-  <div class="border-gray-100 rounded-2xl text-center w-full shadow-sm border bg-white">
-    <div class="w-full mb-4">
-      <p-selectButton
-          fluid 
-          size="small" 
-          [options]="stateOptions" 
-          optionLabel="label"
-          (onChange)="changeOption($event.value)"
-          optionValue="value">
-        <ng-template let-item>
-          <button>{{item.label}}</button>
-        </ng-template>
-      </p-selectButton>
-    </div>
+  <div class="border-gray-100 rounded-2xl text-center w-full shadow-sm border bg-white overflow-hidden">
+    @if (dailyBalanceRx.isLoading()) {
+      <div class="flex flex-col justify-center items-center h-full py-6">
+        <p-progress-spinner
+            strokeWidth="4"
+            fill="transparent"
+            animationDuration=".5s"
+            [style]="{ width: '40px', height: '40px' }"
+        />
+        <p class="font-bold mt-3" [style]="{color:color()}">Cargando...</p>
+      </div>
+    }@else{
+      <div class="w-full mb-4">
+        <p-selectButton
+            fluid
+            size="small"
+            [options]="stateOptions"
+            optionLabel="label"
+            (onChange)="changeOption($event.value)"
+            optionValue="value">
+          <ng-template let-item>
+            <button>{{item.label}}</button>
+          </ng-template>
+        </p-selectButton>
+      </div>
 
-    <apx-chart
-      [series]="chartOpts().series!"
-      [chart]="chartOpts().chart!"
-      [xaxis]="chartOpts().xaxis!"
-      [yaxis]="chartOpts().yaxis!"
-      [dataLabels]="chartOpts().dataLabels!"
-      [annotations]="chartOpts().annotations!"
-    >
-    </apx-chart>
+      <apx-chart
+        [series]="chartOpts().series!"
+        [chart]="chartOpts().chart!"
+        [xaxis]="chartOpts().xaxis!"
+        [yaxis]="chartOpts().yaxis!"
+        [dataLabels]="chartOpts().dataLabels!"
+        [annotations]="chartOpts().annotations!"
+      >
+      </apx-chart>
+    }
   </div>
         
