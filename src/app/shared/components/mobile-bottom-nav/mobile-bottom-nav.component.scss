@@ -16,7 +16,11 @@
 }
 
 
-//.mask-gradient {
-//  mask-image: linear-gradient(to top, black 20%, transparent 100%);
-//  -webkit-mask-image: linear-gradient(to top, black 20%, transparent 100%);
-//}
+.font-active{
+  font-size: 25px !important;
+}
+
+.mask-gradient {
+  mask-image: linear-gradient(to top, black 20%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 20%, transparent 100%);
+}
