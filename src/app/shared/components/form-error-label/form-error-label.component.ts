@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Component({
@@ -6,7 +6,6 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
   imports: [],
   templateUrl: './form-error-label.component.html',
   styles: ``,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormErrorLabelComponent {
   control = input.required<AbstractControl | null>();

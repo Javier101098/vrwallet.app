@@ -1,151 +1,157 @@
-<div class="kt-container-fixed">
-  <div class="kt-card">
-    <div class="kt-card-header">
-      <div class="kt-card-heading">
-        <h2 class="kt-card-title">Create Account</h2>
+@if (isEdit() && accountResource.isLoading()) {
+  <div class="flex flex-col items-center justify-center py-20">
+    <p-progress-spinner
+        strokeWidth="4"
+        [style]="{ width: '50px', height: '50px' }"
+    />
+    <p class="text-slate-500 mt-4 font-medium">Obteniendo información de la cuenta</p>
+  </div>
+} @else if (isEdit() && accountResource.error()) {
+<vrw-not-found>
+  <span slot="slot-title">Cuenta no encontrada</span>
+  <span slot="slot-description">
+    No pudimos localizar los detalles de esta cuenta. Es posible que haya sido eliminada o no cuantas con los privilegios.
+  </span>
+</vrw-not-found>
+}
+@else if((isEdit() && accountResource.hasValue()) || !isEdit()) {
+  <div class="kt-container-fixed">
+    <div class="kt-card">
+      <div class="kt-card-header">
+        <div class="kt-card-heading">
+          <h2 class="kt-card-title">Create Account</h2>
+        </div>
       </div>
-    </div>
-    <div class="kt-card-content py-3 grid gap-5">
-      <form
-        [formGroup]="form"
-        (ngSubmit)="handleSubmit()"
-        class="grid grid-cols-6 gap-4"
-      >
-        <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
+      <div class="kt-card-content py-3 grid gap-5">
+        <form
+            [formGroup]="form"
+            (ngSubmit)="handleSubmit()"
+            class="grid grid-cols-6 gap-4"
+        >
+          <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
           <span class="kt-form-label w-full">
             Name
             <span class="text-red-600"> * </span>
           </span>
-          <div class="grow w-full">
-            <input formControlName="name" class="kt-input w-full" type="text" />
-            <vrw-form-error-label
-              [control]="form.get('name')"
-            ></vrw-form-error-label>
+            <div class="grow w-full">
+              <input formControlName="name" class="kt-input w-full" type="text" />
+              <vrw-form-error-label
+                  [control]="form.get('name')"
+              ></vrw-form-error-label>
+            </div>
           </div>
-        </div>
-        <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
+          <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
           <span class="kt-form-label w-full">
             Account Type
             <span class="text-red-600"> * </span>
           </span>
-          <div class="grow w-full">
-            <select
-              formControlName="accountTypeId"
-              class="kt-select"
-              data-kt-select="true"
-              data-kt-select-placeholder="Select a framework"
-              data-kt-select-config='{
-                  "optionsClass": "kt-scrollable overflow-auto max-h-[250px]"
-                }'
-            >
-              @for (accountType of accountTypes(); track accountType.id) {
-                <option [value]="accountType.id">{{ accountType.name }}</option>
-              }
-            </select>
-            <vrw-form-error-label
-              [control]="form.get('accountTypeId')"
-            ></vrw-form-error-label>
+            <div class="grow w-full">
+              <p-select
+                  [options]="accountTypes()"
+                  formControlName="accountTypeId"
+                  [checkmark]="true"
+                  [showClear]="true"
+                  size="small"
+                  optionLabel="name"
+                  optionValue="id"
+                  class="w-full dark:bg-slate-800" />
+              <vrw-form-error-label
+                  [control]="form.get('accountTypeId')"
+              ></vrw-form-error-label>
+            </div>
           </div>
-        </div>
-        <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
+          <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
           <span class="kt-form-label w-full">
             Currency
             <span class="text-red-600"> * </span>
           </span>
-          <div class="grow w-full">
-            <select
-              formControlName="currencyId"
-              class="kt-select"
-              data-kt-select="true"
-              data-kt-select-placeholder="Select a framework"
-              data-kt-select-config='{
-                  "optionsClass": "kt-scrollable overflow-auto max-h-[250px]"
-                }'
-            >
-              @for (currency of currencies(); track currency.id) {
-                <option [value]="currency.id">{{ currency.name }}</option>
-              }
-            </select>
-            <vrw-form-error-label
-              [control]="form.get('currencyId')"
-            ></vrw-form-error-label>
+            <div class="grow w-full">
+              <p-select
+                  [options]="currencies()"
+                  formControlName="currencyId"
+                  [checkmark]="true"
+                  [showClear]="true"
+                  size="small"
+                  optionLabel="name"
+                  optionValue="id"
+                  class="w-full dark:bg-slate-800" />
+              <vrw-form-error-label
+                  [control]="form.get('currencyId')"
+              ></vrw-form-error-label>
+            </div>
           </div>
-        </div>
-        <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
+          <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
           <span class="kt-form-label w-full">
             Institution
             <span class="text-red-600">*</span>
           </span>
-          <div class="grow w-full">
-            <select
-              formControlName="institutionId"
-              class="kt-select"
-              data-kt-select="true"
-              data-kt-select-placeholder="Select a framework"
-              data-kt-select-config='{
-                  "optionsClass": "kt-scrollable overflow-auto max-h-[250px]"
-                }'
-            >
-              @for (institution of institutions(); track institution.id) {
-                <option [value]="institution.id">{{ institution.name }}</option>
-              }
-            </select>
-            <vrw-form-error-label
-              [control]="form.get('institutionId')"
-            ></vrw-form-error-label>
+            <div class="grow w-full">
+              <p-select
+                  [options]="institutions()"
+                  formControlName="institutionId"
+                  [checkmark]="true"
+                  [showClear]="true"
+                  size="small"
+                  optionLabel="name"
+                  optionValue="id"
+                  class="w-full dark:bg-slate-800" />
+              <vrw-form-error-label
+                  [control]="form.get('institutionId')"
+              ></vrw-form-error-label>
+            </div>
           </div>
-        </div>
-        <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
+          <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
           <span class="kt-form-label w-full">
             Color
             <span class="text-red-600">*</span>
           </span>
-          <div class="grow w-full">
-            <div class="kt-input">
-              <p-colorpicker
-                formControlName="color"
-                class="mb-0"
-              ></p-colorpicker>
-              <input
-                class="form-control"
-                formControlName="color"
-                [value]="form.get('color')?.value"
-                type="text"
-                readonly
-              />
+            <div class="grow w-full">
+              <div class="kt-input">
+                <p-colorpicker
+                    formControlName="color"
+                    class="mb-0"
+                ></p-colorpicker>
+                <input
+                    class="form-control"
+                    formControlName="color"
+                    [value]="form.get('color')?.value"
+                    type="text"
+                    readonly
+                />
+              </div>
+              <vrw-form-error-label
+                  [control]="form.get('color')"
+              ></vrw-form-error-label>
             </div>
-            <vrw-form-error-label
-              [control]="form.get('color')"
-            ></vrw-form-error-label>
           </div>
-        </div>
-        <div
-          class="flex flex-nowrap justify-between items-center col-span-6 gap-2 mt-4"
-        >
-          <button
-            type="button"
-            (click)="handleGoOut()"
-            class="kt-btn kt-btn-secondary w-1/2"
+          <div
+              class="flex flex-nowrap justify-between items-center col-span-6 gap-2 mt-4"
           >
-            Cancelar
-          </button>
-          <button
-            [disabled]="form.invalid || isLoading()"
-            type="submit"
-            class="kt-btn w-1/2"
-          >
-            @if (isLoading()) {
-              <span class="font-bold" role="status" aria-hidden="true">
+            <button
+                type="button"
+                (click)="handleGoOut()"
+                class="kt-btn kt-btn-secondary w-1/2"
+            >
+              Cancelar
+            </button>
+            <button
+                [disabled]="form.invalid || isLoading()"
+                type="submit"
+                class="kt-btn w-1/2"
+            >
+              @if (isLoading()) {
+                <span class="font-bold" role="status" aria-hidden="true">
                 Espere un momento...
               </span>
-            } @else {
-              <span class="font-bold" role="status" aria-hidden="true">
-                Agregar Cuenta
-              </span>
-            }
-          </button>
-        </div>
-      </form>
+              } @else {
+                <span class="font-bold" role="status" aria-hidden="true">
+                  {{isEdit() ? 'Actualizar Cuenta' : 'Agregar Cuenta'}}
+                </span>
+              }
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
+}

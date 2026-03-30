@@ -103,6 +103,45 @@ export const AccountStore = signalStore(
           }),
         ),
       ),
+      updateAccount: rxMethod<{ account: AccountCreate; id: string }>(
+        pipe(
+          tap(()=>patchState(store,{isLoading:true})),
+          switchMap(({account,id})=>{
+            return accountService.update(account,id)
+              .pipe(
+                tapResponse({
+                  next:(updateAccount: Account)=> {
+                    patchState(store,(state)=>({
+                      accounts: state.accounts.map((account)=>(account.id === updateAccount.id ? updateAccount : account)),
+                      isLoading: false
+                    }))
+                    
+                    messageService.add({
+                      severity: 'success',
+                      detail: 'Cuenta actualizada correctamente',
+                    });
+                    
+                    router.navigate(['/accounts']).then();
+                  },
+                  error:(error: HttpErrorResponse)=>{
+                    const message = error.error.errors
+                      ? Object.values(error.error.errors).find((x) =>
+                        Array.isArray(x),
+                      )?.[0]
+                      : 'Hubo un problema al crear la cuenta, intente nuevamente.';
+
+                    messageService.add({
+                      severity: 'error',
+                      summary: 'Error',
+                      detail: message,
+                    });
+
+                    patchState(store, { isLoading: false });                  }
+                })
+              )
+          })
+        )
+      )
     }),
   ),
   withHooks({
