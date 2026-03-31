@@ -12,7 +12,7 @@ import {Account} from "../../interfaces/account.interface";
   ],
   templateUrl: './account-card.component.html',
   styles: ``,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush, 
 })
 export class AccountCardComponent {
   color = input.required<{primary:string,light:string}>();

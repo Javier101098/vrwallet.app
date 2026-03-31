@@ -1,31 +1,22 @@
-import { CommonModule, Location } from '@angular/common';
-import {Component, inject, signal} from '@angular/core';
-import {
-  FormBuilder,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { AccountStore } from '../../../account/services/account-store.service';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { TransactionService } from '../../services/transaction.service';
-import { Expense, Income, Transfer } from '../../interfaces/deposit.interface';
-import { MessageService } from 'primeng/api';
-import { Account } from '../../../account/interfaces/account.interface';
-import { FormErrorLabelComponent } from '@shared/components/form-error-label/form-error-label.component';
-import { Transaction, Type } from '../../interfaces/transaction.interface';
-import { finalize, map, Observable } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { CategoryService } from '@core/services/category.service';
-import {
-  AutoComplete,
-  AutoCompleteCompleteEvent,
-  AutoCompleteSelectEvent,
-} from 'primeng/autocomplete';
-import { Category } from '@core/Interfaces/category.interface';
-import { DatePickerModule } from 'primeng/datepicker';
-import { ActivatedRoute, Router } from '@angular/router';
+import {CommonModule, Location} from '@angular/common';
+import {Component, computed, effect, inject, input, signal} from '@angular/core';
+import {FormBuilder, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {InputNumberModule} from 'primeng/inputnumber';
+import {AccountStore} from '../../../account/services/account-store.service';
+import {SelectButtonModule} from 'primeng/selectbutton';
+import {TransactionService} from '../../services/transaction.service';
+import {Expense, Income, Transfer} from '../../interfaces/deposit.interface';
+import {MessageService} from 'primeng/api';
+import {Account} from '../../../account/interfaces/account.interface';
+import {FormErrorLabelComponent} from '@shared/components/form-error-label/form-error-label.component';
+import {Transaction, Type} from '../../interfaces/transaction.interface';
+import {finalize, map, Observable} from 'rxjs';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {CategoryService} from '@core/services/category.service';
+import {AutoComplete, AutoCompleteCompleteEvent, AutoCompleteSelectEvent,} from 'primeng/autocomplete';
+import {Category} from '@core/Interfaces/category.interface';
+import {DatePickerModule} from 'primeng/datepicker';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectedBalanceCardComponent} from "../../components/projected-balance-card/projected-balance-card.component";
 import {InputCurrencyComponent} from "@shared/components/input-currency/input-currency.component";
 
@@ -47,12 +38,14 @@ import {InputCurrencyComponent} from "@shared/components/input-currency/input-cu
   styles: ``,
 })
 export default class TransactionFormComponent {
+  accountId =  input<string | null>(null);
+  
   private fb = inject(FormBuilder);
   private transactionService = inject(TransactionService);
   private categoryService = inject(CategoryService);
   private messageService = inject(MessageService);
   private router = inject(Router);
-  private routerActivated = inject(ActivatedRoute);
+  private activatedRoute = inject(ActivatedRoute);
   accountStore = inject(AccountStore);
   protected readonly Type = Type;
 
@@ -62,8 +55,16 @@ export default class TransactionFormComponent {
   filteredCategories = signal<Category[]>([]);
   filteredAccounts = signal<Account[]>([]);
   
+  accountParam = computed(()=>{
+    console.log(this.accountId())
+    const id = this.accountId();
+    return id 
+      ? this.accountStore.accounts().find((account) => account.id === id) ?? null
+      : null;
+  })
+  
   typeParam = toSignal(
-    this.routerActivated.queryParams.pipe(
+    this.activatedRoute.queryParams.pipe(
       map(({ type }) => {
         const parsed = Number(type);
         return Object.values(Type).includes(parsed)
@@ -73,6 +74,7 @@ export default class TransactionFormComponent {
     ),
     { initialValue: Type.Income },
   );
+  
   categories = toSignal(this.categoryService.get(), {
     initialValue: [],
   });
@@ -126,7 +128,19 @@ export default class TransactionFormComponent {
     return statusClasses[type] || 'kt-btn-default';
   }
 
-  constructor(private location: Location) {}
+  constructor(private location: Location) {
+    effect(() => {
+      const accountByParam = this.accountParam();
+      if (accountByParam){
+        this.accountSelected.set(this.accountParam());
+        this.form.get('accountId')?.setValue(accountByParam.id);
+      }else{
+        this.accountSelected.set(null);
+        this.form.get('accountId')?.setValue('');
+      }
+      this.form.updateValueAndValidity();
+    });
+  }
 
   filterCategory(event: AutoCompleteCompleteEvent) {
     const query = event.query.toLowerCase();
@@ -172,7 +186,7 @@ export default class TransactionFormComponent {
     this.accountSelected.set(account.value);
   }
 
-  onChange({ value }: any) {
+  handleChangeTypeOperation({ value }: any) {
     const destControl = this.form.get('destinationAccountId');
     const categoryControl = this.form.get('categoryId');
 

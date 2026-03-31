@@ -8,18 +8,20 @@
     </div>
     <div class="col-span-3 md:col-span-2">
       <div class="kt-card">
-        <div class="kt-card-header">
-          <div class="kt-card-heading">
-            <h2 class="kt-card-title">Transactions</h2>
-          </div>
-        </div>
         <div class="kt-card-content py-3 grid gap-5">
           <form
             [formGroup]="form"
             (ngSubmit)="handleSubmit()"
             class="grid grid-cols-6 gap-4"
           >
-            <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">
+            @if (accountSelected()) {
+              <div class="flex justify-center col-span-6">
+                <p class="font-bold text-lg">
+                  {{accountSelected()?.name | uppercase}}
+                </p>
+              </div>
+            }
+            <div   [ngClass]="{'sm:col-span-3': !accountParam()}" class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">
               <label class="kt-form-label w-full">
                 Tipo de transacción
                 <span class="text-red-600">*</span>
@@ -31,46 +33,48 @@
                   size="small"
                   fluid
                   optionLabel="label"
-                  (onChange)="onChange($event)"
+                  (onChange)="handleChangeTypeOperation($event)"
                   optionValue="value"
                 >
                 </p-selectbutton>
               </div>
             </div>
-            <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">
-              <div class="flex flex-row items-center justify-between w-full">
-                <label class="kt-form-label w-full" for="account">
-                  Cuenta
-                  <span class="text-red-600">*</span>
-                </label>
-              </div>
-              <div class="grow w-full">
-                <p-autoComplete
-                  size="small"
-                  fluid
-                  inputId="account"
-                  optionValue="id"
-                  formControlName="accountId"
-                  [dropdown]="true"
-                  [suggestions]="filteredAccounts()"
-                  (completeMethod)="filterAccount($event)"
-                  (onSelect)="handleChangeAccount($event)"
-                  optionLabel="name"
-                >
-                  <ng-template let-account pTemplate="item">
-                    <div class="flex items-center justify-between gap-2">
+            @if (!accountParam()) {
+              <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">
+                <div class="flex flex-row items-center justify-between w-full">
+                  <label class="kt-form-label w-full" for="account">
+                    Cuenta
+                    <span class="text-red-600">*</span>
+                  </label>
+                </div>
+                <div class="grow w-full">
+                  <p-autoComplete
+                      size="small"
+                      fluid
+                      inputId="account"
+                      optionValue="id"
+                      formControlName="accountId"
+                      [dropdown]="true"
+                      [suggestions]="filteredAccounts()"
+                      (completeMethod)="filterAccount($event)"
+                      (onSelect)="handleChangeAccount($event)"
+                      optionLabel="name"
+                  >
+                    <ng-template let-account pTemplate="item">
+                      <div class="flex items-center justify-between gap-2">
                       <span>
                         {{ account.name }}
                       </span>
-                      <span class="kt-badge kt-badge-stroke">
+                        <span class="kt-badge kt-badge-stroke">
                         {{ account.balance | currency: "MXN" }}
                       </span>
-                    </div>
-                  </ng-template>
-                </p-autoComplete>
-                <vrw-form-error-label [control]="form.get('accountId')" />
+                      </div>
+                    </ng-template>
+                  </p-autoComplete>
+                  <vrw-form-error-label [control]="form.get('accountId')" />
+                </div>
               </div>
-            </div>
+            }
             <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
               <label class="kt-form-label w-full">
                 Monto
@@ -155,7 +159,7 @@
                   [maxDate]="maxDate()"
                 ></p-datePicker>
                 <vrw-form-error-label [control]="form.get('date')" />
-              </div>
+              </div>                                     
             </div>
             <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">
               <label class="kt-form-label w-full" for="note"> Nota </label>
