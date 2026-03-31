@@ -1,5 +1,5 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {
   FormBuilder,
   FormsModule,
@@ -26,6 +26,8 @@ import {
 import { Category } from '@core/Interfaces/category.interface';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ActivatedRoute, Router } from '@angular/router';
+import {ProjectedBalanceCardComponent} from "../../components/projected-balance-card/projected-balance-card.component";
+import {InputCurrencyComponent} from "@shared/components/input-currency/input-currency.component";
 
 @Component({
   selector: 'vrw-transaction-form',
@@ -38,6 +40,8 @@ import { ActivatedRoute, Router } from '@angular/router';
     FormErrorLabelComponent,
     AutoComplete,
     DatePickerModule,
+    ProjectedBalanceCardComponent,
+    InputCurrencyComponent,
   ],
   templateUrl: './transaction-form.component.html',
   styles: ``,
@@ -57,7 +61,7 @@ export default class TransactionFormComponent {
   accountSelected = signal<Account | null>(null);
   filteredCategories = signal<Category[]>([]);
   filteredAccounts = signal<Account[]>([]);
-
+  
   typeParam = toSignal(
     this.routerActivated.queryParams.pipe(
       map(({ type }) => {
@@ -100,6 +104,14 @@ export default class TransactionFormComponent {
 
   get currentExpense(): Expense {
     return this.form.value as Expense;
+  }
+  
+  get amount() : number {
+    return this.form.get('amount')?.value ?? 0;
+  }
+  
+  get selectedTransactionType() : Type {
+    return this.form.get('type')?.value as Type;
   }
 
   get buttonClass(): string {

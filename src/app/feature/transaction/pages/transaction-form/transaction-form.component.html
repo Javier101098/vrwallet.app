@@ -1,231 +1,227 @@
-<div class="kt-container-fixed">
-  <div class="kt-card">
-    <div class="kt-card-header">
-      <div class="kt-card-heading">
-        <h2 class="kt-card-title">Transactions</h2>
+  <div class="grid kt-container-fixed grid-cols-3 gap-4">
+    <div class="col-span-3 md:col-span-1">
+      <vrw-projected-balance-card
+          [amount]="amount"
+          [account]="accountSelected()"
+          [type]="selectedTransactionType"
+      />
+    </div>
+    <div class="col-span-3 md:col-span-2">
+      <div class="kt-card">
+        <div class="kt-card-header">
+          <div class="kt-card-heading">
+            <h2 class="kt-card-title">Transactions</h2>
+          </div>
+        </div>
+        <div class="kt-card-content py-3 grid gap-5">
+          <form
+            [formGroup]="form"
+            (ngSubmit)="handleSubmit()"
+            class="grid grid-cols-6 gap-4"
+          >
+            <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">
+              <label class="kt-form-label w-full">
+                Tipo de transacción
+                <span class="text-red-600">*</span>
+              </label>
+              <div class="grow w-full">
+                <p-selectbutton
+                  [options]="stateOptions"
+                  formControlName="type"
+                  size="small"
+                  fluid
+                  optionLabel="label"
+                  (onChange)="onChange($event)"
+                  optionValue="value"
+                >
+                </p-selectbutton>
+              </div>
+            </div>
+            <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">
+              <div class="flex flex-row items-center justify-between w-full">
+                <label class="kt-form-label w-full" for="account">
+                  Cuenta
+                  <span class="text-red-600">*</span>
+                </label>
+              </div>
+              <div class="grow w-full">
+                <p-autoComplete
+                  size="small"
+                  fluid
+                  inputId="account"
+                  optionValue="id"
+                  formControlName="accountId"
+                  [dropdown]="true"
+                  [suggestions]="filteredAccounts()"
+                  (completeMethod)="filterAccount($event)"
+                  (onSelect)="handleChangeAccount($event)"
+                  optionLabel="name"
+                >
+                  <ng-template let-account pTemplate="item">
+                    <div class="flex items-center justify-between gap-2">
+                      <span>
+                        {{ account.name }}
+                      </span>
+                      <span class="kt-badge kt-badge-stroke">
+                        {{ account.balance | currency: "MXN" }}
+                      </span>
+                    </div>
+                  </ng-template>
+                </p-autoComplete>
+                <vrw-form-error-label [control]="form.get('accountId')" />
+              </div>
+            </div>
+            <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
+              <label class="kt-form-label w-full">
+                Monto
+                <span class="text-red-600">*</span>
+              </label>
+              <div class="grow w-full">
+                <vrw-input-currency
+                    [control]="this.form.get('amount')!" />
+                <vrw-form-error-label [control]="form.get('amount')" />
+              </div>
+            </div>
+            @if (form.get("type")?.value === Type.Transfer) {
+              <div
+                class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6"
+              >
+                <label class="kt-form-label w-full" for="destinationAccount">
+                  Cuenta destino
+                  <span class="text-red-600">*</span>
+                </label>
+                <div class="grow w-full">
+                  <p-autoComplete
+                    size="small"
+                    fluid
+                    inputId="destinationAccount"
+                    optionValue="id"
+                    formControlName="destinationAccountId"
+                    [dropdown]="true"
+                    [suggestions]="filteredAccounts()"
+                    (completeMethod)="filterAccount($event, true)"
+                    optionLabel="name"
+                  >
+                    <ng-template let-account>
+                      <div class="flex items-center gap-2">
+                        <div>{{ account.name }}</div>
+                      </div>
+                    </ng-template>
+                  </p-autoComplete>
+                </div>
+              </div>
+            } @else {
+              <div
+                class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6"
+              >
+                <label class="kt-form-label w-full" for="category">
+                  Categoria
+                </label>
+                <div class="grow w-full">
+                  <p-autoComplete
+                    size="small"
+                    fluid
+                    optionValue="id"
+                    inputId="category"
+                    formControlName="categoryId"
+                    [dropdown]="true"
+                    [suggestions]="filteredCategories()"
+                    (completeMethod)="filterCategory($event)"
+                    optionLabel="name"
+                  >
+                    <ng-template let-category>
+                      <div class="flex items-center gap-2">
+                        <div>{{ category.name }}</div>
+                      </div>
+                    </ng-template>
+                  </p-autoComplete>
+                  <vrw-form-error-label [control]="form.get('categoryId')" />
+                </div>
+              </div>
+            }
+            <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
+              <label for="date" class="kt-form-label w-full">
+                Fecha
+                <span class="text-red-600">*</span>
+              </label>
+              <div class="grow w-full">
+                <p-datePicker
+                  fluid
+                  size="small"
+                  inputId="date"
+                  formControlName="date"
+                  [showTime]="true"
+                  hourFormat="24"
+                  [maxDate]="maxDate()"
+                ></p-datePicker>
+                <vrw-form-error-label [control]="form.get('date')" />
+              </div>
+            </div>
+            <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">
+              <label class="kt-form-label w-full" for="note"> Nota </label>
+              <div class="grow w-full">
+                <input
+                  id="note"
+                  formControlName="note"
+                  class="kt-input w-full"
+                  placeholder=""
+                  type="text"
+                />
+                <vrw-form-error-label [control]="form.get('note')" />
+              </div>
+            </div>
+            <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">
+              <label class="kt-form-label w-full" for="payer"> Pagador </label>
+              <div class="grow w-full">
+                <input
+                  id="payer"
+                  formControlName="payer"
+                  class="kt-input w-full"
+                  placeholder=""
+                  type="text"
+                />
+              </div>
+            </div>
+            <div
+              class="flex flex-nowrap justify-between items-center col-span-6 gap-2 mt-4"
+            >
+              <button
+                (click)="handleCancel()"
+                type="button"
+                class="kt-btn kt-btn-secondary w-1/2"
+              >
+                Cancelar
+              </button>
+              <button
+                [disabled]="form.invalid || loading()"
+                type="submit"
+                class="kt-btn w-1/2"
+                [ngClass]="buttonClass"
+              >
+                @if (loading()) {
+                  <span>Registrando...</span>
+                } @else {
+                  @switch (form.get("type")?.value) {
+                    @case (Type.Income) {
+                      <span class="font-semibold">Registrar Ingreso</span>
+                    }
+                    @case (Type.Expense) {
+                      <span class="font-semibold">Registrar Gasto</span>
+                    }
+                    @case (Type.Transfer) {
+                      <span class="font-semibold">Registrar Transferencia</span>
+                    }
+                    @default {
+                      <span class="font-semibold"
+                        >Selecciona el tipo de transacción</span
+                      >
+                    }
+                  }
+                }
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-    <div class="kt-card-content py-3 grid gap-5">
-      <form
-        [formGroup]="form"
-        (ngSubmit)="handleSubmit()"
-        class="grid grid-cols-6 gap-4"
-      >
-        <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
-          <label class="kt-form-label w-full">
-            Tipo de transacción
-            <span class="text-red-600">*</span>
-          </label>
-          <div class="grow w-full">
-            <p-selectbutton
-              [options]="stateOptions"
-              formControlName="type"
-              size="small"
-              fluid
-              optionLabel="label"
-              (onChange)="onChange($event)"
-              optionValue="value"
-            >
-            </p-selectbutton>
-          </div>
-        </div>
-        <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
-          <div class="flex flex-row items-center justify-between w-full">
-            <label class="kt-form-label w-full" for="account">
-              Cuenta
-              <span class="text-red-600">*</span>
-            </label>
-            <span class="text-[10px] font-bold">
-              {{ accountSelected()?.balance | currency: "MXN" }}
-            </span>
-          </div>
-          <div class="grow w-full">
-            <p-autoComplete
-              size="small"
-              fluid
-              inputId="account"
-              optionValue="id"
-              formControlName="accountId"
-              [dropdown]="true"
-              [suggestions]="filteredAccounts()"
-              (completeMethod)="filterAccount($event)"
-              (onSelect)="handleChangeAccount($event)"
-              optionLabel="name"
-            >
-              <ng-template let-account pTemplate="item">
-                <div class="flex items-center justify-between gap-2">
-                  <span>
-                    {{ account.name }}
-                  </span>
-                  <span class="kt-badge kt-badge-stroke">
-                    {{ account.balance | currency: "MXN" }}
-                  </span>
-                </div>
-              </ng-template>
-            </p-autoComplete>
-            <vrw-form-error-label [control]="form.get('accountId')" />
-          </div>
-        </div>
-        <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
-          <label class="kt-form-label w-full">
-            Monto
-            <span class="text-red-600">*</span>
-          </label>
-          <div class="grow w-full">
-            <p-inputNumber
-              inputId="currency-us"
-              formControlName="amount"
-              size="small"
-              mode="currency"
-              class="w-full"
-              currency="MXN"
-              locale="en-US"
-            >
-            </p-inputNumber>
-            <vrw-form-error-label [control]="form.get('amount')" />
-          </div>
-        </div>
-
-        @if (form.get("type")?.value === Type.Transfer) {
-          <div
-            class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6"
-          >
-            <label class="kt-form-label w-full" for="destinationAccount">
-              Cuenta destino
-              <span class="text-red-600">*</span>
-            </label>
-            <div class="grow w-full">
-              <p-autoComplete
-                size="small"
-                fluid
-                inputId="destinationAccount"
-                optionValue="id"
-                formControlName="destinationAccountId"
-                [dropdown]="true"
-                [suggestions]="filteredAccounts()"
-                (completeMethod)="filterAccount($event, true)"
-                optionLabel="name"
-              >
-                <ng-template let-account>
-                  <div class="flex items-center gap-2">
-                    <div>{{ account.name }}</div>
-                  </div>
-                </ng-template>
-              </p-autoComplete>
-            </div>
-          </div>
-        } @else {
-          <div
-            class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6"
-          >
-            <label class="kt-form-label w-full" for="category">
-              Categoria
-            </label>
-            <div class="grow w-full">
-              <p-autoComplete
-                size="small"
-                fluid
-                optionValue="id"
-                inputId="category"
-                formControlName="categoryId"
-                [dropdown]="true"
-                [suggestions]="filteredCategories()"
-                (completeMethod)="filterCategory($event)"
-                optionLabel="name"
-              >
-                <ng-template let-category>
-                  <div class="flex items-center gap-2">
-                    <div>{{ category.name }}</div>
-                  </div>
-                </ng-template>
-              </p-autoComplete>
-              <vrw-form-error-label [control]="form.get('categoryId')" />
-            </div>
-          </div>
-        }
-
-        <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
-          <label for="date" class="kt-form-label w-full">
-            Fecha
-            <span class="text-red-600">*</span>
-          </label>
-          <div class="grow w-full">
-            <p-datePicker
-              fluid
-              size="small"
-              inputId="date"
-              formControlName="date"
-              [showTime]="true"
-              hourFormat="24"
-              [maxDate]="maxDate()"
-            ></p-datePicker>
-            <vrw-form-error-label [control]="form.get('date')" />
-          </div>
-        </div>
-        <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">
-          <label class="kt-form-label w-full" for="note"> Nota </label>
-          <div class="grow w-full">
-            <input
-              id="note"
-              formControlName="note"
-              class="kt-input w-full"
-              placeholder=""
-              type="text"
-            />
-            <vrw-form-error-label [control]="form.get('note')" />
-          </div>
-        </div>
-        <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">
-          <label class="kt-form-label w-full" for="payer"> Pagador </label>
-          <div class="grow w-full">
-            <input
-              id="payer"
-              formControlName="payer"
-              class="kt-input w-full"
-              placeholder=""
-              type="text"
-            />
-          </div>
-        </div>
-        <div
-          class="flex flex-nowrap justify-between items-center col-span-6 gap-2 mt-4"
-        >
-          <button
-            (click)="handleCancel()"
-            type="button"
-            class="kt-btn kt-btn-secondary w-1/2"
-          >
-            Cancelar
-          </button>
-          <button
-            [disabled]="form.invalid || loading()"
-            type="submit"
-            class="kt-btn w-1/2"
-            [ngClass]="buttonClass"
-          >
-            @if (loading()) {
-              <span>Registrando...</span>
-            } @else {
-              @switch (form.get("type")?.value) {
-                @case (Type.Income) {
-                  <span class="font-semibold">Registrar Ingreso</span>
-                }
-                @case (Type.Expense) {
-                  <span class="font-semibold">Registrar Gasto</span>
-                }
-                @case (Type.Transfer) {
-                  <span class="font-semibold">Registrar Transferencia</span>
-                }
-                @default {
-                  <span class="font-semibold"
-                    >Selecciona el tipo de transacción</span
-                  >
-                }
-              }
-            }
-          </button>
-        </div>
-      </form>
-    </div>
   </div>
-</div>
