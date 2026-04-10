@@ -2,13 +2,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  inject,
   input,
 } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { AccountService } from '../../services/account.service';
 import { CardComponent } from '@shared/components/card/card.component';
 import { CurrencyPipe, PercentPipe } from '@angular/common';
+import {AccountSummary} from "../../interfaces/account-summary.interface";
 
 @Component({
   selector: 'vrw-summary-card',
@@ -22,18 +20,16 @@ import { CurrencyPipe, PercentPipe } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SummaryCardComponent {
-  id = input.required<string>();
+  summary = input.required<AccountSummary>();
   style = input.required<{ primary: string; light: string }>();
-
-  private accountService = inject(AccountService);
-
+  
   currentSummary = computed(
     () =>
-      this.summaryResource.value()?.currentMonth ?? { income: 0, expense: 0 },
+      this.summary()?.currentMonth ?? { income: 0, expense: 0 },
   );
   previousSummary = computed(
     () =>
-      this.summaryResource.value()?.previousMonth ?? { income: 0, expense: 0 },
+      this.summary()?.previousMonth ?? { income: 0, expense: 0 },
   );
 
   readonly incomeStats = computed(() => {
@@ -50,11 +46,6 @@ export class SummaryCardComponent {
       this.previousSummary().expense,
     );
     return { change, color: this.getBadgeColor(change) };
-  });
-
-  summaryResource = rxResource({
-    params: () => ({ id: this.id() }),
-    stream: ({ params }) => this.accountService.getMonthlySummary(params.id),
   });
 
   private calculateChange(current: number, previous: number) {

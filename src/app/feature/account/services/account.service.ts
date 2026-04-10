@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@env/environment';
-import { Account } from '../interfaces/account.interface';
+import {Account} from '../interfaces/account.interface';
 import { Observable } from 'rxjs';
 import { AccountCreate } from '../interfaces/account-create.interface';
 import { Transaction } from '../../transaction/interfaces/transaction.interface';
-import { AccountBalanceComparison } from '../interfaces/account-balance-comparison.interface';
+import { AccountSummary } from '../interfaces/account-summary.interface';
 import { AccountBalance } from '../interfaces/account-balance.interface';
 
 @Injectable({
@@ -27,7 +27,7 @@ export class AccountService {
     return this.http.put<Account>(`${this.baseUrl}/account/${id}`, account);
   }
 
-  public getById(id: string) {
+  public getById(id: string) : Observable<Account> {
     return this.http.get<Account>(`${this.baseUrl}/account/${id}`);
   }
 
@@ -37,13 +37,13 @@ export class AccountService {
     );
   }
 
-  public getMonthlySummary(id: string) {
-    return this.http.get<AccountBalanceComparison>(
-      `${this.baseUrl}/account/${id}/monthly-balance`,
+  public getSummary(id: string) {
+    return this.http.get<AccountSummary>(
+      `${this.baseUrl}/account/${id}/summary`,
     );
   }
 
-  public getDailyBalance(
+  public getBalanceHistory(
     id: string,
     startDate: string,
   ): Observable<AccountBalance[]> {

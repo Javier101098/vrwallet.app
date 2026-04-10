@@ -60,7 +60,7 @@ export class BalanceChartComponent {
   ];
 
   chartOpts = computed<Partial<ChartOptions>>(() => {
-    const data = this.dailyBalanceRx.value() || [];
+    const data = this.balanceHistoryRx.value() || [];
 
     const normalized = data.length > 0 ? [...data, this.today()] : [];
 
@@ -153,7 +153,7 @@ export class BalanceChartComponent {
     this.optionSelected.set(value);
   }
 
-  dailyBalanceRx = rxResource({
+  balanceHistoryRx = rxResource({
     params: () => ({
       id: this.id(),
       days: this.optionSelected(),
@@ -164,7 +164,7 @@ export class BalanceChartComponent {
       lastWeek.setDate(today.getDate() - params.days);
       const startDate = lastWeek.toISOString().split('T')[0];
       return this.accountService
-        .getDailyBalance(params.id, startDate)
+        .getBalanceHistory(params.id, startDate)
     },
   });
 }

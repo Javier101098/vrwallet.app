@@ -1,4 +1,10 @@
-export interface AccountBalanceComparison {
+export interface AccountSummary {
+  id: string;
+  name: string;
+  accountNumber: string;
+  color: string;
+  balance: number;
+  isInvestment?: boolean;
   currentMonth: MonthlySummary;
   previousMonth: MonthlySummary;
 }
