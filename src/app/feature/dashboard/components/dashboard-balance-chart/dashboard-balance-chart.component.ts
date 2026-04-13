@@ -6,6 +6,9 @@ import {FinancialService} from "../../services/financial.service";
 import {rxResource} from "@angular/core/rxjs-interop";
 import {FormsModule} from "@angular/forms";
 import {ProgressSpinner} from "primeng/progressspinner";
+import {AccountStore} from "../../../account/services/account-store.service";
+import {format} from "date-fns";
+import {map} from "rxjs";
 
 @Component({
   selector: 'vrw-dashboard-balance-chart',
@@ -21,11 +24,12 @@ import {ProgressSpinner} from "primeng/progressspinner";
 })
 export class DashboardBalanceChartComponent {
   private financialService = inject(FinancialService);
+  private accountStore = inject(AccountStore);
   
   optionSelected = signal<number>(7);
   chartOpts = computed<Partial<ChartOptions>>(() => {
     const data = this.statsResource.value()?.balances || [];
-
+    
     const seriesData = data.map((b) => b.balance);
     const categories = data.map((b) => b.date);
 
@@ -109,6 +113,8 @@ export class DashboardBalanceChartComponent {
       }
     };
   });
+  currentBalance = computed<number>(()=> this.accountStore.balance());
+  
   stateOptions: { label: string; value: number }[] = [
     { label: '7 días', value: 7 },
     { label: '30 días', value: 30 },
@@ -127,6 +133,16 @@ export class DashboardBalanceChartComponent {
       lastWeek.setDate(today.getDate() - params.days);
       const startDate = lastWeek.toISOString().split('T')[0];
       return this.financialService.getStats(startDate)
+        .pipe(
+          map((stats) => {
+            const date = format(new Date(), 'yyyy-MM-dd');
+            stats.balances = [
+              ...stats.balances,
+              {date:date, balance: this.currentBalance()}
+            ];
+            return stats;
+          })
+        )
     }
   })
 
