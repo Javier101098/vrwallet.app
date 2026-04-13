@@ -11,7 +11,7 @@ export class FinancialService {
   private readonly baseUrl : string = environment.baseUrl;
   
   getStats(startDate: string): Observable<Stats> {
-    const params = new HttpParams().set('date', startDate);
+    const params = new HttpParams().set('startDate', startDate);
     return this.http.get<Stats>(`${this.baseUrl}/dashboard/stats`,{params});
   }
 }
