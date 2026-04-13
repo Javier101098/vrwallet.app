@@ -23,6 +23,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { AccountService } from '../../services/account.service';
 import { SelectButton } from 'primeng/selectbutton';
 import { ProgressSpinner } from 'primeng/progressspinner';
+import {FormsModule} from "@angular/forms";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -40,7 +41,7 @@ export type ChartOptions = {
 
 @Component({
   selector: 'vrw-balance-chart',
-  imports: [ChartComponent, SelectButton, ProgressSpinner],
+  imports: [ChartComponent, SelectButton, ProgressSpinner, FormsModule],
   templateUrl: './balance-chart.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -156,7 +157,7 @@ export class BalanceChartComponent {
   balanceHistoryRx = rxResource({
     params: () => ({
       id: this.id(),
-      days: this.optionSelected(),
+      days: this.optionSelected() ?? 7,
     }),
     stream: ({ params }) => {
       const today = new Date();

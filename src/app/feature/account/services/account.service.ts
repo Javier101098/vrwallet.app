@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { AccountCreate } from '../interfaces/account-create.interface';
 import { Transaction } from '../../transaction/interfaces/transaction.interface';
 import { AccountSummary } from '../interfaces/account-summary.interface';
-import { AccountBalance } from '../interfaces/account-balance.interface';
+import {BalanceDate} from "@core/Interfaces/balance-date.interface";
 
 @Injectable({
   providedIn: 'root',
@@ -46,9 +46,9 @@ export class AccountService {
   public getBalanceHistory(
     id: string,
     startDate: string,
-  ): Observable<AccountBalance[]> {
+  ): Observable<BalanceDate[]> {
     const params = new HttpParams().set('date', startDate);
-    return this.http.get<AccountBalance[]>(
+    return this.http.get<BalanceDate[]>(
       `${this.baseUrl}/account/${id}/daily-balance`,
       { params },
     );

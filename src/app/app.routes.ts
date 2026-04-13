@@ -4,6 +4,7 @@ import { DashboardPageComponent } from './feature/dashboard/pages/dashboard-page
 import AuthLayoutComponent from '@core/layouts/auth-layout/auth-layout.component';
 import { authenticatedGuard } from '@core/guards/authenticated.guard';
 import { noAuthenticatedGuard } from '@core/guards/no-authenticated.guard';
+import {FinancialService} from "./feature/dashboard/services/financial.service";
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '' },
@@ -21,6 +22,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
+        providers: [FinancialService],
         title: 'dashboard | vrwallet',
         component: DashboardPageComponent,
       },
