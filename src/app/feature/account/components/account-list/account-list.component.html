@@ -4,13 +4,6 @@
       <h2 class="kt-card-title">My accounts</h2>
     </div>
     <div class="kt-card-toolbar">
-      <button
-        routerLink="/accounts/create"
-        type="button"
-        class="kt-btn kt-btn-xs kt-btn-outline kt-btn-icon"
-      >
-        <i class="ki-filled ki-additem"></i>
-      </button>
     </div>
   </div>
   <div class="kt-card-content py-1">
@@ -31,6 +24,12 @@
           <span class="text-sm text-muted-foreground"> No accounts found </span>
         </div>
       }
+      <div class="flex w-ful justify-center">
+        <a routerLink="create" class="w-full kt-card-accent border border-gray-300 text-center backg rounded-4xl p-1.5 font-semibold">
+          <i class="ki-filled ki-plus"></i>
+          Agregar cuenta
+        </a>
+      </div>
     }
   </div>
 </div>
