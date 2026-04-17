@@ -29,10 +29,10 @@
             class="grid grid-cols-6 gap-4"
         >
           <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
-          <span class="kt-form-label w-full">
-            Name
-            <span class="text-red-600"> * </span>
-          </span>
+            <span class="kt-form-label w-full">
+              Name
+              <span class="text-red-600"> * </span>
+            </span>
             <div class="grow w-full">
               <input formControlName="name" class="kt-input w-full" type="text" />
               <vrw-form-error-label
@@ -101,10 +101,10 @@
             </div>
           </div>
           <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
-          <span class="kt-form-label w-full">
-            Color
-            <span class="text-red-600">*</span>
-          </span>
+            <span class="kt-form-label w-full">
+              Color
+              <span class="text-red-600">*</span>
+            </span>
             <div class="grow w-full">
               <div class="kt-input">
                 <p-colorpicker
@@ -124,6 +124,95 @@
               ></vrw-form-error-label>
             </div>
           </div>
+          
+          <div class="flex items-center flex-col gap-2 sm:col-span-5 col-span-6">
+            <span class="kt-form-label w-full">
+              Notas
+            </span>
+            <div class="grow w-full">
+              <input formControlName="note" class="kt-input w-full" type="text" />
+              <vrw-form-error-label
+                  [control]="form.get('note')"
+              ></vrw-form-error-label>
+            </div>
+          </div>
+
+          @if (isInvestment()) {
+            <div class="col-span-6">
+              <p-divider align="center" type="dotted">
+                <b>Detalles de Inversión</b>
+              </p-divider>
+            </div>
+
+            <div class="flex items-center flex-col gap-2 sm:col-span-3 col-span-6">
+              <span class="kt-form-label w-full">
+                Frecuencia de Pago
+                <span class="text-red-600">*</span>
+              </span>
+              <div class="grow w-full">
+                <p-selectbutton 
+                    fluid
+                    [options]="yieldFrequencies()"
+                    formControlName="yieldFrequency"
+                    optionLabel="label"
+                    optionValue="value"
+                    class="w-full"></p-selectbutton>
+              </div>
+            </div>
+
+            <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
+            <span class="kt-form-label w-full">
+              Tasa Rendimiento (%)
+              <span class="text-red-600">*</span>
+            </span>
+              <div class="grow w-full">
+                <p-inputnumber
+                    formControlName="yieldRate"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="2"
+                    suffix="%"
+                    class="w-full"
+                    inputStyleClass="kt-input w-full"></p-inputnumber>
+              </div>
+            </div>
+
+            <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
+            <span class="kt-form-label w-full">
+              Fecha de Vencimiento
+            </span>
+              <div class="grow w-full">
+                <p-datepicker
+                    formControlName="dueDate"
+                    [showIcon]="true"
+                    appendTo="body"
+                    class="w-full"
+                    styleClass="w-full"
+                    inputStyleClass="kt-input w-full"></p-datepicker>
+              </div>
+            </div>
+
+            <div class="flex items-center flex-col gap-4 sm:col-span-3 col-span-6 pt-4">
+              <div class="flex items-center gap-2">
+                <p-checkbox
+                    formControlName="isIsrRetention"
+                    [binary]="true"
+                    inputId="isIsrRetention"
+                />
+                <label for="isIsrRetention" class="kt-form-label cursor-pointer">Habilitar retención de ISR</label>
+              </div>
+              <div class="flex items-center gap-2">
+                <p-checkbox
+                    formControlName="isCompoundInterest"
+                    [binary]="true"
+                    inputId="isCompoundInterest"
+                />
+                <label for="isCompoundInterest" class="kt-form-label cursor-pointer">Habilitar interés compuesto</label>
+              </div>
+            </div>
+          }
+          
+          
           <div
               class="flex flex-nowrap justify-between items-center col-span-6 gap-2 mt-4"
           >

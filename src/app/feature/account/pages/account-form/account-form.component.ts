@@ -4,7 +4,8 @@ import {
   computed,
   effect,
   inject,
-  input
+  input,
+  signal
 } from '@angular/core';
 import {
   FormBuilder,
@@ -22,12 +23,17 @@ import { AccountCreate } from '../../interfaces/account-create.interface';
 import { AccountStore } from '../../services/account-store.service';
 import { Router} from '@angular/router';
 import { ColorPickerModule } from 'primeng/colorpicker';
-import { of} from "rxjs";
+import {map, of, startWith} from "rxjs";
 import {AccountService} from "../../services/account.service";
 import {Account} from "../../interfaces/account.interface";
 import {ProgressSpinner} from "primeng/progressspinner";
 import {Select} from "primeng/select";
 import {NotFoundComponent} from "@shared/components/not-found/not-found.component";
+import {Divider} from "primeng/divider";
+import {SelectButton} from "primeng/selectbutton";
+import {InputNumber} from "primeng/inputnumber";
+import {Checkbox} from "primeng/checkbox";
+import {DatePicker} from "primeng/datepicker";
 
 @Component({
   selector: 'vrw-account-form',
@@ -39,6 +45,11 @@ import {NotFoundComponent} from "@shared/components/not-found/not-found.componen
     ProgressSpinner,
     Select,
     NotFoundComponent,
+    Divider,
+    SelectButton,
+    InputNumber,
+    Checkbox,
+    DatePicker,
   ],
   providers: [MessageService],
   templateUrl: './account-form.component.html',
@@ -63,10 +74,16 @@ export default class AccountFormComponent {
   accountTypes = toSignal(this.accountTypeService.get(), { initialValue: [] });
   currencies = toSignal(this.currencyService.get(), { initialValue: [] });
   institutions = toSignal(this.institutionService.get(), { initialValue: [] });
+
+  yieldFrequencies = signal([
+    { label: 'Diario', value: 'daily' },
+    { label: 'Semanal', value: 'weekly' },
+    { label: 'Mensual', value: 'monthly' }
+  ]);
   
   accountResource = rxResource({
     params:()=> ({id:this.id()}),
-    stream:({params}) =>{
+    stream:({params}) => {
       const {id} = params;
       if (id == undefined) return of(null);
       return this.accountService.getById(id);
@@ -79,8 +96,25 @@ export default class AccountFormComponent {
     currencyId: ['', [Validators.required]],
     institutionId: ['', [Validators.required]],
     color: ['#ff0066', [Validators.required]],
+    note: ['', [Validators.maxLength(100)]],
+    yieldFrequency: ['monthly' as any],
+    yieldRate: [0],
+    isIsrRetention: [false],
+    isCompoundInterest: [false],
+    dueDate: [null as any],
   });
 
+  isInvestment = toSignal(
+    this.form.get('accountTypeId')!.valueChanges.pipe(
+      startWith(this.form.get('accountTypeId')!.value),
+      map((id:string)=> {
+        const type = this.accountTypes().find(t => t.id === id);
+        return type?.name.includes('Inversión')
+      })
+    ),
+    { requireSync: true }
+  );
+  
   get currentForm(): AccountCreate {
     return this.form.value as AccountCreate;
   }

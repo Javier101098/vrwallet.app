@@ -1,0 +1,1 @@
+export type YieldFrequency = 'daily' | 'weekly' | 'monthly';
