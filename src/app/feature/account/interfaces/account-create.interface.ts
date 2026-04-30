@@ -1,15 +1,19 @@
-import {YieldFrequency} from "./yield-frequency";
+import {Frequency} from "./yield-frequency";
 
 export interface AccountCreate {
-  name: string;
   accountTypeId: string;
   currencyId: string;
   institutionId: string;
+  name: string;
   color: string;
   note: string;
-  yieldFrequency?: YieldFrequency;
-  yieldRate?: number;
-  isIsrRetention?: boolean;
-  isCompoundInterest?: boolean;
-  dueDate?: string;
+  investment?: InvestmentAccount;
+}
+
+export interface InvestmentAccount{
+  frequency: Frequency;
+  rate: number;
+  maturityDate: string;
+  retainsIsr: boolean;
+  isCompound: boolean;
 }

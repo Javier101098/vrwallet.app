@@ -23,7 +23,7 @@ import { AccountCreate } from '../../interfaces/account-create.interface';
 import { AccountStore } from '../../services/account-store.service';
 import { Router} from '@angular/router';
 import { ColorPickerModule } from 'primeng/colorpicker';
-import {map, of, startWith} from "rxjs";
+import {map, of, startWith, tap} from "rxjs";
 import {AccountService} from "../../services/account.service";
 import {Account} from "../../interfaces/account.interface";
 import {ProgressSpinner} from "primeng/progressspinner";
@@ -34,6 +34,8 @@ import {SelectButton} from "primeng/selectbutton";
 import {InputNumber} from "primeng/inputnumber";
 import {Checkbox} from "primeng/checkbox";
 import {DatePicker} from "primeng/datepicker";
+import {Frequency} from "../../interfaces/yield-frequency";
+import {MinDateValidator} from "@shared/validators/min-date.validator";
 
 @Component({
   selector: 'vrw-account-form',
@@ -49,12 +51,11 @@ import {DatePicker} from "primeng/datepicker";
     SelectButton,
     InputNumber,
     Checkbox,
-    DatePicker,
   ],
   providers: [MessageService],
   templateUrl: './account-form.component.html',
   styles: ``,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export default class AccountFormComponent {
   id = input<string>(); 
@@ -76,9 +77,9 @@ export default class AccountFormComponent {
   institutions = toSignal(this.institutionService.get(), { initialValue: [] });
 
   yieldFrequencies = signal([
-    { label: 'Diario', value: 'daily' },
-    { label: 'Semanal', value: 'weekly' },
-    { label: 'Mensual', value: 'monthly' }
+    { label: 'Diario', value: Frequency.daily },
+    { label: 'Semanal', value: Frequency.weekly },
+    { label: 'Mensual', value: Frequency.monthly }
   ]);
   
   accountResource = rxResource({
@@ -91,25 +92,52 @@ export default class AccountFormComponent {
   })
   
   form = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.maxLength(50)]],
+    name: ['', [
+      Validators.required,
+      Validators.maxLength(50)
+    ]],
     accountTypeId: ['', [Validators.required]],
     currencyId: ['', [Validators.required]],
     institutionId: ['', [Validators.required]],
     color: ['#ff0066', [Validators.required]],
     note: ['', [Validators.maxLength(100)]],
-    yieldFrequency: ['monthly' as any],
-    yieldRate: [0],
-    isIsrRetention: [false],
-    isCompoundInterest: [false],
-    dueDate: [null as any],
+    investment:  this.fb.group({
+      frequency: [Frequency.daily],
+      rate: [0],
+      maturityDate: [''],
+      isCompound: [false],
+      retainsIsr: [false],
+    }),
   });
 
   isInvestment = toSignal(
     this.form.get('accountTypeId')!.valueChanges.pipe(
       startWith(this.form.get('accountTypeId')!.value),
-      map((id:string)=> {
+      map((id: string) => {
         const type = this.accountTypes().find(t => t.id === id);
-        return type?.name.includes('Inversión')
+        return type?.name.includes('Inversión') ?? false;
+      }),
+      tap((isInv) => {
+        const frequencyCtrl = this.form.get('investment.frequency');
+        const rateCtrl = this.form.get('investment.rate');
+        const maturityDateCtrl = this.form.get('investment.maturityDate');
+
+        if (isInv) {
+          frequencyCtrl?.setValidators([Validators.required]);
+          rateCtrl?.setValidators([
+            Validators.required,
+            Validators.min(0.01)
+          ]);
+          maturityDateCtrl?.setValidators([MinDateValidator()]);
+        } else {
+          frequencyCtrl?.clearValidators();
+          rateCtrl?.clearValidators();
+          maturityDateCtrl?.clearValidators();
+        }
+
+        frequencyCtrl?.updateValueAndValidity();
+        rateCtrl?.updateValueAndValidity();
+        maturityDateCtrl?.updateValueAndValidity();
       })
     ),
     { requireSync: true }
@@ -133,7 +161,7 @@ export default class AccountFormComponent {
         institutions.length > 0;
 
       if (allLoaded) {
-        this.form.patchValue(account as Account);
+        this.form.patchValue(account as AccountCreate);
       }
     });
   }
@@ -148,11 +176,19 @@ export default class AccountFormComponent {
       return;
     }
     
+    const formValue = {...this.form.value} as any
+    
+    //todo mal todo mal
+    if (formValue.investment?.maturityDate == ''){
+      formValue.investment = null;
+    }
+
+    //todo formvalue todo mal
     this.isEdit() && this.id() != undefined 
       ? this.accountStore.updateAccount({
-          account:this.currentForm,id:this.id()!
+          account:formValue,id:this.id()!
         }) 
-      : this.accountStore.addAccount(this.currentForm);
+      : this.accountStore.addAccount(formValue);
   }
 
   handleGoOut(): void {

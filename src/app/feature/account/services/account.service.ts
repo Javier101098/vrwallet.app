@@ -27,8 +27,8 @@ export class AccountService {
     return this.http.put<Account>(`${this.baseUrl}/account/${id}`, account);
   }
 
-  public getById(id: string) : Observable<Account> {
-    return this.http.get<Account>(`${this.baseUrl}/account/${id}`);
+  public getById(id: string) : Observable<AccountCreate> {
+    return this.http.get<AccountCreate>(`${this.baseUrl}/account/${id}`);
   }
 
   public getTransactions(id: string): Observable<Transaction[]> {

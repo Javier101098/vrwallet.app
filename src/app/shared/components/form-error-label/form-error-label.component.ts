@@ -69,6 +69,9 @@ export class FormErrorLabelComponent {
       case 'maxTwoDecimals':
         return '* Solo se admiten 2 decimales';
 
+      case 'minDate':
+        return '* La fecha debe ser mayor a la fecha actual';
+
       default:
         return `* Error de validación no controlado ${firstError}`;
     }
