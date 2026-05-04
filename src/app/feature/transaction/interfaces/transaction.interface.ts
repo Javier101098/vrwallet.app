@@ -14,5 +14,5 @@ export enum Type {
   Income,
   Expense,
   Transfer,
-  // Yield,
+  Yield,
 }

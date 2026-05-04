@@ -19,13 +19,12 @@ import { InstitutionService } from '@core/services/institution.service';
 import {rxResource, toSignal} from '@angular/core/rxjs-interop';
 import { FormErrorLabelComponent } from '@shared/components/form-error-label/form-error-label.component';
 import { MessageService } from 'primeng/api';
-import { AccountCreate } from '../../interfaces/account-create.interface';
+import {AccountCreate, InvestmentAccount} from '../../interfaces/account-create.interface';
 import { AccountStore } from '../../services/account-store.service';
 import { Router} from '@angular/router';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import {map, of, startWith, tap} from "rxjs";
 import {AccountService} from "../../services/account.service";
-import {Account} from "../../interfaces/account.interface";
 import {ProgressSpinner} from "primeng/progressspinner";
 import {Select} from "primeng/select";
 import {NotFoundComponent} from "@shared/components/not-found/not-found.component";
@@ -33,7 +32,6 @@ import {Divider} from "primeng/divider";
 import {SelectButton} from "primeng/selectbutton";
 import {InputNumber} from "primeng/inputnumber";
 import {Checkbox} from "primeng/checkbox";
-import {DatePicker} from "primeng/datepicker";
 import {Frequency} from "../../interfaces/yield-frequency";
 import {MinDateValidator} from "@shared/validators/min-date.validator";
 
@@ -143,10 +141,6 @@ export default class AccountFormComponent {
     { requireSync: true }
   );
   
-  get currentForm(): AccountCreate {
-    return this.form.value as AccountCreate;
-  }
-  
   constructor() {
     effect(() => {
       const account = this.accountResource.value();
@@ -175,20 +169,19 @@ export default class AccountFormComponent {
       });
       return;
     }
-    
-    const formValue = {...this.form.value} as any
-    
-    //todo mal todo mal
-    if (formValue.investment?.maturityDate == ''){
-      formValue.investment = null;
-    }
 
-    //todo formvalue todo mal
-    this.isEdit() && this.id() != undefined 
-      ? this.accountStore.updateAccount({
-          account:formValue,id:this.id()!
-        }) 
-      : this.accountStore.addAccount(formValue);
+    const { investment, ...base } = this.form.getRawValue();
+
+    const payload: AccountCreate = {
+      ...base,
+      investment: this.isInvestment() && investment.maturityDate !== ''
+        ? (investment as InvestmentAccount)
+        : undefined,
+    };
+
+    this.isEdit() && this.id() != undefined
+      ? this.accountStore.updateAccount({ account: payload, id: this.id()! })
+      : this.accountStore.addAccount(payload);
   }
 
   handleGoOut(): void {

@@ -28,6 +28,7 @@ export class AccountTransactionItemComponent {
 
   typeOperation = computed(() => {
     return this.transaction().type === Type.Income ||
+      this.transaction().type === Type.Yield ||
       (this.transaction().type === Type.Transfer &&
         this.transaction().destinationAccountId == this.accountId())
       ? Operation.Incoming
@@ -54,7 +55,9 @@ export class AccountTransactionItemComponent {
 
       case Type.Transfer:
         return 'Transferencia';
-
+        
+      case Type.Yield:
+        return 'Rendimientos';
       default:
         return 'Transacción';
     }
@@ -65,7 +68,8 @@ export class AccountTransactionItemComponent {
 
     switch (type) {
       case Type.Income:
-        return 'bg-green-100 text -green-600 group-hover:bg-green-200';
+      case Type.Yield:
+        return 'bg-green-100 text-green-600 group-hover:bg-green-200';
 
       case Type.Expense:
         return 'bg-slate-100 text-slate-600 group-hover:bg-slate-200';
@@ -82,7 +86,7 @@ export class AccountTransactionItemComponent {
     const type = this.transaction().type;
 
     switch (type) {
-      case Type.Income:
+      case Type.Income || Type.Yield:
         return 'text-green-600';
 
       case Type.Expense:

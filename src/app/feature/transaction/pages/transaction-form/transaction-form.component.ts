@@ -10,7 +10,7 @@ import {MessageService} from 'primeng/api';
 import {Account} from '../../../account/interfaces/account.interface';
 import {FormErrorLabelComponent} from '@shared/components/form-error-label/form-error-label.component';
 import {Transaction, Type} from '../../interfaces/transaction.interface';
-import {finalize, map, Observable} from 'rxjs';
+import {finalize, map, Observable, throwError} from 'rxjs';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {CategoryService} from '@core/services/category.service';
 import {AutoComplete, AutoCompleteCompleteEvent, AutoCompleteSelectEvent,} from 'primeng/autocomplete';
@@ -111,6 +111,7 @@ export default class TransactionFormComponent {
       [Type.Expense]: 'kt-btn-destructive',
       [Type.Income]: 'bg-green-600',
       [Type.Transfer]: 'kt-btn-primary',
+      [Type.Yield]: 'bg-green-600',
     };
 
     return statusClasses[type] || 'kt-btn-default';
@@ -201,6 +202,7 @@ export default class TransactionFormComponent {
       [Type.Expense]: () => this.transactionService.expense(this.payload<Expense>()),
       [Type.Income]: () => this.transactionService.add(this.payload<Income>()),
       [Type.Transfer]: () => this.transactionService.transfer(this.payload<Transfer>()),
+      [Type.Yield]: () => throwError(() => new Error('Transacción de tipo rendimiento aún no implementada'))
     };
 
     request$[this.form.get('type')?.value!]()
