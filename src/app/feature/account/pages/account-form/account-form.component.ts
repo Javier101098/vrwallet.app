@@ -141,10 +141,6 @@ export default class AccountFormComponent {
     { requireSync: true }
   );
   
-  get currentForm(): AccountCreate {
-    return this.form.value as AccountCreate;
-  }
-  
   constructor() {
     effect(() => {
       const account = this.accountResource.value();
