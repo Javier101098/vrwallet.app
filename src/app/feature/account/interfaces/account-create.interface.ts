@@ -6,7 +6,7 @@ export interface AccountCreate {
   institutionId: string;
   name: string;
   color: string;
-  note: string;
+  notes: string;
   investment?: InvestmentAccount;
 }
 

@@ -98,7 +98,7 @@ export default class AccountFormComponent {
     currencyId: ['', [Validators.required]],
     institutionId: ['', [Validators.required]],
     color: ['#ff0066', [Validators.required]],
-    note: ['', [Validators.maxLength(100)]],
+    notes: ['', [Validators.maxLength(100)]],
     investment:  this.fb.group({
       frequency: [Frequency.daily],
       rate: [0],
