@@ -129,9 +129,9 @@
               Notas
             </span>
             <div class="grow w-full">
-              <input formControlName="note" class="kt-input w-full" type="text" />
+              <input formControlName="notes" class="kt-input w-full" type="text" />
               <vrw-form-error-label
-                  [control]="form.get('note')"
+                  [control]="form.get('notes')"
               ></vrw-form-error-label>
             </div>
           </div>
@@ -179,7 +179,8 @@
                 </div>
                 <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
                 <span class="kt-form-label w-full">
-                  Fecha de Vencimiento -- poner en caso de nulo
+                  Fecha de Vencimiento
+                  <i class="pi pi-question-circle" pTooltip="Si no cuenta con fecha de vencimiento, deje el campo vacío."></i>
                 </span>
                   <div class="grow w-full">
                     <input formControlName="maturityDate" class="kt-input kt-input-sm" type="date" />

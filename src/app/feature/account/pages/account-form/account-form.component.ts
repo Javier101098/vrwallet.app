@@ -34,6 +34,7 @@ import {InputNumber} from "primeng/inputnumber";
 import {Checkbox} from "primeng/checkbox";
 import {Frequency} from "../../interfaces/yield-frequency";
 import {MinDateValidator} from "@shared/validators/min-date.validator";
+import {Tooltip} from "primeng/tooltip";
 
 @Component({
   selector: 'vrw-account-form',
@@ -49,6 +50,7 @@ import {MinDateValidator} from "@shared/validators/min-date.validator";
     SelectButton,
     InputNumber,
     Checkbox,
+    Tooltip,
   ],
   providers: [MessageService],
   templateUrl: './account-form.component.html',
@@ -155,6 +157,7 @@ export default class AccountFormComponent {
         institutions.length > 0;
 
       if (allLoaded) {
+        this.form.markAllAsTouched();
         this.form.patchValue(account as AccountCreate);
       }
     });

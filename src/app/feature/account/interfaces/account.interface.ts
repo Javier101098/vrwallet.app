@@ -6,5 +6,6 @@ export interface Account {
   name: string;
   accountNumber: string;
   color: string;
+  notes: string;
   balance: number;
 }
