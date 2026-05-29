@@ -22,10 +22,4 @@ export class PerformanceSummaryComponent {
     const {current, previous} = this.monthlyYield();
     return (current - previous) / previous;
   });
-
-  readonly isPositive = computed(() => this.monthlyVariation() > 0);
-  readonly isNegative = computed(() => this.monthlyVariation() < 0);
-  readonly isNeutral  = computed(() => this.monthlyVariation() === 0);
-
-
 }
