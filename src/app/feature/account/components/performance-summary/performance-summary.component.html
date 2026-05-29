@@ -2,7 +2,7 @@
   <div class="w-full">
     <div class="flex justify-between items-start mb-3">
       <div>
-        <h3 class="text-sm font-semibold text-slate-700 uppercase tracking-wide">
+        <h3 class="text-sm font-semibold uppercase tracking-wide">
           Rendimiento Generado
         </h3>
         <p class="text-xs text-slate-400 mt-0.5">Este mes</p>
@@ -21,21 +21,14 @@
 
     <div class="flex items-baseline gap-3 flex-wrap">
       <span class="text-3xl font-bold tracking-tight"
-            [class.text-emerald-600]="monthlyVariation() > 0"
-            [class.text-red-600]="monthlyVariation() < 0"
-            [class.text-slate-600]="monthlyVariation() === 0"
-      >
+            [style.color]="colors().primary">
         {{ monthlyYield().current | currency }}
       </span>
 
       <div class="flex items-center gap-1.5">
         <span class="inline-flex items-center gap-1 text-sm font-semibold px-2 py-1 rounded-full transition-all"
-              [class.bg-emerald-100]="monthlyVariation() > 0"
-              [class.text-emerald-800]="monthlyVariation() > 0"
-              [class.bg-red-100]="monthlyVariation() < 0"
-              [class.text-red-800]="monthlyVariation() < 0"
-              [class.bg-gray-100]="monthlyVariation() === 0"
-              [class.text-gray-600]="monthlyVariation() === 0">
+              [style.background-color]="colors().light"
+              [style.color]="colors().primary">
           <svg class="w-3.5 h-3.5 transition-transform duration-200"
                fill="none" stroke="currentColor" viewBox="0 0 24 24"
                [class.rotate-180]="monthlyVariation() < 0">

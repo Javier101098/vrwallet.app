@@ -18,8 +18,14 @@ export class PerformanceSummaryComponent {
   readonly monthlyYield = input.required<MonthlyYield>();
   readonly colors = input.required<{primary:string,light:string}>()
 
-  monthlyVariation = computed(() => {
+  readonly monthlyVariation = computed(() => {
     const {current, previous} = this.monthlyYield();
     return (current - previous) / previous;
   });
+
+  readonly isPositive = computed(() => this.monthlyVariation() > 0);
+  readonly isNegative = computed(() => this.monthlyVariation() < 0);
+  readonly isNeutral  = computed(() => this.monthlyVariation() === 0);
+
+
 }
