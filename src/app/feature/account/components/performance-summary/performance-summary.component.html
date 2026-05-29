@@ -1,0 +1,51 @@
+<vrw-card>
+  <div class="w-full">
+    <div class="flex justify-between items-start mb-3">
+      <div>
+        <h3 class="text-sm font-semibold text-slate-700 uppercase tracking-wide">
+          Rendimiento Generado
+        </h3>
+        <p class="text-xs text-slate-400 mt-0.5">Este mes</p>
+      </div>
+      <div class="group relative">
+        <svg class="w-4 h-4 text-slate-300 hover:text-slate-500 cursor-help transition-colors"
+             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+        </svg>
+        <div class="absolute right-0 top-6 hidden group-hover:block bg-slate-800 text-white text-xs rounded-lg py-1 px-2 whitespace-nowrap z-10">
+          Rendimiento neto vs mes anterior
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-baseline gap-3 flex-wrap">
+      <span class="text-3xl font-bold tracking-tight"
+            [class.text-emerald-600]="monthlyVariation() > 0"
+            [class.text-red-600]="monthlyVariation() < 0"
+            [class.text-slate-600]="monthlyVariation() === 0"
+      >
+        {{ monthlyYield().current | currency }}
+      </span>
+
+      <div class="flex items-center gap-1.5">
+        <span class="inline-flex items-center gap-1 text-sm font-semibold px-2 py-1 rounded-full transition-all"
+              [class.bg-emerald-100]="monthlyVariation() > 0"
+              [class.text-emerald-800]="monthlyVariation() > 0"
+              [class.bg-red-100]="monthlyVariation() < 0"
+              [class.text-red-800]="monthlyVariation() < 0"
+              [class.bg-gray-100]="monthlyVariation() === 0"
+              [class.text-gray-600]="monthlyVariation() === 0">
+          <svg class="w-3.5 h-3.5 transition-transform duration-200"
+               fill="none" stroke="currentColor" viewBox="0 0 24 24"
+               [class.rotate-180]="monthlyVariation() < 0">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                  d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+          <span>{{ monthlyVariation() | percent: '1.2-2' }}</span>
+        </span>
+        <span class="text-xs text-slate-400 font-medium">vs mes anterior</span>
+      </div>
+    </div>
+  </div>
+</vrw-card>

@@ -1,6 +1,6 @@
 import {Frequency} from "./yield-frequency";
 
-export interface AccountCreate {
+export interface CreateAccountRequest {
   accountTypeId: string;
   currencyId: string;
   institutionId: string;

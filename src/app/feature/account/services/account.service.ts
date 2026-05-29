@@ -3,9 +3,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@env/environment';
 import {Account} from '../interfaces/account.interface';
 import { Observable } from 'rxjs';
-import { AccountCreate } from '../interfaces/account-create.interface';
+import { CreateAccountRequest } from '../interfaces/account-create.interface';
 import { Transaction } from '../../transaction/interfaces/transaction.interface';
-import { AccountSummary } from '../interfaces/account-summary.interface';
+import { AccountSummaryResponse } from '../interfaces/account-summary.interface';
 import {BalanceDate} from "@core/Interfaces/balance-date.interface";
 
 @Injectable({
@@ -19,16 +19,16 @@ export class AccountService {
     return this.http.get<Account[]>(`${this.baseUrl}/account`);
   }
 
-  public add(account: AccountCreate): Observable<Account> {
+  public add(account: CreateAccountRequest): Observable<Account> {
     return this.http.post<Account>(`${this.baseUrl}/account`, account);
   }
-  
-  public update(account: AccountCreate,id: string) : Observable<Account>{
+
+  public update(account: CreateAccountRequest, id: string) : Observable<Account>{
     return this.http.put<Account>(`${this.baseUrl}/account/${id}`, account);
   }
 
-  public getById(id: string) : Observable<AccountCreate> {
-    return this.http.get<AccountCreate>(`${this.baseUrl}/account/${id}`);
+  public getById(id: string) : Observable<CreateAccountRequest> {
+    return this.http.get<CreateAccountRequest>(`${this.baseUrl}/account/${id}`);
   }
 
   public getTransactions(id: string): Observable<Transaction[]> {
@@ -38,7 +38,7 @@ export class AccountService {
   }
 
   public getSummary(id: string) {
-    return this.http.get<AccountSummary>(
+    return this.http.get<AccountSummaryResponse>(
       `${this.baseUrl}/account/${id}/summary`,
     );
   }

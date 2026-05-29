@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { CardComponent } from '@shared/components/card/card.component';
 import { CurrencyPipe, PercentPipe } from '@angular/common';
-import {AccountSummary} from "../../interfaces/account-summary.interface";
+import {AccountSummaryResponse} from "../../interfaces/account-summary.interface";
 
 @Component({
   selector: 'vrw-summary-card',
@@ -20,9 +20,9 @@ import {AccountSummary} from "../../interfaces/account-summary.interface";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SummaryCardComponent {
-  summary = input.required<AccountSummary>();
+  summary = input.required<AccountSummaryResponse>();
   style = input.required<{ primary: string; light: string }>();
-  
+
   currentSummary = computed(
     () =>
       this.summary()?.currentMonth ?? { income: 0, expense: 0 },

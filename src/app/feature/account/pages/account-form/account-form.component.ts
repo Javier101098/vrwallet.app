@@ -19,7 +19,7 @@ import { InstitutionService } from '@core/services/institution.service';
 import {rxResource, toSignal} from '@angular/core/rxjs-interop';
 import { FormErrorLabelComponent } from '@shared/components/form-error-label/form-error-label.component';
 import { MessageService } from 'primeng/api';
-import {AccountCreate, InvestmentAccount} from '../../interfaces/account-create.interface';
+import {CreateAccountRequest, InvestmentAccount} from '../../interfaces/account-create.interface';
 import { AccountStore } from '../../services/account-store.service';
 import { Router} from '@angular/router';
 import { ColorPickerModule } from 'primeng/colorpicker';
@@ -58,8 +58,8 @@ import {Tooltip} from "primeng/tooltip";
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export default class AccountFormComponent {
-  id = input<string>(); 
-    
+  id = input<string>();
+
   private fb = inject(FormBuilder);
   private accountService = inject(AccountService);
   private accountTypeService = inject(AccountTypeService);
@@ -71,7 +71,7 @@ export default class AccountFormComponent {
 
   isLoading = this.accountStore.isLoading;
   isEdit = computed(()=>this.id() != undefined)
-  
+
   accountTypes = toSignal(this.accountTypeService.get(), { initialValue: [] });
   currencies = toSignal(this.currencyService.get(), { initialValue: [] });
   institutions = toSignal(this.institutionService.get(), { initialValue: [] });
@@ -81,7 +81,7 @@ export default class AccountFormComponent {
     { label: 'Semanal', value: Frequency.weekly },
     { label: 'Mensual', value: Frequency.monthly }
   ]);
-  
+
   accountResource = rxResource({
     params:()=> ({id:this.id()}),
     stream:({params}) => {
@@ -90,7 +90,7 @@ export default class AccountFormComponent {
       return this.accountService.getById(id);
     }
   })
-  
+
   form = this.fb.nonNullable.group({
     name: ['', [
       Validators.required,
@@ -142,7 +142,7 @@ export default class AccountFormComponent {
     ),
     { requireSync: true }
   );
-  
+
   constructor() {
     effect(() => {
       const account = this.accountResource.value();
@@ -158,7 +158,7 @@ export default class AccountFormComponent {
 
       if (allLoaded) {
         this.form.markAllAsTouched();
-        this.form.patchValue(account as AccountCreate);
+        this.form.patchValue(account as CreateAccountRequest);
       }
     });
   }
@@ -175,7 +175,7 @@ export default class AccountFormComponent {
 
     const { investment, ...base } = this.form.getRawValue();
 
-    const payload: AccountCreate = {
+    const payload: CreateAccountRequest = {
       ...base,
       investment: this.isInvestment() && investment.maturityDate !== ''
         ? (investment as InvestmentAccount)
