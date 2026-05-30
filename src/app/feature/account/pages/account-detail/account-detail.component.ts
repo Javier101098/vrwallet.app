@@ -16,7 +16,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { BalanceChartComponent } from '../../components/balance-chart/balance-chart.component';
 import { format } from 'date-fns';
 import {AccountCardComponent} from "../../components/account-card/account-card.component";
-import {AccountSummary} from "../../interfaces/account-summary.interface";
+import {AccountSummaryResponse} from "../../interfaces/account-summary.interface";
+import {PerformanceSummaryComponent} from '../../components/performance-summary/performance-summary.component';
 
 @Component({
   selector: 'vrw-account-detail',
@@ -30,6 +31,7 @@ import {AccountSummary} from "../../interfaces/account-summary.interface";
     NgApexchartsModule,
     BalanceChartComponent,
     AccountCardComponent,
+    PerformanceSummaryComponent,
   ],
   templateUrl: './account-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,8 +40,8 @@ export default class AccountDetailComponent {
   public id = input.required<string>();
 
   private accountService = inject(AccountService);
-  
-  account = computed<AccountSummary|undefined>(() => this.accountSummaryResource.value());
+
+  account = computed<AccountSummaryResponse|undefined>(() => this.accountSummaryResource.value());
   isInvestment = computed(() => this.account()?.isInvestment);
   balanceTodayChart = computed(() => {
     const date = format(new Date(), 'yyyy-MM-dd');
@@ -49,14 +51,14 @@ export default class AccountDetailComponent {
     };
   });
   isInitialLoading = computed(() => this.accountSummaryResource.isLoading());
-  accountStyle = computed(() => {
+  colors = computed(() => {
     const color = this.account()?.color || '#009688';
     return {
       primary: color,
       light: `${color}1A`,
     };
   });
-  
+
   accountSummaryResource = rxResource({
     params: () => ({ id: this.id() }),
     stream: ({ params }) => this.accountService.getSummary(params.id),

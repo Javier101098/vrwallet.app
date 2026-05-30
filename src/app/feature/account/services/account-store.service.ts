@@ -12,7 +12,7 @@ import { pipe, switchMap, tap } from 'rxjs';
 import { inject } from '@angular/core';
 import { AccountService } from './account.service';
 import { tapResponse } from '@ngrx/operators';
-import { AccountCreate } from '../interfaces/account-create.interface';
+import { CreateAccountRequest } from '../interfaces/account-create.interface';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -64,7 +64,7 @@ export const AccountStore = signalStore(
           }),
         ),
       ),
-      addAccount: rxMethod<AccountCreate>(
+      addAccount: rxMethod<CreateAccountRequest>(
         pipe(
           tap(() => patchState(store, { isLoading: true })),
           switchMap((account) => {
@@ -103,7 +103,7 @@ export const AccountStore = signalStore(
           }),
         ),
       ),
-      updateAccount: rxMethod<{ account: AccountCreate; id: string }>(
+      updateAccount: rxMethod<{ account: CreateAccountRequest; id: string }>(
         pipe(
           tap(()=>patchState(store,{isLoading:true})),
           switchMap(({account,id})=>{
@@ -115,12 +115,12 @@ export const AccountStore = signalStore(
                       accounts: state.accounts.map((account)=>(account.id === updateAccount.id ? updateAccount : account)),
                       isLoading: false
                     }))
-                    
+
                     messageService.add({
                       severity: 'success',
                       detail: 'Cuenta actualizada correctamente',
                     });
-                    
+
                     router.navigate(['/accounts']).then();
                   },
                   error:(error: HttpErrorResponse)=>{
