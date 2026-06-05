@@ -7,6 +7,7 @@ RUN npm ci
 
 COPY . .
 
+ARG BUILD_CONFIGURATION
 RUN npm run build --configuration=${BUILD_CONFIGURATION}
 
 FROM nginx:alpine
