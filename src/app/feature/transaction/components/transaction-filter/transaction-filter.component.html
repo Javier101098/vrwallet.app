@@ -1,0 +1,107 @@
+<vrw-card>
+  <div class="flex flex-col gap-4 w-full">
+    <div class="flex justify-between items-center">
+      <h3 class="font-bold">Filtros</h3>
+    </div>
+
+    <form class="kt-form py-2" [formGroup]="form">
+      <div class="kt-form-item">
+        <label class="kt-form-label" for="search">Buscar</label>
+        <div class="kt-form-control">
+          <input class="kt-input" id="search" type="search"/>
+        </div>
+      </div>
+
+      <div class="kt-form-item">
+        <label class="kt-form-label" for="account">
+          Fechas
+        </label>
+        <div class="kt-form-control">
+          <p-datepicker  fluid size="small" selectionMode="range" formControlName="date" ></p-datepicker>
+        </div>
+      </div>
+
+      <div class="kt-form-item">
+        <label class="kt-form-label" for="account">
+          Cuentas
+        </label>
+        <div class="kt-form-control">
+          <select
+            id="account"
+            formControlName="accountId"
+            class="kt-select"
+            data-kt-select="true"
+            data-kt-select-config='{
+              "optionsClass": "kt-scrollable overflow-auto max-h-[250px]"
+            }'
+          >
+            @for (account of accounts(); track account.id) {
+              <option value="{{account.id}}">{{account.name}}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="kt-form-item">
+        <label class="kt-form-label" for="category">
+          Categorias
+        </label>
+        <div class="kt-form-control">
+          <select
+            id="category"
+            class="kt-select"
+            data-kt-select="true"
+            data-kt-select-config='{
+              "optionsClass": "kt-scrollable overflow-auto max-h-[250px]"
+            }'
+          >
+            @for (category of categories(); track category.id) {
+              <option value="{{category.id}}">{{category.name}}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="kt-form-item">
+        <label class="kt-form-label" for="category">
+          Rango por Montos
+        </label>
+        <div class="kt-form-control">
+          <p-slider size="small" formControlName="range"  min="0" max="1000000" [range]="true" class="w-full" />
+        </div>
+        <div class="flex justify-between items-center text-xs">
+          <div class="flex flex-col items-center gap-1">
+            <span class="text-muted-foreground">Mín.</span>
+            <span contenteditable="true" class="px-10 py-1 rounded-md bg-muted" (keydown)="allowOnlyNumbers($event)">
+              {{amountRange().min | currency}}
+            </span>
+          </div>
+          <div class="flex flex-col items-center gap-1">
+            <span class="text-muted-foreground">Máx.</span>
+            <span contenteditable="true" class="px-10 py-1 rounded-md bg-muted" (keydown)="allowOnlyNumbers($event)">
+              {{amountRange().max | currency}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="kt-form-item">
+        <label class="kt-form-label" for="type">Tipo de registro</label>
+        <div class="kt-form-control">
+          <select
+            id="type"
+            class="kt-select"
+            data-kt-select="true"
+            data-kt-select-config='{
+              "optionsClass": "kt-scrollable overflow-auto max-h-[250px]"
+            }'
+          >
+            @for (type of recordType; track type.value) {
+              <option value="{{type.value}}">{{type.label}}</option>
+            }
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+</vrw-card>
