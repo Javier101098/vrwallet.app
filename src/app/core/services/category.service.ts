@@ -12,6 +12,6 @@ export class CategoryService {
   private readonly endpoint = environment.baseUrl;
 
   get(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${this.endpoint}/category`);
+    return this.http.get<Category[]>(`${this.endpoint}/categories`);
   }
 }
