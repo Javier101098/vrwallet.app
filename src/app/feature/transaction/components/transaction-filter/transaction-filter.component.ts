@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, computed, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, signal} from '@angular/core';
 import {CardComponent} from '@shared/components/card/card.component';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {DatePicker} from 'primeng/datepicker';
@@ -6,9 +6,9 @@ import {Slider} from 'primeng/slider';
 import {AccountStore} from '../../../account/services/account-store.service';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {CategoryService} from '@core/services/category.service';
-import {Type} from '../../interfaces/transaction.interface';
+import {Transaction, Type} from '../../interfaces/transaction.interface';
 import {CurrencyPipe} from '@angular/common';
-import {map} from 'rxjs';
+import {debounceTime, map} from 'rxjs';
 import {TransactionService} from '../../services/transaction.service';
 import {TransactionFilter} from '../../interfaces/transaction-filter.interface';
 
@@ -35,6 +35,7 @@ export class TransactionFilterComponent {
   categories = toSignal(this.categoryService.get(), {
     initialValue: [],
   });
+  transactions = signal<Transaction[]>([]);
 
   recordType: { label: string; value: Type }[] = [
     { label: 'Expense', value: Type.Expense },
@@ -66,9 +67,12 @@ export class TransactionFilterComponent {
   );
 
   constructor() {
-
-    this.form.valueChanges.subscribe((value) => {
-      console.log(value);
+    this.form.valueChanges
+      .pipe(
+        debounceTime(500)
+      )
+      .subscribe(() : void => {
+      this.handleApplyFilters();
     })
   }
 
@@ -90,10 +94,11 @@ export class TransactionFilterComponent {
   }
 
   handleApplyFilters() {
+    if (this.form.invalid) return;
 
     this.transactionService.get(this.transactionFilters)
       .subscribe((transactions) => {
-
+        this.transactions.set(transactions);
       });
   }
 
