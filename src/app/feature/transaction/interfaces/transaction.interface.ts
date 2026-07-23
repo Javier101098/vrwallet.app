@@ -1,3 +1,6 @@
+import {Account} from '../../account/interfaces/account.interface';
+import {Category} from '@core/Interfaces/category.interface';
+
 export interface Transaction {
   id: number;
   accountId: string;
@@ -9,6 +12,12 @@ export interface Transaction {
   createdAt: string;
   type: Type;
 }
+
+export type TransactionResponse = Omit<Transaction, 'accountId' | 'destinationAccountId'> & {
+  account : Account
+  destinationAccount?: Account
+  category: Category
+};
 
 export enum Type {
   Income,

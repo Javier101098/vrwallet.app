@@ -1,4 +1,4 @@
-export interface TransactionFilter {
+export interface TransactionFilterRequest {
   accountId?: string | null;
   from?: Date | null;
   to?: Date | null;
@@ -8,4 +8,5 @@ export interface TransactionFilter {
   maxAmount?: number | null;
   page?: number | null;
   limit?: number | null;
+  type: string | null;
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {TransactionFilterComponent} from '../../components/transaction-filter/transaction-filter.component';
 import {TransactionListComponent} from '../../components/transaction-list/transaction-list.component';
 
@@ -12,4 +12,5 @@ import {TransactionListComponent} from '../../components/transaction-list/transa
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class TransactionLogComponent {}
+export default class TransactionLogComponent {
+}

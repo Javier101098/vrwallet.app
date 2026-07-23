@@ -9,8 +9,8 @@ import {CategoryService} from '@core/services/category.service';
 import {Transaction, Type} from '../../interfaces/transaction.interface';
 import {CurrencyPipe} from '@angular/common';
 import {debounceTime, map} from 'rxjs';
-import {TransactionService} from '../../services/transaction.service';
-import {TransactionFilter} from '../../interfaces/transaction-filter.interface';
+import {TransactionFilterRequest} from '../../interfaces/transaction-filter.interface';
+import {TransactionStore} from '../../services/transaction-store.service';
 
 @Component({
   selector: 'vrw-transaction-filter',
@@ -29,7 +29,7 @@ export class TransactionFilterComponent {
   private readonly fb = inject(FormBuilder);
   private readonly accountStore = inject(AccountStore);
   private readonly categoryService = inject(CategoryService);
-  private readonly transactionService = inject(TransactionService);
+  private readonly transactionStore = inject(TransactionStore);
 
   accounts = computed(() => this.accountStore.accounts());
   categories = toSignal(this.categoryService.get(), {
@@ -50,6 +50,7 @@ export class TransactionFilterComponent {
     ],
     accountId:[null],
     categoryId:[null],
+    type: [null],
     date: [null],
     amount: [null]
   });
@@ -72,12 +73,13 @@ export class TransactionFilterComponent {
         debounceTime(500)
       )
       .subscribe(() : void => {
-      this.handleApplyFilters();
+        console.log(this.transactionFilters);
+      this.transactionStore.loadTransactions(this.transactionFilters);
     })
   }
 
-  get transactionFilters(): TransactionFilter {
-    const { accountId, categoryId, date, amount, range } = this.form.getRawValue();
+  get transactionFilters(): TransactionFilterRequest {
+    const { accountId, categoryId, date, amount, range, type } = this.form.getRawValue();
 
     const [startDate, endDate] = date ?? [];
     const [minPrice, maxPrice] = range ?? [];
@@ -88,18 +90,10 @@ export class TransactionFilterComponent {
       from: startDate ? new Date(startDate) : null,
       to: endDate ? new Date(endDate) : null,
       amount: amount ? Number(amount) : null,
+      type: type ?? null,
       minAmount: minPrice ? Number(minPrice) : null,
       maxAmount: maxPrice ? Number(maxPrice) : null
     };
-  }
-
-  handleApplyFilters() {
-    if (this.form.invalid) return;
-
-    this.transactionService.get(this.transactionFilters)
-      .subscribe((transactions) => {
-        this.transactions.set(transactions);
-      });
   }
 
   allowOnlyNumbers(event: KeyboardEvent) {
