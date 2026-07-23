@@ -1,8 +1,4 @@
-<div class="mb-4 bg-white .dark:bg-amber-600">
-    que paso
-</div>
-
-<div class="flex items-center justify-between p-3 dark:bg-transparent rounded-[2rem] shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between p-3 dark:bg-transparent rounded-[2rem] shadow-sm border border-gray-100 dark:border-zinc-800 hover:shadow-md transition-shadow">
   <div class="flex items-center gap-4">
     <div class="flex items-center justify-center w-12 h-12 rounded-full bg-green-100/60 text-teal-800">
       <i class="ki-filled ki-calendar text-3xl">
@@ -13,9 +9,8 @@
       <span class="text-sm font-medium text-gray-500 mt-0.5">{{transaction().date | date}} &bull; {{transaction().category.name}}</span>
     </div>
   </div>
-
   <div class="flex flex-col items-end gap-1.5">
-    <span class="text-base font-bold text-gray-900 dark:text-gray-300">{{operationSign()}} {{transaction().amount | currency}}</span>
+    <span class="text-base font-bold text-gray-700 dark:text-gray-300">{{operationSign()}} {{transaction().amount | currency}}</span>
 
     <div class="flex items-center gap-1.5">
         <span class="px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-teal-800 uppercase bg-green-100/60 rou nded-full">
