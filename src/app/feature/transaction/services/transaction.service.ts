@@ -14,7 +14,7 @@ export class TransactionService {
   private http = inject(HttpClient);
   private readonly baseUrl = environment.baseUrl;
 
-  public get( filter  : TransactionFilterRequest) : Observable<Paged<Transaction>>{
+  public get( filter  : TransactionFilterRequest) : Observable<Paged<TransactionResponse>>{
     let params =  new HttpParams();
 
     Object.entries(filter).forEach(([key, value]) => {
@@ -23,7 +23,7 @@ export class TransactionService {
       }
     });
 
-    return this.http.get<Paged<Transaction>>(`${this.baseUrl}/transactions`, { params });
+    return this.http.get<Paged<TransactionResponse>>(`${this.baseUrl}/transactions`, { params });
   }
 
   public add(deposit: Income) {

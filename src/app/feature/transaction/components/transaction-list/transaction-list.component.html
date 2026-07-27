@@ -9,6 +9,19 @@
     @for (transaction of transactions(); track transaction.id) {
       <vrw-transaction-item [transaction]="transaction"></vrw-transaction-item>
     }
+
+    @if (transactionStore.isEmpty()) {
+      <p-message severity="secondary" icon="pi pi-inbox">
+        No hay transacciones registradas.
+      </p-message>
+    } @else {
+      <p-paginator
+        (onPageChange)="onPageChange($event)"
+        [first]="0"
+        [rows]="5"
+        [totalRecords]="transactionStore.totalCount()"
+        [rowsPerPageOptions]="[10, 20, 30]" />
+    }
   </div>
 </div>
 

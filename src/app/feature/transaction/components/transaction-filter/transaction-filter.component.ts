@@ -11,6 +11,7 @@ import {CurrencyPipe} from '@angular/common';
 import {debounceTime, map} from 'rxjs';
 import {TransactionFilterRequest} from '../../interfaces/transaction-filter.interface';
 import {TransactionStore} from '../../services/transaction-store.service';
+import {format} from 'date-fns';
 
 @Component({
   selector: 'vrw-transaction-filter',
@@ -73,7 +74,6 @@ export class TransactionFilterComponent {
         debounceTime(500)
       )
       .subscribe(() : void => {
-        console.log(this.transactionFilters);
       this.transactionStore.loadTransactions(this.transactionFilters);
     })
   }
@@ -87,8 +87,8 @@ export class TransactionFilterComponent {
     return {
       accountId: accountId ?? null,
       categoryId: categoryId ?? null,
-      from: startDate ? new Date(startDate) : null,
-      to: endDate ? new Date(endDate) : null,
+      from: startDate ? format(new Date(startDate),'yyyy-MM-dd') : null,
+      to: endDate ? format(new Date(endDate),'yyyy-MM-dd') : null,
       amount: amount ? Number(amount) : null,
       type: type ?? null,
       minAmount: minPrice ? Number(minPrice) : null,

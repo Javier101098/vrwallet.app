@@ -1,54 +1,68 @@
-import {Transaction, TransactionResponse} from '../interfaces/transaction.interface';
-import {patchState, signalStore, withComputed, withMethods, withState} from '@ngrx/signals';
-import {rxMethod} from '@ngrx/signals/rxjs-interop';
+import { computed, inject } from '@angular/core';
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { tapResponse } from '@ngrx/operators';
 import {Observable, pipe, switchMap, tap} from 'rxjs';
-import {tapResponse} from '@ngrx/operators';
-import {inject} from '@angular/core';
-import {TransactionService} from './transaction.service';
-import {TransactionFilterRequest} from '../interfaces/transaction-filter.interface';
-import {Paged} from '@core/Interfaces/paged.interface';
+
+import { TransactionResponse } from '../interfaces/transaction.interface';
+import { TransactionFilterRequest } from '../interfaces/transaction-filter.interface';
+import { Paged } from '@core/Interfaces/paged.interface';
+import { TransactionService } from './transaction.service';
 
 interface TransactionState {
   transactions: TransactionResponse[];
   isLoading: boolean;
+  error: string | null;
+  totalPages: number;
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
 }
 
 const initialState: TransactionState = {
   transactions: [],
   isLoading: false,
+  error: null,
+  totalPages: 0,
+  totalCount: 0,
+  pageNumber: 1,
+  pageSize: 10,
 };
 
 export const TransactionStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
   withComputed((store) => ({
-
+    hasNextPage: computed(() => store.pageNumber() < store.totalPages()),
+    hasPreviousPage: computed(() => store.pageNumber() > 1),
+    isEmpty: computed(() => !store.isLoading() && store.transactions().length === 0),
+    pages : computed(() => Array.from({ length: store.totalPages() }, (_, i) => i + 1))
   })),
-  withMethods((
-    store,
-    transactionService =  inject(TransactionService)
-  )=> ({
+  withMethods((store, transactionService = inject(TransactionService)) => ({
     loadTransactions: rxMethod<TransactionFilterRequest>(
       pipe(
-        switchMap((filter: TransactionFilterRequest): Observable<Paged<TransactionResponse>> => {
-          return transactionService.get(filter).pipe(
-            tap(console.log),
+        tap(() => patchState(store, { isLoading: true, error: null })),
+        switchMap((filter: TransactionFilterRequest) : Observable<Paged<TransactionResponse>> =>
+          transactionService.get(filter).pipe(
             tapResponse({
-              next: (response: Paged<TransactionResponse>) => {
+              next: ({ items, ...response }: Paged<TransactionResponse>) => {
                 patchState(store, {
-                  transactions: response.items,
+                  ...response,
+                  transactions: items,
                   isLoading: false,
                 });
               },
               error: () => {
                 patchState(store, {
-                  isLoading: false
+                  ...initialState,
+                  isLoading: false,
+                  error: 'No se pudo cargar el listado de transacciones.',
                 });
-              }
+              },
             })
-          );
-        })
+          )
+        )
       )
-    )
+    ),
   }))
-)
+);

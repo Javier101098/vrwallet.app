@@ -3,6 +3,16 @@
     <vrw-transaction-filter></vrw-transaction-filter>
   </div>
   <div class="col-span-2">
-    <vrw-transactions-list></vrw-transactions-list>
+    @if (transactionStore.isLoading()) {
+      <div class="mt-auto flex flex-col items-center justify-between gap-3">
+        <p-progress-spinner
+          ariaLabel="Loading"
+          class="size-11! shrink-0! [&_.p-progressspinner-circle-range]:stroke-emerald-300! [&_.p-progressspinner-circle-track]:stroke-emerald-100/15! [&_.p-progressspinner-value]:hidden!"
+        />
+        <p class="text-sm text-muted-foreground">Cargando...</p>
+      </div>
+    }@else{
+      <vrw-transactions-list></vrw-transactions-list>
+    }
   </div>
 </div>

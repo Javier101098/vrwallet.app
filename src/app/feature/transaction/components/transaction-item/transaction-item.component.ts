@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core';
-import {Transaction, TransactionResponse, Type} from '../../interfaces/transaction.interface';
+import {TransactionResponse, Type} from '../../interfaces/transaction.interface';
 import {CurrencyPipe, DatePipe} from '@angular/common';
 
 @Component({
@@ -24,6 +24,14 @@ export class TransactionItemComponent {
     }
   });
 
+  bgColor = computed<string>(() => {
+    return this.transaction().account.color
+  })
+
+  textColor = computed(()=>{
+    return this.bgColor() === '#ffffff' ? '#000000' : '#ffffff'
+  })
+
   operationSign= computed<string>(() => {
     switch (this.transaction().type) {
       case Type.Income:
@@ -43,6 +51,3 @@ export class TransactionItemComponent {
   });
 
 }
-
-
-
