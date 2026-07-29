@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, computed, inject, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, output, signal} from '@angular/core';
 import {CardComponent} from '@shared/components/card/card.component';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {DatePicker} from 'primeng/datepicker';
@@ -10,7 +10,6 @@ import {Transaction, Type} from '../../interfaces/transaction.interface';
 import {CurrencyPipe} from '@angular/common';
 import {debounceTime, map} from 'rxjs';
 import {TransactionFilterRequest} from '../../interfaces/transaction-filter.interface';
-import {TransactionStore} from '../../services/transaction-store.service';
 import {format} from 'date-fns';
 
 @Component({
@@ -27,10 +26,11 @@ import {format} from 'date-fns';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransactionFilterComponent {
+  readonly submitted = output<TransactionFilterRequest>();
+
   private readonly fb = inject(FormBuilder);
   private readonly accountStore = inject(AccountStore);
   private readonly categoryService = inject(CategoryService);
-  private readonly transactionStore = inject(TransactionStore);
 
   accounts = computed(() => this.accountStore.accounts());
   categories = toSignal(this.categoryService.get(), {
@@ -39,10 +39,10 @@ export class TransactionFilterComponent {
   transactions = signal<Transaction[]>([]);
 
   recordType: { label: string; value: Type }[] = [
-    { label: 'Expense', value: Type.Expense },
-    { label: 'Income', value: Type.Income },
-    { label: 'Transfer', value: Type.Transfer },
-    { label: 'Rendimientos', value: Type.Yield },
+    { label: 'Gasto', value: Type.Expense },
+    { label: 'Ingreso', value: Type.Income },
+    { label: 'Transferencia', value: Type.Transfer },
+    { label: 'Rendimientos', value: Type.Yield }
   ];
 
   public readonly form = this.fb.group({
@@ -74,7 +74,7 @@ export class TransactionFilterComponent {
         debounceTime(500)
       )
       .subscribe(() : void => {
-      this.transactionStore.loadTransactions(this.transactionFilters);
+        this.submitted.emit(this.transactionFilters);
     })
   }
 
@@ -92,7 +92,9 @@ export class TransactionFilterComponent {
       amount: amount ? Number(amount) : null,
       type: type ?? null,
       minAmount: minPrice ? Number(minPrice) : null,
-      maxAmount: maxPrice ? Number(maxPrice) : null
+      maxAmount: maxPrice ? Number(maxPrice) : null,
+      page: 1,
+      limit:5
     };
   }
 

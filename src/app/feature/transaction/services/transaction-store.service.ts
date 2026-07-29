@@ -10,46 +10,38 @@ import { Paged } from '@core/Interfaces/paged.interface';
 import { TransactionService } from './transaction.service';
 
 interface TransactionState {
-  transactions: TransactionResponse[];
+  data: Paged<TransactionResponse> | null;
   isLoading: boolean;
   error: string | null;
-  totalPages: number;
-  totalCount: number;
-  pageNumber: number;
-  pageSize: number;
+  filters: TransactionFilterRequest | null;
 }
 
 const initialState: TransactionState = {
-  transactions: [],
+  data: null,
   isLoading: false,
   error: null,
-  totalPages: 0,
-  totalCount: 0,
-  pageNumber: 1,
-  pageSize: 10,
+  filters: null,
 };
 
 export const TransactionStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
   withComputed((store) => ({
-    hasNextPage: computed(() => store.pageNumber() < store.totalPages()),
-    hasPreviousPage: computed(() => store.pageNumber() > 1),
-    isEmpty: computed(() => !store.isLoading() && store.transactions().length === 0),
-    pages : computed(() => Array.from({ length: store.totalPages() }, (_, i) => i + 1))
+    isEmpty: computed(() => !store.isLoading() && store.data()?.totalCount === 0),
+    pages : computed(() => Array.from({ length: store.data()?.totalPages ?? 0 }, (_, i) => i + 1))
   })),
   withMethods((store, transactionService = inject(TransactionService)) => ({
     loadTransactions: rxMethod<TransactionFilterRequest>(
       pipe(
         tap(() => patchState(store, { isLoading: true, error: null })),
-        switchMap((filter: TransactionFilterRequest) : Observable<Paged<TransactionResponse>> =>
-          transactionService.get(filter).pipe(
+        switchMap((filter: TransactionFilterRequest) : Observable<Paged<TransactionResponse>> => {
+          return transactionService.get(filter).pipe(
             tapResponse({
-              next: ({ items, ...response }: Paged<TransactionResponse>) => {
+              next: (response: Paged<TransactionResponse>) => {
                 patchState(store, {
-                  ...response,
-                  transactions: items,
+                  data: response,
                   isLoading: false,
+                  filters: filter,
                 });
               },
               error: () => {
@@ -60,8 +52,8 @@ export const TransactionStore = signalStore(
                 });
               },
             })
-          )
-        )
+          );
+        })
       )
     ),
   }))

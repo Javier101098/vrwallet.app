@@ -118,7 +118,6 @@ export default class TransactionFormComponent {
   }
 
   constructor(private location: Location) {
-    //bug: eliminar el effect, ya que no debe setear valores
     effect(() => {
       const accountByParam = this.accountParam();
       if (accountByParam){
@@ -216,8 +215,7 @@ export default class TransactionFormComponent {
           this.accountStore.loadAccounts();
           this.router.navigate(['/accounts', transaction.accountId]).then();
         },
-        error: (error: any) => {
-          //todo error aplicar interceptor, mensaje de error por cantidad insuficiente
+        error: () => {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',

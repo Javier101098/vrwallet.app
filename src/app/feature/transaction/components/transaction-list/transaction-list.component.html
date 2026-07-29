@@ -6,22 +6,32 @@
       </button>
     </div>
   <div class="flex flex-col gap-4">
-    @for (transaction of transactions(); track transaction.id) {
-      <vrw-transaction-item [transaction]="transaction"></vrw-transaction-item>
-    }
 
-    @if (transactionStore.isEmpty()) {
-      <p-message severity="secondary" icon="pi pi-inbox">
-        No hay transacciones registradas.
-      </p-message>
+    @if (transactionStore.isLoading()) {
+      <div class="mt-auto flex flex-col items-center justify-between gap-3">
+        <p-progress-spinner
+          ariaLabel="Loading"
+          class="size-11! shrink-0! [&_.p-progressspinner-circle-range]:stroke-emerald-300! [&_.p-progressspinner-circle-track]:stroke-emerald-100/15! [&_.p-progressspinner-value]:hidden!"
+        />
+        <p class="text-sm text-muted-foreground">Cargando...</p>
+      </div>
     } @else {
-      <p-paginator
-        (onPageChange)="onPageChange($event)"
-        [first]="0"
-        [rows]="5"
-        [totalRecords]="transactionStore.totalCount()"
-        [rowsPerPageOptions]="[10, 20, 30]" />
+      @for (transaction of transactions(); track transaction.id) {
+        <vrw-transaction-item [transaction]="transaction"></vrw-transaction-item>
+      } @empty {
+        <div class="flex flex-col items-center justify-center p-10 mt-4 bg-muted rounded-xl">
+          <i class="ki-filled ki-abstract-26 text-primary text-5xl mb-2"></i>
+          <h3 class="text-sm font-semibold text-slate-700 dark:text-white">No hay transacciones registradas</h3>
+          <p class="text-xs text-slate-500 mt-1">Los movimientos recientes aparecerán en esta sección.</p>
+        </div>
+      }
     }
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="first()"
+      [rows]="data()?.pageSize"
+      [totalRecords]="data()?.totalCount"
+      [rowsPerPageOptions]="[5, 10, 20, 30]" />
   </div>
 </div>
 
