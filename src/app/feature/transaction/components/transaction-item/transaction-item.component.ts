@@ -1,12 +1,13 @@
 import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core';
 import {TransactionResponse, Type} from '../../interfaces/transaction.interface';
-import {CurrencyPipe, DatePipe} from '@angular/common';
+import {CurrencyPipe, DatePipe, TitleCasePipe} from '@angular/common';
 
 @Component({
   selector: 'vrw-transaction-item',
   imports: [
     DatePipe,
-    CurrencyPipe
+    CurrencyPipe,
+    TitleCasePipe
   ],
   templateUrl: './transaction-item.component.html',
   styles: ``,
