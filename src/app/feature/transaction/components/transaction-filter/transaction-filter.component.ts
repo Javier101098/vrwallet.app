@@ -26,7 +26,7 @@ import {format} from 'date-fns';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransactionFilterComponent {
-  readonly submitted = output<TransactionFilterRequest>();
+  readonly submitted  = output<TransactionFilterRequest>();
 
   private readonly fb = inject(FormBuilder);
   private readonly accountStore = inject(AccountStore);
