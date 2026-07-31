@@ -40,7 +40,7 @@ import {format} from "date-fns";
 })
 export default class TransactionFormComponent {
   accountId =  input<string | null>(null);
-  
+
   private fb = inject(FormBuilder);
   private transactionService = inject(TransactionService);
   private categoryService = inject(CategoryService);
@@ -55,14 +55,14 @@ export default class TransactionFormComponent {
   accountSelected = signal<Account | null>(null);
   filteredCategories = signal<Category[]>([]);
   filteredAccounts = signal<Account[]>([]);
-  
+
   accountParam = computed(()=>{
     const id = this.accountId();
-    return id 
+    return id
       ? this.accountStore.accounts().find((account) => account.id === id) ?? null
       : null;
   })
-  
+
   typeParam = toSignal(
     this.activatedRoute.queryParams.pipe(
       map(({ type }) => {
@@ -74,7 +74,7 @@ export default class TransactionFormComponent {
     ),
     { initialValue: Type.Income },
   );
-  
+
   categories = toSignal(this.categoryService.get(), {
     initialValue: [],
   });
@@ -95,11 +95,11 @@ export default class TransactionFormComponent {
     { label: 'Income', value: Type.Income },
     { label: 'Transfer', value: Type.Transfer },
   ];
-  
+
   get amount() : number {
     return this.form.get('amount')?.value ?? 0;
   }
-  
+
   get selectedTransactionType() : Type {
     return this.form.get('type')?.value as Type;
   }
@@ -118,7 +118,6 @@ export default class TransactionFormComponent {
   }
 
   constructor(private location: Location) {
-    //bug: eliminar el effect, ya que no debe setear valores
     effect(() => {
       const accountByParam = this.accountParam();
       if (accountByParam){
@@ -148,15 +147,15 @@ export default class TransactionFormComponent {
   ) {
     const query = event.query.toLowerCase();
     const {type,accountId,destinationAccountId} = this.form.getRawValue();
-    
+
     const accounts = this.accountStore.accounts();
     const filtered = accounts.filter((account) => {
       const matchesQuery = account.name.toLowerCase().includes(query);
-      
-      const isDuplicated = isDestination 
-        ? account.id !== accountId 
+
+      const isDuplicated = isDestination
+        ? account.id !== accountId
         : account.id !== destinationAccountId
-        
+
       return matchesQuery && (type !== Type.Transfer || isDuplicated);
     });
 
@@ -183,8 +182,8 @@ export default class TransactionFormComponent {
     destControl?.updateValueAndValidity();
     categoryControl?.updateValueAndValidity();
   }
-  
-  private payload<T> (){ 
+
+  private payload<T> (){
     const rawValue = this.form.getRawValue();
 
    return {
@@ -216,8 +215,7 @@ export default class TransactionFormComponent {
           this.accountStore.loadAccounts();
           this.router.navigate(['/accounts', transaction.accountId]).then();
         },
-        error: (error: any) => {
-          //todo error aplicar interceptor, mensaje de error por cantidad insuficiente
+        error: () => {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',

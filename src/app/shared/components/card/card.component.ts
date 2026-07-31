@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'vrw-card',
@@ -6,7 +6,8 @@ import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host:{
+    class: 'w-full'
+  }
 })
-export class CardComponent {
-  @HostBinding('class') class = 'w-full';
-}
+export class CardComponent {}

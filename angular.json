@@ -33,11 +33,11 @@
               }
             ],
             "styles": [
+              "src/assets/css/styles.css",
               "src/tailwind.css",
               "src/styles.scss",
               "src/assets/vendors/apexcharts/apexcharts.css",
-              "src/assets/vendors/keenicons/styles.bundle.css",
-              "src/assets/css/styles.css"
+              "src/assets/vendors/keenicons/styles.bundle.css"
             ],
             "scripts": [
               "src/assets/js/core.bundle.js",

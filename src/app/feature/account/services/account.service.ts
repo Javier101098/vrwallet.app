@@ -16,30 +16,30 @@ export class AccountService {
   private readonly baseUrl = environment.baseUrl;
 
   public getAccounts(): Observable<Account[]> {
-    return this.http.get<Account[]>(`${this.baseUrl}/account`);
+    return this.http.get<Account[]>(`${this.baseUrl}/accounts`);
   }
 
   public add(account: CreateAccountRequest): Observable<Account> {
-    return this.http.post<Account>(`${this.baseUrl}/account`, account);
+    return this.http.post<Account>(`${this.baseUrl}/accounts`, account);
   }
 
   public update(account: CreateAccountRequest, id: string) : Observable<Account>{
-    return this.http.put<Account>(`${this.baseUrl}/account/${id}`, account);
+    return this.http.put<Account>(`${this.baseUrl}/accounts/${id}`, account);
   }
 
   public getById(id: string) : Observable<CreateAccountRequest> {
-    return this.http.get<CreateAccountRequest>(`${this.baseUrl}/account/${id}`);
+    return this.http.get<CreateAccountRequest>(`${this.baseUrl}/accounts/${id}`);
   }
 
   public getTransactions(id: string): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(
-      `${this.baseUrl}/account/${id}/transactions`,
+      `${this.baseUrl}/accounts/${id}/transactions`,
     );
   }
 
   public getSummary(id: string) {
     return this.http.get<AccountSummaryResponse>(
-      `${this.baseUrl}/account/${id}/summary`,
+      `${this.baseUrl}/accounts/${id}/summary`,
     );
   }
 
@@ -49,7 +49,7 @@ export class AccountService {
   ): Observable<BalanceDate[]> {
     const params = new HttpParams().set('date', startDate);
     return this.http.get<BalanceDate[]>(
-      `${this.baseUrl}/account/${id}/daily-balance`,
+      `${this.baseUrl}/accounts/${id}/daily-balance`,
       { params },
     );
   }

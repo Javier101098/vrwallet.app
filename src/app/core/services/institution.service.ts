@@ -12,6 +12,6 @@ export class InstitutionService {
   private readonly baseUrl = environment.baseUrl;
 
   get(): Observable<Institution[]> {
-    return this.http.get<Institution[]>(`${this.baseUrl}/institution`);
+    return this.http.get<Institution[]>(`${this.baseUrl}/institutions`);
   }
 }
