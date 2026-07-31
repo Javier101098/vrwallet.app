@@ -5,6 +5,7 @@ import AuthLayoutComponent from '@core/layouts/auth-layout/auth-layout.component
 import { authenticatedGuard } from '@core/guards/authenticated.guard';
 import { noAuthenticatedGuard } from '@core/guards/no-authenticated.guard';
 import {FinancialService} from "./feature/dashboard/services/financial.service";
+import {TransactionStore} from './feature/transaction/services/transaction-store.service';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '' },
@@ -33,6 +34,7 @@ export const routes: Routes = [
       {
         path: 'transactions',
         loadChildren: () => import('./feature/transaction/transaction.routes'),
+        providers: [TransactionStore]
       },
     ],
   },

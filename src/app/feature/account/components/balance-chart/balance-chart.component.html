@@ -1,5 +1,5 @@
 <div
-  class="border-gray-100 rounded-2xl text-center w-full shadow-sm border bg-white overflow-hidden"
+  class="border-gray-100 border dark:border-zinc-800 rounded-2xl text-center w-full shadow-sm overflow-hidden"
 >
   @if (balanceHistoryRx.isLoading()) {
     <div class="flex flex-col justify-center items-center h-full py-6">
@@ -12,7 +12,7 @@
       <p class="font-bold mt-3" [style]="{ color: color() }">Cargando...</p>
     </div>
   } @else {
-    <div class="w-full mb-4">
+    <div class="w-full mb-4 dark:border-b-zinc-800 border-b kt-card-accent">
       <p-selectButton
         fluid
         size="small"

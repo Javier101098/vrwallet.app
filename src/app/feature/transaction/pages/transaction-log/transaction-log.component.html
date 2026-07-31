@@ -1,8 +1,8 @@
 <div class="grid kt-container-fixed grid-cols-3 gap-4">
   <div class="col-span-1">
-    <vrw-transaction-filter></vrw-transaction-filter>
+    <vrw-transaction-filter (submitted)="setFilter($event)"></vrw-transaction-filter>
   </div>
   <div class="col-span-2">
-    <vrw-transactions-list></vrw-transactions-list>
+    <vrw-transactions-list (onChangePage)="setPaginate($event)"></vrw-transactions-list>
   </div>
 </div>

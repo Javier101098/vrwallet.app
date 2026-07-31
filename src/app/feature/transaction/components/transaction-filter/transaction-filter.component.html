@@ -3,7 +3,6 @@
     <div class="flex justify-between items-center">
       <h3 class="font-bold">Filtros</h3>
     </div>
-
     <form class="kt-form py-2" [formGroup]="form">
       <div class="kt-form-item">
         <label class="kt-form-label" for="search">Buscar</label>
@@ -44,10 +43,11 @@
 
       <div class="kt-form-item">
         <label class="kt-form-label" for="category">
-          Categorias
+          Categorías
         </label>
         <div class="kt-form-control">
           <select
+            formControlName="categoryId"
             id="category"
             class="kt-select"
             data-kt-select="true"
@@ -90,6 +90,7 @@
         <div class="kt-form-control">
           <select
             id="type"
+            formControlName="type"
             class="kt-select"
             data-kt-select="true"
             data-kt-select-config='{

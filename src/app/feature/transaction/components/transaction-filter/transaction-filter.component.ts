@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, computed, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, output, signal} from '@angular/core';
 import {CardComponent} from '@shared/components/card/card.component';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {DatePicker} from 'primeng/datepicker';
@@ -6,11 +6,11 @@ import {Slider} from 'primeng/slider';
 import {AccountStore} from '../../../account/services/account-store.service';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {CategoryService} from '@core/services/category.service';
-import {Type} from '../../interfaces/transaction.interface';
+import {Transaction, Type} from '../../interfaces/transaction.interface';
 import {CurrencyPipe} from '@angular/common';
-import {map} from 'rxjs';
-import {TransactionService} from '../../services/transaction.service';
-import {TransactionFilter} from '../../interfaces/transaction-filter.interface';
+import {debounceTime, map} from 'rxjs';
+import {TransactionFilterRequest} from '../../interfaces/transaction-filter.interface';
+import {format} from 'date-fns';
 
 @Component({
   selector: 'vrw-transaction-filter',
@@ -26,21 +26,23 @@ import {TransactionFilter} from '../../interfaces/transaction-filter.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransactionFilterComponent {
+  readonly submitted  = output<TransactionFilterRequest>();
+
   private readonly fb = inject(FormBuilder);
   private readonly accountStore = inject(AccountStore);
   private readonly categoryService = inject(CategoryService);
-  private readonly transactionService = inject(TransactionService);
 
   accounts = computed(() => this.accountStore.accounts());
   categories = toSignal(this.categoryService.get(), {
     initialValue: [],
   });
+  transactions = signal<Transaction[]>([]);
 
   recordType: { label: string; value: Type }[] = [
-    { label: 'Expense', value: Type.Expense },
-    { label: 'Income', value: Type.Income },
-    { label: 'Transfer', value: Type.Transfer },
-    { label: 'Rendimientos', value: Type.Yield },
+    { label: 'Gasto', value: Type.Expense },
+    { label: 'Ingreso', value: Type.Income },
+    { label: 'Transferencia', value: Type.Transfer },
+    { label: 'Rendimientos', value: Type.Yield }
   ];
 
   public readonly form = this.fb.group({
@@ -49,6 +51,7 @@ export class TransactionFilterComponent {
     ],
     accountId:[null],
     categoryId:[null],
+    type: [null],
     date: [null],
     amount: [null]
   });
@@ -66,14 +69,17 @@ export class TransactionFilterComponent {
   );
 
   constructor() {
-
-    this.form.valueChanges.subscribe((value) => {
-      console.log(value);
+    this.form.valueChanges
+      .pipe(
+        debounceTime(500)
+      )
+      .subscribe(() : void => {
+        this.submitted.emit(this.transactionFilters);
     })
   }
 
-  get transactionFilters(): TransactionFilter {
-    const { accountId, categoryId, date, amount, range } = this.form.getRawValue();
+  get transactionFilters(): TransactionFilterRequest {
+    const { accountId, categoryId, date, amount, range, type } = this.form.getRawValue();
 
     const [startDate, endDate] = date ?? [];
     const [minPrice, maxPrice] = range ?? [];
@@ -81,20 +87,15 @@ export class TransactionFilterComponent {
     return {
       accountId: accountId ?? null,
       categoryId: categoryId ?? null,
-      from: startDate ? new Date(startDate) : null,
-      to: endDate ? new Date(endDate) : null,
+      from: startDate ? format(new Date(startDate),'yyyy-MM-dd') : null,
+      to: endDate ? format(new Date(endDate),'yyyy-MM-dd') : null,
       amount: amount ? Number(amount) : null,
+      type: type ?? null,
       minAmount: minPrice ? Number(minPrice) : null,
-      maxAmount: maxPrice ? Number(maxPrice) : null
+      maxAmount: maxPrice ? Number(maxPrice) : null,
+      page: 1,
+      limit:5
     };
-  }
-
-  handleApplyFilters() {
-
-    this.transactionService.get(this.transactionFilters)
-      .subscribe((transactions) => {
-
-      });
   }
 
   allowOnlyNumbers(event: KeyboardEvent) {
