@@ -11,7 +11,6 @@ import {CurrencyPipe} from '@angular/common';
 import {debounceTime, map} from 'rxjs';
 import {TransactionFilterRequest} from '../../interfaces/transaction-filter.interface';
 import {format} from 'date-fns';
-import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion';
 
 @Component({
   selector: 'vrw-transaction-filter',
@@ -20,11 +19,7 @@ import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'prim
     ReactiveFormsModule,
     Slider,
     DatePicker,
-    CurrencyPipe,
-    Accordion,
-    AccordionPanel,
-    AccordionHeader,
-    AccordionContent
+    CurrencyPipe
   ],
   templateUrl: './transaction-filter.component.html',
   styles: ``,
@@ -42,6 +37,7 @@ export class TransactionFilterComponent {
     initialValue: [],
   });
   transactions = signal<Transaction[]>([]);
+  isFilterCollapsed = signal(false);
 
   recordType: { label: string; value: Type }[] = [
     { label: 'Gasto', value: Type.Expense },
@@ -117,6 +113,10 @@ export class TransactionFilterComponent {
     if (!isNumber && !allowedKeys.includes(event.key)) {
       event.preventDefault();
     }
+  }
+
+  toggleFilterCollapse(): void {
+    this.isFilterCollapsed.set(!this.isFilterCollapsed());
   }
 
 }
