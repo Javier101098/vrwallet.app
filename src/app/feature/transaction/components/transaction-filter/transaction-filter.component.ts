@@ -11,6 +11,7 @@ import {CurrencyPipe} from '@angular/common';
 import {debounceTime, map} from 'rxjs';
 import {TransactionFilterRequest} from '../../interfaces/transaction-filter.interface';
 import {format} from 'date-fns';
+import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion';
 
 @Component({
   selector: 'vrw-transaction-filter',
@@ -19,7 +20,11 @@ import {format} from 'date-fns';
     ReactiveFormsModule,
     Slider,
     DatePicker,
-    CurrencyPipe
+    CurrencyPipe,
+    Accordion,
+    AccordionPanel,
+    AccordionHeader,
+    AccordionContent
   ],
   templateUrl: './transaction-filter.component.html',
   styles: ``,
