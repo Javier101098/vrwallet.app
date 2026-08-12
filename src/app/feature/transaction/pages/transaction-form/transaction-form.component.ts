@@ -7,7 +7,6 @@ import {SelectButtonModule} from 'primeng/selectbutton';
 import {TransactionService} from '../../services/transaction.service';
 import {Expense, Income, Transfer} from '../../interfaces/deposit.interface';
 import {MessageService} from 'primeng/api';
-import {Account} from '../../../account/interfaces/account.interface';
 import {FormErrorLabelComponent} from '@shared/components/form-error-label/form-error-label.component';
 import {Transaction, Type} from '../../interfaces/transaction.interface';
 import {finalize, map, Observable, throwError} from 'rxjs';
@@ -20,6 +19,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectedBalanceCardComponent} from "../../components/projected-balance-card/projected-balance-card.component";
 import {InputCurrencyComponent} from "@shared/components/input-currency/input-currency.component";
 import {format} from "date-fns";
+import {AccountDetail} from '../../../account/interfaces/account-detail.interface';
 
 @Component({
   selector: 'vrw-transaction-form',
@@ -52,9 +52,9 @@ export default class TransactionFormComponent {
 
   maxDate = signal<Date>(new Date());
   loading = signal<boolean>(false);
-  accountSelected = signal<Account | null>(null);
+  accountSelected = signal<AccountDetail | null>(null);
   filteredCategories = signal<Category[]>([]);
-  filteredAccounts = signal<Account[]>([]);
+  filteredAccounts = signal<AccountDetail[]>([]);
 
   accountParam = computed(()=>{
     const id = this.accountId();

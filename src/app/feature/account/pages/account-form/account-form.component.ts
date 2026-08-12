@@ -70,7 +70,8 @@ export default class AccountFormComponent {
   private router = inject(Router);
 
   isLoading = this.accountStore.isLoading;
-  isEdit = computed(()=>this.id() != undefined)
+  isEdit = computed(()=>this.id() != undefined);
+  isFormCollapsed = signal(false);
 
   accountTypes = toSignal(this.accountTypeService.get(), { initialValue: [] });
   currencies = toSignal(this.currencyService.get(), { initialValue: [] });
@@ -189,5 +190,9 @@ export default class AccountFormComponent {
 
   handleGoOut(): void {
     this.router.navigate(['/accounts']).then();
+  }
+
+  toggleFormCollapse(): void {
+    this.isFormCollapsed.set(!this.isFormCollapsed());
   }
 }
