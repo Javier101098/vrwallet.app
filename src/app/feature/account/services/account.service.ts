@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@env/environment';
-import {Account} from '../interfaces/account.interface';
 import { Observable } from 'rxjs';
 import { CreateAccountRequest } from '../interfaces/account-create.interface';
 import { Transaction } from '../../transaction/interfaces/transaction.interface';
 import { AccountSummaryResponse } from '../interfaces/account-summary.interface';
 import {BalanceDate} from "@core/Interfaces/balance-date.interface";
+import {AccountDetail} from '../interfaces/account-detail.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -15,20 +15,20 @@ export class AccountService {
   private http = inject(HttpClient);
   private readonly baseUrl = environment.baseUrl;
 
-  public getAccounts(): Observable<Account[]> {
-    return this.http.get<Account[]>(`${this.baseUrl}/accounts`);
-  }
-
-  public add(account: CreateAccountRequest): Observable<Account> {
-    return this.http.post<Account>(`${this.baseUrl}/accounts`, account);
-  }
-
-  public update(account: CreateAccountRequest, id: string) : Observable<Account>{
-    return this.http.put<Account>(`${this.baseUrl}/accounts/${id}`, account);
-  }
-
   public getById(id: string) : Observable<CreateAccountRequest> {
     return this.http.get<CreateAccountRequest>(`${this.baseUrl}/accounts/${id}`);
+  }
+
+  public get(): Observable<AccountDetail[]> {
+    return this.http.get<AccountDetail[]>(`${this.baseUrl}/accounts`);
+  }
+
+  public add(account: CreateAccountRequest): Observable<AccountDetail> {
+    return this.http.post<AccountDetail>(`${this.baseUrl}/accounts`, account);
+  }
+
+  public update(account: CreateAccountRequest, id: string) : Observable<AccountDetail>{
+    return this.http.put<AccountDetail>(`${this.baseUrl}/accounts/${id}`, account);
   }
 
   public getTransactions(id: string): Observable<Transaction[]> {

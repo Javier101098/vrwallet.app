@@ -1,4 +1,3 @@
-import { Account } from '../interfaces/account.interface';
 import {
   patchState,
   signalStore,
@@ -8,7 +7,7 @@ import {
   withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { pipe, switchMap, tap } from 'rxjs';
+import { pipe, switchMap, tap} from 'rxjs';
 import { inject } from '@angular/core';
 import { AccountService } from './account.service';
 import { tapResponse } from '@ngrx/operators';
@@ -16,9 +15,10 @@ import { CreateAccountRequest } from '../interfaces/account-create.interface';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import {AccountDetail} from '../interfaces/account-detail.interface';
 
 interface AccountState {
-  accounts: Account[];
+  accounts: AccountDetail[];
   isLoading: boolean;
 }
 
@@ -51,9 +51,9 @@ export const AccountStore = signalStore(
         pipe(
           tap(() => patchState(store, { isLoading: true })),
           switchMap(() => {
-            return accountService.getAccounts().pipe(
+            return accountService.get().pipe(
               tapResponse({
-                next: (accounts: Account[]) => {
+                next: (accounts: AccountDetail[]) => {
                   patchState(store, { accounts, isLoading: false });
                 },
                 error: () => {
@@ -70,7 +70,7 @@ export const AccountStore = signalStore(
           switchMap((account) => {
             return accountService.add(account).pipe(
               tapResponse({
-                next: (newAccount: Account) => {
+                next: (newAccount: AccountDetail) => {
                   patchState(store, (state) => ({
                     accounts: [...state.accounts, newAccount],
                     isLoading: false,
@@ -110,7 +110,7 @@ export const AccountStore = signalStore(
             return accountService.update(account,id)
               .pipe(
                 tapResponse({
-                  next:(updateAccount: Account)=> {
+                  next:(updateAccount: AccountDetail)=> {
                     patchState(store,(state)=>({
                       accounts: state.accounts.map((account)=>(account.id === updateAccount.id ? updateAccount : account)),
                       isLoading: false

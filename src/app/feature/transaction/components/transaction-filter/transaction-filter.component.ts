@@ -37,6 +37,7 @@ export class TransactionFilterComponent {
     initialValue: [],
   });
   transactions = signal<Transaction[]>([]);
+  isFilterCollapsed = signal(false);
 
   recordType: { label: string; value: Type }[] = [
     { label: 'Gasto', value: Type.Expense },
@@ -112,6 +113,10 @@ export class TransactionFilterComponent {
     if (!isNumber && !allowedKeys.includes(event.key)) {
       event.preventDefault();
     }
+  }
+
+  toggleFilterCollapse(): void {
+    this.isFilterCollapsed.set(!this.isFilterCollapsed());
   }
 
 }
