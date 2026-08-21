@@ -136,7 +136,8 @@ export const AccountStore = signalStore(
                       detail: message,
                     });
 
-                    patchState(store, { isLoading: false });                  }
+                    patchState(store, { isLoading: false });
+                  }
                 })
               )
           })

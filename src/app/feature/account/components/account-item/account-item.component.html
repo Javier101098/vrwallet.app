@@ -24,8 +24,18 @@
         </div>
       </div>
     </div>
-    <span class="kt-badge kt-badge-outline kt-badge-primary">
-      {{ account().balance | currency }}
-    </span>
+    <div class="flex items-end gap-1 flex-col">
+      <span class="kt-badge kt-badge-outline kt-badge-primary min-w-[80px]">
+        {{ account().balance | currency }}
+      </span>
+      @if (isCredit()) {
+        <div class="kt-progress" >
+          <div
+            [style.width]="percentageOfCreditUsed() | percent"
+            [style.background-color]="account().color || '#009688'"
+            class="kt-progress-indicator"></div>
+        </div>
+      }
+    </div>
   </div>
 }

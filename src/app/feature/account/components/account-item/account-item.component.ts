@@ -1,15 +1,32 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
+import {ChangeDetectionStrategy, Component, computed, effect, input} from '@angular/core';
+import {CurrencyPipe, PercentPipe} from '@angular/common';
 import { RouterLink } from '@angular/router';
 import {AccountDetail} from '../../interfaces/account-detail.interface';
+import {CreditDetail} from '../../interfaces/credit-detail';
 
 @Component({
   selector: 'vrw-account-item',
-  imports: [CurrencyPipe, RouterLink],
+  imports: [CurrencyPipe, RouterLink, PercentPipe],
   templateUrl: './account-item.component.html',
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountItemComponent {
   readonly account = input.required<AccountDetail>();
+
+  credit = computed<CreditDetail|null>(() => this.account().creditDetail ?? null);
+
+  isCredit = computed(() => this.credit() != null);
+
+  percentageOfCreditUsed = computed(() => {
+    if (this.credit() == null) return 0;
+    const { creditLimit,creditUsed } = this.credit()!;
+    return creditUsed / creditLimit;
+  });
+
+  constructor() {
+    effect(() => {
+      this.percentageOfCreditUsed();
+    });
+  }
 }
