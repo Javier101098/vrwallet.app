@@ -1,4 +1,5 @@
 import {Frequency} from "./yield-frequency";
+import {Credit} from "./credit.interface";
 
 export interface CreateAccountRequest {
   accountTypeId: string;
@@ -8,6 +9,7 @@ export interface CreateAccountRequest {
   color: string;
   notes: string;
   investment?: InvestmentAccount;
+  credit?: Credit;
 }
 
 export interface InvestmentAccount{

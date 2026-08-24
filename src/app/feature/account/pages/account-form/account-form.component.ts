@@ -20,6 +20,7 @@ import {rxResource, toSignal} from '@angular/core/rxjs-interop';
 import { FormErrorLabelComponent } from '@shared/components/form-error-label/form-error-label.component';
 import { MessageService } from 'primeng/api';
 import {CreateAccountRequest, InvestmentAccount} from '../../interfaces/account-create.interface';
+import {Credit} from '../../interfaces/credit.interface';
 import { AccountStore } from '../../services/account-store.service';
 import { Router} from '@angular/router';
 import { ColorPickerModule } from 'primeng/colorpicker';
@@ -109,7 +110,56 @@ export default class AccountFormComponent {
       isCompound: [false],
       retainsIsr: [false],
     }),
+    credit: this.fb.group({
+      creditLimit: [0],
+      creditAvailable: [0],
+      creditUsed: [0],
+      paymentDueDay: [1],
+      notifyPayment: [false],
+    }),
   });
+
+  isCredit = toSignal(
+    this.form.get('accountTypeId')!.valueChanges.pipe(
+      startWith(this.form.get('accountTypeId')!.value),
+      map((id: string) => {
+        const type = this.accountTypes().find(t => t.id === id);
+        return type?.name.toLowerCase().includes('crédito') || type?.name.toLowerCase().includes('credito') || false;
+      }),
+      tap((isCred) => {
+        const creditLimitCtrl = this.form.get('credit.creditLimit');
+        const creditAvailableCtrl = this.form.get('credit.creditAvailable');
+        const creditUsedCtrl = this.form.get('credit.creditUsed');
+        const paymentDueDayCtrl = this.form.get('credit.paymentDueDay');
+        const notifyPaymentCtrl = this.form.get('credit.notifyPayment');
+
+        if (isCred) {
+          creditLimitCtrl?.setValidators([Validators.required, Validators.min(0)]);
+          creditAvailableCtrl?.setValidators([Validators.required, Validators.min(0)]);
+          creditUsedCtrl?.setValidators([Validators.required, Validators.min(0)]);
+          paymentDueDayCtrl?.setValidators([
+            Validators.required,
+            Validators.min(1),
+            Validators.max(31)
+          ]);
+          notifyPaymentCtrl?.setValidators([Validators.required]);
+        } else {
+          creditLimitCtrl?.clearValidators();
+          creditAvailableCtrl?.clearValidators();
+          creditUsedCtrl?.clearValidators();
+          paymentDueDayCtrl?.clearValidators();
+          notifyPaymentCtrl?.clearValidators();
+        }
+
+        creditLimitCtrl?.updateValueAndValidity();
+        creditAvailableCtrl?.updateValueAndValidity();
+        creditUsedCtrl?.updateValueAndValidity();
+        paymentDueDayCtrl?.updateValueAndValidity();
+        notifyPaymentCtrl?.updateValueAndValidity();
+      })
+    ),
+    { requireSync: true }
+  );
 
   isInvestment = toSignal(
     this.form.get('accountTypeId')!.valueChanges.pipe(
@@ -174,12 +224,15 @@ export default class AccountFormComponent {
       return;
     }
 
-    const { investment, ...base } = this.form.getRawValue();
+    const { investment, credit, ...base } = this.form.getRawValue();
 
     const payload: CreateAccountRequest = {
       ...base,
       investment: this.isInvestment() && investment.maturityDate !== ''
         ? (investment as InvestmentAccount)
+        : undefined,
+      credit: this.isCredit()
+        ? (credit as Credit)
         : undefined,
     };
 
