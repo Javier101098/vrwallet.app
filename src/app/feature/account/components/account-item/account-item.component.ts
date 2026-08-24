@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, computed, effect, input} from '@angu
 import {CurrencyPipe, PercentPipe} from '@angular/common';
 import { RouterLink } from '@angular/router';
 import {AccountDetail} from '../../interfaces/account-detail.interface';
-import {CreditDetail} from '../../interfaces/credit-detail';
+import {Credit} from '../../interfaces/credit.interface';
 
 @Component({
   selector: 'vrw-account-item',
@@ -14,7 +14,7 @@ import {CreditDetail} from '../../interfaces/credit-detail';
 export class AccountItemComponent {
   readonly account = input.required<AccountDetail>();
 
-  credit = computed<CreditDetail|null>(() => this.account().creditDetail ?? null);
+  credit = computed<Credit|null>(() => this.account().credit ?? null);
 
   isCredit = computed(() => this.credit() != null);
 
