@@ -246,6 +246,7 @@
                         [minFractionDigits]="2"
                         [maxFractionDigits]="2"
                         [min]="0"
+                        [max]="form.get('credit.creditLimit')?.value ?? 0"
                         class="w-full"
                         inputStyleClass="kt-input w-full"></p-inputnumber>
                     <vrw-form-error-label [control]="form.get('credit.creditAvailable')" />
@@ -263,6 +264,7 @@
                         [minFractionDigits]="2"
                         [maxFractionDigits]="2"
                         [min]="0"
+                        [max]="form.get('credit.creditLimit')?.value ?? 0"
                         class="w-full"
                         inputStyleClass="kt-input w-full"></p-inputnumber>
                     <vrw-form-error-label [control]="form.get('credit.creditUsed')" />
