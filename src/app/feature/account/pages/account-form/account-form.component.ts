@@ -9,39 +9,37 @@ import {
   signal
 } from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
   FormsModule,
   ReactiveFormsModule,
-  ValidationErrors,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { AccountTypeService } from '@core/services/account-type.service';
 import { CurrencyService } from '@core/services/currency.service';
 import { InstitutionService } from '@core/services/institution.service';
-import {rxResource, takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
+import { rxResource, takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormErrorLabelComponent } from '@shared/components/form-error-label/form-error-label.component';
 import { MessageService } from 'primeng/api';
-import {CreateAccountRequest, InvestmentAccount} from '../../interfaces/account-create.interface';
-import {Credit} from '../../interfaces/credit.interface';
+import { CreateAccountRequest, InvestmentAccount } from '../../interfaces/account-create.interface';
+import { Credit } from '../../interfaces/credit.interface';
 import { AccountStore } from '../../services/account-store.service';
-import { Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { ColorPickerModule } from 'primeng/colorpicker';
-import {map, of, startWith, tap} from "rxjs";
-import {AccountService} from "../../services/account.service";
-import {ProgressSpinner} from "primeng/progressspinner";
-import {Select} from "primeng/select";
-import {NotFoundComponent} from "@shared/components/not-found/not-found.component";
-import {Divider} from "primeng/divider";
-import {SelectButton} from "primeng/selectbutton";
-import {InputNumber} from "primeng/inputnumber";
-import {Checkbox} from "primeng/checkbox";
-import {Frequency} from "../../interfaces/yield-frequency";
-import {MinDateValidator} from "@shared/validators/min-date.validator";
-import {creditMaxValidator} from "@shared/validators/credit-max.validator";
-import {creditSumValidator} from "@shared/validators/credit-sum.validator";
-import {Tooltip} from "primeng/tooltip";
+import { of, startWith } from 'rxjs';
+import { AccountService } from '../../services/account.service';
+import { ProgressSpinner } from 'primeng/progressspinner';
+import { Select } from 'primeng/select';
+import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
+import { Divider } from 'primeng/divider';
+import { SelectButton } from 'primeng/selectbutton';
+import { InputNumber } from 'primeng/inputnumber';
+import { Checkbox } from 'primeng/checkbox';
+import { Frequency } from '../../interfaces/yield-frequency';
+import { MinDateValidator } from '@shared/validators/min-date.validator';
+import { creditMaxValidator } from '@shared/validators/credit-max.validator';
+import { creditSumValidator } from '@shared/validators/credit-sum.validator';
+import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'vrw-account-form',
@@ -62,10 +60,11 @@ import {Tooltip} from "primeng/tooltip";
   providers: [MessageService],
   templateUrl: './account-form.component.html',
   styles: ``,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class AccountFormComponent {
   id = input<string>();
+  protected readonly maxPaymentDueDay = 31;
 
   private fb = inject(FormBuilder);
   private accountService = inject(AccountService);
@@ -77,11 +76,11 @@ export default class AccountFormComponent {
   private router = inject(Router);
 
   private isSyncingCredit = false;
+  private hasPatchedForm = signal(false);
   private destroyRef = inject(DestroyRef);
 
   isLoading = this.accountStore.isLoading;
-  isEdit = computed(()=>this.id() != undefined);
-  isFormCollapsed = signal(false);
+  isEdit = computed(() => this.id() != undefined);
 
   accountTypes = toSignal(this.accountTypeService.get(), { initialValue: [] });
   currencies = toSignal(this.currencyService.get(), { initialValue: [] });
@@ -94,13 +93,13 @@ export default class AccountFormComponent {
   ]);
 
   accountResource = rxResource({
-    params:()=> ({id:this.id()}),
-    stream:({params}) => {
-      const {id} = params;
+    params: () => ({ id: this.id() }),
+    stream: ({ params }) => {
+      const { id } = params;
       if (id == undefined) return of(null);
       return this.accountService.getById(id);
     }
-  })
+  });
 
   form = this.fb.nonNullable.group({
     name: ['', [
@@ -112,7 +111,7 @@ export default class AccountFormComponent {
     institutionId: ['', [Validators.required]],
     color: ['#ff0066', [Validators.required]],
     notes: ['', [Validators.maxLength(100)]],
-    investment:  this.fb.group({
+    investment: this.fb.group({
       frequency: [Frequency.daily],
       rate: [0],
       maturityDate: [''],
@@ -128,95 +127,40 @@ export default class AccountFormComponent {
     }),
   });
 
-  isCredit = toSignal(
-    this.form.get('accountTypeId')!.valueChanges.pipe(
-      startWith(this.form.get('accountTypeId')!.value),
-      map((id: string) => {
-        const type = this.accountTypes().find(t => t.id === id);
-        return type?.name.toLowerCase().includes('crédito') || type?.name.toLowerCase().includes('credito') || false;
-      }),
-      tap((isCred) => {
-        const creditLimitCtrl = this.form.get('credit.creditLimit');
-        const creditAvailableCtrl = this.form.get('credit.creditAvailable');
-        const creditUsedCtrl = this.form.get('credit.creditUsed');
-        const paymentDueDayCtrl = this.form.get('credit.paymentDueDay');
-        const notifyPaymentCtrl = this.form.get('credit.notifyPayment');
-
-        if (isCred) {
-          creditLimitCtrl?.setValidators([Validators.required, Validators.min(0)]);
-          creditAvailableCtrl?.setValidators([
-            Validators.required,
-            Validators.min(0),
-            creditMaxValidator(),
-            creditSumValidator(),
-          ]);
-          creditUsedCtrl?.setValidators([
-            Validators.required,
-            Validators.min(0),
-            creditMaxValidator(),
-            creditSumValidator(),
-          ]);
-          paymentDueDayCtrl?.setValidators([
-            Validators.required,
-            Validators.min(1),
-            Validators.max(31)
-          ]);
-          notifyPaymentCtrl?.setValidators([Validators.required]);
-        } else {
-          creditLimitCtrl?.clearValidators();
-          creditAvailableCtrl?.clearValidators();
-          creditUsedCtrl?.clearValidators();
-          paymentDueDayCtrl?.clearValidators();
-          notifyPaymentCtrl?.clearValidators();
-        }
-
-        creditLimitCtrl?.updateValueAndValidity();
-        creditAvailableCtrl?.updateValueAndValidity();
-        creditUsedCtrl?.updateValueAndValidity();
-        paymentDueDayCtrl?.updateValueAndValidity();
-        notifyPaymentCtrl?.updateValueAndValidity();
-      })
+  private selectedAccountTypeId = toSignal(
+    this.form.controls.accountTypeId.valueChanges.pipe(
+      startWith(this.form.controls.accountTypeId.value)
     ),
     { requireSync: true }
   );
 
-  isInvestment = toSignal(
-    this.form.get('accountTypeId')!.valueChanges.pipe(
-      startWith(this.form.get('accountTypeId')!.value),
-      map((id: string) => {
-        const type = this.accountTypes().find(t => t.id === id);
-        return type?.name.includes('Inversión') ?? false;
-      }),
-      tap((isInv) => {
-        const frequencyCtrl = this.form.get('investment.frequency');
-        const rateCtrl = this.form.get('investment.rate');
-        const maturityDateCtrl = this.form.get('investment.maturityDate');
-
-        if (isInv) {
-          frequencyCtrl?.setValidators([Validators.required]);
-          rateCtrl?.setValidators([
-            Validators.required,
-            Validators.min(0.01)
-          ]);
-          maturityDateCtrl?.setValidators([MinDateValidator()]);
-        } else {
-          frequencyCtrl?.clearValidators();
-          rateCtrl?.clearValidators();
-          maturityDateCtrl?.clearValidators();
-        }
-
-        frequencyCtrl?.updateValueAndValidity();
-        rateCtrl?.updateValueAndValidity();
-        maturityDateCtrl?.updateValueAndValidity();
-      })
-    ),
-    { requireSync: true }
+  private selectedAccountType = computed(() =>
+    this.accountTypes().find(t => t.id === this.selectedAccountTypeId())
   );
+
+  isCredit = computed(() =>
+    this.matchesTypeName(this.selectedAccountType()?.name, ['crédito', 'credito'])
+  );
+
+  isInvestment = computed(() =>
+    this.matchesTypeName(this.selectedAccountType()?.name, ['inversión', 'inversion'])
+  );
+
+  private matchesTypeName(name: string | undefined, keywords: string[]): boolean {
+    if (!name) return false;
+    const normalized = name.toLowerCase();
+    return keywords.some(keyword => normalized.includes(keyword));
+  }
 
   constructor() {
     this.setupCreditSync();
 
+    effect(() => this.syncCreditValidators(this.isCredit()));
+    effect(() => this.syncInvestmentValidators(this.isInvestment()));
+
     effect(() => {
+      if (this.hasPatchedForm()) return;
+
       const account = this.accountResource.value();
       const accountTypes = this.accountTypes();
       const currencies = this.currencies();
@@ -228,71 +172,104 @@ export default class AccountFormComponent {
         currencies.length > 0 &&
         institutions.length > 0;
 
-      if (allLoaded) {
-        this.isSyncingCredit = true;
-        this.form.markAllAsTouched();
-        this.form.patchValue(account as CreateAccountRequest);
-        this.isSyncingCredit = false;
-        this.form.get('credit.creditAvailable')?.updateValueAndValidity();
-        this.form.get('credit.creditUsed')?.updateValueAndValidity();
-      }
+      if (!allLoaded) return;
+
+      this.isSyncingCredit = true;
+      this.form.patchValue(account as CreateAccountRequest);
+      this.isSyncingCredit = false;
+      this.form.get('credit.creditAvailable')?.updateValueAndValidity();
+      this.form.get('credit.creditUsed')?.updateValueAndValidity();
+      this.hasPatchedForm.set(true);
     });
   }
 
+  private syncCreditValidators(isCredit: boolean): void {
+    const validatorsByPath: Record<string, ValidatorFn[]> = {
+      'credit.creditLimit': [Validators.required, Validators.min(0)],
+      'credit.creditAvailable': [
+        Validators.required,
+        Validators.min(0),
+        creditMaxValidator(),
+        creditSumValidator(),
+      ],
+      'credit.creditUsed': [
+        Validators.required,
+        Validators.min(0),
+        creditMaxValidator(),
+        creditSumValidator(),
+      ],
+      'credit.paymentDueDay': [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(this.maxPaymentDueDay),
+      ],
+      'credit.notifyPayment': [Validators.required],
+    };
+
+    for (const [path, validators] of Object.entries(validatorsByPath)) {
+      const control = this.form.get(path);
+      control?.setValidators(isCredit ? validators : []);
+      control?.updateValueAndValidity({ emitEvent: false });
+    }
+  }
+
+  private syncInvestmentValidators(isInvestment: boolean): void {
+    const frequencyCtrl = this.form.get('investment.frequency');
+    const rateCtrl = this.form.get('investment.rate');
+    const maturityDateCtrl = this.form.get('investment.maturityDate');
+
+    frequencyCtrl?.setValidators(isInvestment ? [Validators.required] : []);
+    rateCtrl?.setValidators(isInvestment ? [Validators.required, Validators.min(0.01)] : []);
+    maturityDateCtrl?.setValidators(isInvestment ? [MinDateValidator()] : []);
+
+    frequencyCtrl?.updateValueAndValidity({ emitEvent: false });
+    rateCtrl?.updateValueAndValidity({ emitEvent: false });
+    maturityDateCtrl?.updateValueAndValidity({ emitEvent: false });
+  }
+
   private setupCreditSync(): void {
-    const creditLimitCtrl = this.form.get('credit.creditLimit');
-    const creditAvailableCtrl = this.form.get('credit.creditAvailable');
-    const creditUsedCtrl = this.form.get('credit.creditUsed');
+    const limitCtrl = this.form.get('credit.creditLimit');
+    const availableCtrl = this.form.get('credit.creditAvailable');
+    const usedCtrl = this.form.get('credit.creditUsed');
 
-    if (!creditLimitCtrl || !creditAvailableCtrl || !creditUsedCtrl) return;
+    if (!limitCtrl || !availableCtrl || !usedCtrl) return;
 
-    creditLimitCtrl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((limitVal) => {
+    const recompute = (source: 'limit' | 'available' | 'used'): void => {
       if (this.isSyncingCredit || !this.isCredit()) return;
       this.isSyncingCredit = true;
-      const limit = Number(limitVal) || 0;
-      let used = Number(creditUsedCtrl.value) || 0;
-      if (used > limit) {
-        used = limit;
-        creditUsedCtrl.setValue(used, { emitEvent: false });
-      }
-      const available = Number((Math.max(0, limit - used)).toFixed(2));
-      creditAvailableCtrl.setValue(available, { emitEvent: false });
-      creditAvailableCtrl.updateValueAndValidity({ emitEvent: false });
-      creditUsedCtrl.updateValueAndValidity({ emitEvent: false });
-      this.isSyncingCredit = false;
-    });
 
-    creditAvailableCtrl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((availVal) => {
-      if (this.isSyncingCredit || !this.isCredit()) return;
-      this.isSyncingCredit = true;
-      const limit = Number(creditLimitCtrl.value) || 0;
-      let available = Number(availVal) || 0;
-      if (available > limit) {
-        available = limit;
-        creditAvailableCtrl.setValue(available, { emitEvent: false });
-      }
-      const used = Number((Math.max(0, limit - available)).toFixed(2));
-      creditUsedCtrl.setValue(used, { emitEvent: false });
-      creditAvailableCtrl.updateValueAndValidity({ emitEvent: false });
-      creditUsedCtrl.updateValueAndValidity({ emitEvent: false });
-      this.isSyncingCredit = false;
-    });
+      const limit = Number(limitCtrl.value) || 0;
+      let available = Number(availableCtrl.value) || 0;
+      let used = Number(usedCtrl.value) || 0;
 
-    creditUsedCtrl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((usedVal) => {
-      if (this.isSyncingCredit || !this.isCredit()) return;
-      this.isSyncingCredit = true;
-      const limit = Number(creditLimitCtrl.value) || 0;
-      let used = Number(usedVal) || 0;
-      if (used > limit) {
-        used = limit;
-        creditUsedCtrl.setValue(used, { emitEvent: false });
+      if (source === 'available') {
+        available = Math.min(available, limit);
+        used = Number((limit - available).toFixed(2));
+        availableCtrl.setValue(available, { emitEvent: false });
+        usedCtrl.setValue(used, { emitEvent: false });
+      } else {
+        used = Math.min(used, limit);
+        available = Number((limit - used).toFixed(2));
+        usedCtrl.setValue(used, { emitEvent: false });
+        availableCtrl.setValue(available, { emitEvent: false });
       }
-      const available = Number((Math.max(0, limit - used)).toFixed(2));
-      creditAvailableCtrl.setValue(available, { emitEvent: false });
-      creditAvailableCtrl.updateValueAndValidity({ emitEvent: false });
-      creditUsedCtrl.updateValueAndValidity({ emitEvent: false });
+
+      availableCtrl.updateValueAndValidity({ emitEvent: false });
+      usedCtrl.updateValueAndValidity({ emitEvent: false });
       this.isSyncingCredit = false;
-    });
+    };
+
+    limitCtrl.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => recompute('limit'));
+
+    availableCtrl.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => recompute('available'));
+
+    usedCtrl.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => recompute('used'));
   }
 
   handleSubmit(): void {
@@ -309,24 +286,21 @@ export default class AccountFormComponent {
 
     const payload: CreateAccountRequest = {
       ...base,
-      investment: this.isInvestment() && investment.maturityDate !== ''
-        ? (investment as InvestmentAccount)
+      investment: this.isInvestment()
+        ? ({
+          ...investment,
+          maturityDate: investment.maturityDate || undefined,
+        } as InvestmentAccount)
         : undefined,
-      credit: this.isCredit()
-        ? (credit as Credit)
-        : undefined,
+      credit: this.isCredit() ? (credit as Credit) : undefined,
     };
 
-    this.isEdit() && this.id() != undefined
+    this.isEdit()
       ? this.accountStore.updateAccount({ account: payload, id: this.id()! })
       : this.accountStore.addAccount(payload);
   }
 
   handleGoOut(): void {
-    this.router.navigate(['/accounts']).then();
-  }
-
-  toggleFormCollapse(): void {
-    this.isFormCollapsed.set(!this.isFormCollapsed());
+    void this.router.navigate(['/accounts']);
   }
 }
