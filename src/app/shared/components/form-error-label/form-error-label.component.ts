@@ -72,6 +72,9 @@ export class FormErrorLabelComponent {
       case 'minDate':
         return '* La fecha debe ser mayor a la fecha actual';
 
+      case 'creditSumMismatch':
+        return '* La suma del crédito disponible y utilizado debe ser igual al límite de crédito';
+
       default:
         return `* Error de validación no controlado ${firstError}`;
     }

@@ -7,19 +7,19 @@
     <p class="text-slate-500 mt-4 font-medium">Obteniendo información de la cuenta</p>
   </div>
 } @else if (isEdit() && accountResource.error()) {
-<vrw-not-found>
-  <span slot="slot-title">Cuenta no encontrada</span>
-  <span slot="slot-description">
-    No pudimos localizar los detalles de esta cuenta. Es posible que haya sido eliminada o no cuantas con los privilegios.
-  </span>
-</vrw-not-found>
+  <vrw-not-found>
+    <span slot="slot-title">Cuenta no encontrada</span>
+    <span slot="slot-description">
+      No pudimos localizar los detalles de esta cuenta. Es posible que haya sido eliminada o no cuantas con los privilegios.
+    </span>
+  </vrw-not-found>
 }
 @else if((isEdit() && accountResource.hasValue()) || !isEdit()) {
   <div class="kt-container-fixed">
     <div class="kt-card">
       <div class="kt-card-header">
         <div class="kt-card-heading">
-          <h2 class="kt-card-title">Create Account</h2>
+          <h2 class="kt-card-title">{{ isEdit() ? 'Editar Cuenta' : 'Crear Cuenta' }}</h2>
         </div>
       </div>
       <div class="kt-card-content py-3 grid gap-5">
@@ -30,7 +30,7 @@
         >
           <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
             <span class="kt-form-label w-full">
-              Name
+              Nombre
               <span class="text-red-600"> * </span>
             </span>
             <div class="grow w-full">
@@ -42,7 +42,7 @@
           </div>
           <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
           <span class="kt-form-label w-full">
-            Account Type
+            Tipo de Cuenta
             <span class="text-red-600"> * </span>
           </span>
             <div class="grow w-full">
@@ -62,7 +62,7 @@
           </div>
           <div class="flex items-center flex-col gap-2 sm:col-span-1 col-span-6">
           <span class="kt-form-label w-full">
-            Currency
+            Moneda
             <span class="text-red-600"> * </span>
           </span>
             <div class="grow w-full">
@@ -82,7 +82,7 @@
           </div>
           <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
           <span class="kt-form-label w-full">
-            Institution
+            Institución
             <span class="text-red-600">*</span>
           </span>
             <div class="grow w-full">
@@ -246,6 +246,7 @@
                         [minFractionDigits]="2"
                         [maxFractionDigits]="2"
                         [min]="0"
+                        [max]="form.get('credit.creditLimit')?.value ?? 0"
                         class="w-full"
                         inputStyleClass="kt-input w-full"></p-inputnumber>
                     <vrw-form-error-label [control]="form.get('credit.creditAvailable')" />
@@ -263,6 +264,7 @@
                         [minFractionDigits]="2"
                         [maxFractionDigits]="2"
                         [min]="0"
+                        [max]="form.get('credit.creditLimit')?.value ?? 0"
                         class="w-full"
                         inputStyleClass="kt-input w-full"></p-inputnumber>
                     <vrw-form-error-label [control]="form.get('credit.creditUsed')" />

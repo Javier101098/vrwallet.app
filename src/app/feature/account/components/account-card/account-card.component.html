@@ -1,15 +1,13 @@
-<div
-    class="w-full bg-[#fafbfc] border border-gray-100 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center justify-between shadow-sm gap-5 overflow-hidden"
->
+<vrw-card>
   <div class="flex items-center gap-5">
     <div
-        class="w-[60px] h-[60px] rounded-2xl flex items-center justify-center shrink-0 shadow-sm text-white font-bold text-2xl"
-        [style.background-color]="color().primary"
+      class="w-[60px] h-[60px] rounded-2xl flex items-center justify-center shrink-0 shadow-sm text-white font-bold text-2xl"
+      [style.background-color]="color().primary"
     >
       <i class="ki-filled ki-wallet"></i>
     </div>
     <div class="flex flex-col break-all">
-      <h2 class="text-[#0f172a] font-bold text-xl leading-tight mb-0.5">
+      <h2 class="font-bold text-xl leading-tight mb-0.5">
         {{ account().name | uppercase }}
       </h2>
     </div>
@@ -17,21 +15,21 @@
 
   <div class="flex flex-col sm:items-end">
     <span
-        class="text-slate-500 text-xs font-semibold tracking-widest uppercase mb-1"
+      class="text-slate-500 text-xs font-semibold tracking-widest uppercase mb-1"
     >
       Saldo Actual
     </span
     >
     <div
-        class="text-slate-800 text-[40px] font-light leading-none mb-2 tracking-tight"
+      class="text-[40px] font-light leading-none mb-2 tracking-tight"
     >
       {{ account().balance | currency }}
     </div>
     <div class="flex items-center gap-2 mt-1">
       <div
-          [style.color]="color().primary"
-          [style.background-color]="color().light"
-          class="px-2 py-0.5 rounded-md flex items-center gap-0.5 text-xs font-bold"
+        [style.color]="color().primary"
+        [style.background-color]="color().light"
+        class="px-2 py-0.5 rounded-md flex items-center gap-0.5 text-xs font-bold"
       >
         <i class="ki-filled ki-arrow-up-refraction"></i> +2.4%
       </div>
@@ -40,17 +38,17 @@
 
     <div class="flex flex-row gap-2 pt-4">
       <a
-          routerLink="/transactions/create"
-          [queryParams]="{accountId:account().id}"
-          class="kt-btn bg-transparent kt-btn-sm text-white rounded-full font-bold" [style]="{ 'background-color':color().primary}">
+        routerLink="/transactions/create"
+        [queryParams]="{accountId:account().id}"
+        class="kt-btn bg-transparent kt-btn-sm text-white rounded-full font-bold" [style]="{ 'background-color':color().primary}">
         <i class="ki-filled ki-plus-squared text-white"></i> Agregar Fondos
       </a>
       <a
-          [routerLink]="['edit']"
-          class="kt-btn bg-transparent kt-btn-sm kt-btn-outline rounded-full font-bold"
-          [style]="{ 'border-color':color().light, color: color().primary}">
+        [routerLink]="['edit']"
+        class="kt-btn bg-transparent kt-btn-sm kt-btn-outline rounded-full font-bold"
+        [style]="{ 'border-color':color().light, color: color().primary}">
         <i class="ki-filled ki-message-edit" [style.color]="color().primary"></i> Modificar
       </a>
     </div>
   </div>
-</div>
+</vrw-card>
