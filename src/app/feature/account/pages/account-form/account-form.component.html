@@ -1,8 +1,8 @@
 @if (isEdit() && accountResource.isLoading()) {
   <div class="flex flex-col items-center justify-center py-20">
     <p-progress-spinner
-      strokeWidth="4"
-      [style]="{ width: '50px', height: '50px' }"
+        strokeWidth="4"
+        [style]="{ width: '50px', height: '50px' }"
     />
     <p class="text-slate-500 mt-4 font-medium">Obteniendo información de la cuenta</p>
   </div>
@@ -10,8 +10,8 @@
   <vrw-not-found>
     <span slot="slot-title">Cuenta no encontrada</span>
     <span slot="slot-description">
-    No pudimos localizar los detalles de esta cuenta. Es posible que haya sido eliminada o no cuantas con los privilegios.
-  </span>
+      No pudimos localizar los detalles de esta cuenta. Es posible que haya sido eliminada o no cuantas con los privilegios.
+    </span>
   </vrw-not-found>
 }
 @else if((isEdit() && accountResource.hasValue()) || !isEdit()) {
@@ -24,9 +24,9 @@
       </div>
       <div class="kt-card-content py-3 grid gap-5">
         <form
-          [formGroup]="form"
-          (ngSubmit)="handleSubmit()"
-          class="grid grid-cols-6 gap-4"
+            [formGroup]="form"
+            (ngSubmit)="handleSubmit()"
+            class="grid grid-cols-6 gap-4"
         >
           <div class="flex items-center flex-col gap-2 sm:col-span-2 col-span-6">
             <span class="kt-form-label w-full">
@@ -36,7 +36,7 @@
             <div class="grow w-full">
               <input formControlName="name" class="kt-input w-full" type="text" />
               <vrw-form-error-label
-                [control]="form.get('name')"
+                  [control]="form.get('name')"
               ></vrw-form-error-label>
             </div>
           </div>
@@ -47,16 +47,16 @@
           </span>
             <div class="grow w-full">
               <p-select
-                [options]="accountTypes()"
-                formControlName="accountTypeId"
-                [checkmark]="true"
-                [showClear]="true"
-                size="small"
-                optionLabel="name"
-                optionValue="id"
-                class="w-full" />
+                  [options]="accountTypes()"
+                  formControlName="accountTypeId"
+                  [checkmark]="true"
+                  [showClear]="true"
+                  size="small"
+                  optionLabel="name"
+                  optionValue="id"
+                  class="w-full" />
               <vrw-form-error-label
-                [control]="form.get('accountTypeId')"
+                  [control]="form.get('accountTypeId')"
               ></vrw-form-error-label>
             </div>
           </div>
@@ -67,16 +67,16 @@
           </span>
             <div class="grow w-full">
               <p-select
-                [options]="currencies()"
-                formControlName="currencyId"
-                [checkmark]="true"
-                [showClear]="true"
-                size="small"
-                optionLabel="name"
-                optionValue="id"
-                class="w-full" />
+                  [options]="currencies()"
+                  formControlName="currencyId"
+                  [checkmark]="true"
+                  [showClear]="true"
+                  size="small"
+                  optionLabel="name"
+                  optionValue="id"
+                  class="w-full" />
               <vrw-form-error-label
-                [control]="form.get('currencyId')"
+                  [control]="form.get('currencyId')"
               ></vrw-form-error-label>
             </div>
           </div>
@@ -87,16 +87,16 @@
           </span>
             <div class="grow w-full">
               <p-select
-                [options]="institutions()"
-                formControlName="institutionId"
-                [checkmark]="true"
-                [showClear]="true"
-                size="small"
-                optionLabel="name"
-                optionValue="id"
-                class="w-full" />
+                  [options]="institutions()"
+                  formControlName="institutionId"
+                  [checkmark]="true"
+                  [showClear]="true"
+                  size="small"
+                  optionLabel="name"
+                  optionValue="id"
+                  class="w-full" />
               <vrw-form-error-label
-                [control]="form.get('institutionId')"
+                  [control]="form.get('institutionId')"
               ></vrw-form-error-label>
             </div>
           </div>
@@ -108,18 +108,19 @@
             <div class="grow w-full">
               <div class="kt-input">
                 <p-colorpicker
-                  formControlName="color"
-                  class="mb-0"
+                    formControlName="color"
+                    class="mb-0"
                 ></p-colorpicker>
                 <input
-                  class="form-control"
-                  formControlName="color"
-                  type="text"
-                  readonly
+                    class="form-control"
+                    formControlName="color"
+                    [value]="form.get('color')?.value"
+                    type="text"
+                    readonly
                 />
               </div>
               <vrw-form-error-label
-                [control]="form.get('color')"
+                  [control]="form.get('color')"
               ></vrw-form-error-label>
             </div>
           </div>
@@ -130,7 +131,7 @@
             <div class="grow w-full">
               <input formControlName="notes" class="kt-input w-full" type="text" />
               <vrw-form-error-label
-                [control]="form.get('notes')"
+                  [control]="form.get('notes')"
               ></vrw-form-error-label>
             </div>
           </div>
@@ -150,12 +151,12 @@
                   </span>
                   <div class="grow w-full">
                     <p-selectbutton
-                      fluid
-                      [options]="yieldFrequencies()"
-                      formControlName="frequency"
-                      optionLabel="label"
-                      optionValue="value"
-                      class="w-full"></p-selectbutton>
+                        fluid
+                        [options]="yieldFrequencies()"
+                        formControlName="frequency"
+                        optionLabel="label"
+                        optionValue="value"
+                        class="w-full"></p-selectbutton>
                     <vrw-form-error-label [control]="form.get('investment.frequency')" />
                   </div>
                 </div>
@@ -166,13 +167,13 @@
                 </span>
                   <div class="grow w-full">
                     <p-inputnumber
-                      formControlName="rate"
-                      mode="decimal"
-                      [minFractionDigits]="2"
-                      [maxFractionDigits]="2"
-                      suffix="%"
-                      class="w-full"
-                      inputStyleClass="kt-input w-full"></p-inputnumber>
+                        formControlName="rate"
+                        mode="decimal"
+                        [minFractionDigits]="2"
+                        [maxFractionDigits]="2"
+                        suffix="%"
+                        class="w-full"
+                        inputStyleClass="kt-input w-full"></p-inputnumber>
                     <vrw-form-error-label [control]="form.get('investment.rate')" />
                   </div>
                 </div>
@@ -189,17 +190,17 @@
                 <div class="flex items-start flex-row gap-4 sm:col-span-3 col-span-6 pt-4">
                   <div class="flex items-center gap-2">
                     <p-checkbox
-                      formControlName="retainsIsr"
-                      [binary]="true"
-                      inputId="isIsrRetention"
+                        formControlName="retainsIsr"
+                        [binary]="true"
+                        inputId="isIsrRetention"
                     />
                     <label for="isIsrRetention" class="kt-form-label cursor-pointer">Habilitar retención de ISR</label>
                   </div>
                   <div class="flex items-center gap-2">
                     <p-checkbox
-                      formControlName="isCompound"
-                      [binary]="true"
-                      inputId="isCompoundInterest"
+                        formControlName="isCompound"
+                        [binary]="true"
+                        inputId="isCompoundInterest"
                     />
                     <label for="isCompoundInterest" class="kt-form-label cursor-pointer">Habilitar interés compuesto</label>
                   </div>
@@ -223,13 +224,13 @@
                   </span>
                   <div class="grow w-full">
                     <p-inputnumber
-                      formControlName="creditLimit"
-                      mode="decimal"
-                      [minFractionDigits]="2"
-                      [maxFractionDigits]="2"
-                      [min]="0"
-                      class="w-full"
-                      inputStyleClass="kt-input w-full"></p-inputnumber>
+                        formControlName="creditLimit"
+                        mode="decimal"
+                        [minFractionDigits]="2"
+                        [maxFractionDigits]="2"
+                        [min]="0"
+                        class="w-full"
+                        inputStyleClass="kt-input w-full"></p-inputnumber>
                     <vrw-form-error-label [control]="form.get('credit.creditLimit')" />
                   </div>
                 </div>
@@ -240,14 +241,14 @@
                   </span>
                   <div class="grow w-full">
                     <p-inputnumber
-                      formControlName="creditAvailable"
-                      mode="decimal"
-                      [minFractionDigits]="2"
-                      [maxFractionDigits]="2"
-                      [min]="0"
-                      [max]="form.get('credit.creditLimit')?.value ?? 0"
-                      class="w-full"
-                      inputStyleClass="kt-input w-full"></p-inputnumber>
+                        formControlName="creditAvailable"
+                        mode="decimal"
+                        [minFractionDigits]="2"
+                        [maxFractionDigits]="2"
+                        [min]="0"
+                        [max]="form.get('credit.creditLimit')?.value ?? 0"
+                        class="w-full"
+                        inputStyleClass="kt-input w-full"></p-inputnumber>
                     <vrw-form-error-label [control]="form.get('credit.creditAvailable')" />
                   </div>
                 </div>
@@ -258,14 +259,14 @@
                   </span>
                   <div class="grow w-full">
                     <p-inputnumber
-                      formControlName="creditUsed"
-                      mode="decimal"
-                      [minFractionDigits]="2"
-                      [maxFractionDigits]="2"
-                      [min]="0"
-                      [max]="form.get('credit.creditLimit')?.value ?? 0"
-                      class="w-full"
-                      inputStyleClass="kt-input w-full"></p-inputnumber>
+                        formControlName="creditUsed"
+                        mode="decimal"
+                        [minFractionDigits]="2"
+                        [maxFractionDigits]="2"
+                        [min]="0"
+                        [max]="form.get('credit.creditLimit')?.value ?? 0"
+                        class="w-full"
+                        inputStyleClass="kt-input w-full"></p-inputnumber>
                     <vrw-form-error-label [control]="form.get('credit.creditUsed')" />
                   </div>
                 </div>
@@ -276,20 +277,20 @@
                   </span>
                   <div class="grow w-full">
                     <p-inputnumber
-                      formControlName="paymentDueDay"
-                      [min]="1"
-                      [max]="maxPaymentDueDay"
-                      class="w-full"
-                      inputStyleClass="kt-input w-full"></p-inputnumber>
+                        formControlName="paymentDueDay"
+                        [min]="1"
+                        [max]="30"
+                        class="w-full"
+                        inputStyleClass="kt-input w-full"></p-inputnumber>
                     <vrw-form-error-label [control]="form.get('credit.paymentDueDay')" />
                   </div>
                 </div>
                 <div class="flex items-center flex-row gap-4 sm:col-span-4 col-span-6 pt-6">
                   <div class="flex items-center gap-2">
                     <p-checkbox
-                      formControlName="notifyPayment"
-                      [binary]="true"
-                      inputId="notifyPayment"
+                        formControlName="notifyPayment"
+                        [binary]="true"
+                        inputId="notifyPayment"
                     />
                     <label for="notifyPayment" class="kt-form-label cursor-pointer">Notificar vencimiento de pago</label>
                   </div>
@@ -300,19 +301,19 @@
           }
 
           <div
-            class="flex flex-nowrap justify-between items-center col-span-6 gap-2 mt-4"
+              class="flex flex-nowrap justify-between items-center col-span-6 gap-2 mt-4"
           >
             <button
-              type="button"
-              (click)="handleGoOut()"
-              class="kt-btn kt-btn-secondary w-1/2"
+                type="button"
+                (click)="handleGoOut()"
+                class="kt-btn kt-btn-secondary w-1/2"
             >
               Cancelar
             </button>
             <button
-              [disabled]="form.invalid || isLoading()"
-              type="submit"
-              class="kt-btn w-1/2"
+                [disabled]="form.invalid || isLoading()"
+                type="submit"
+                class="kt-btn w-1/2"
             >
               @if (isLoading()) {
                 <span class="font-bold" role="status" aria-hidden="true">
