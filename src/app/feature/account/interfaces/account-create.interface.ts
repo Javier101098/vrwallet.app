@@ -1,5 +1,5 @@
-import {Frequency} from "./yield-frequency";
-import {Credit} from "./credit.interface";
+import {CreateCreditRequest} from "./credit.interface";
+import {CreateInvestmentRequest} from './investment.interface';
 
 export interface CreateAccountRequest {
   accountTypeId: string;
@@ -8,14 +8,6 @@ export interface CreateAccountRequest {
   name: string;
   color: string;
   notes: string;
-  investment?: InvestmentAccount;
-  credit?: Credit;
-}
-
-export interface InvestmentAccount{
-  frequency: Frequency;
-  rate: number;
-  maturityDate: string;
-  retainsIsr: boolean;
-  isCompound: boolean;
+  investment?: CreateInvestmentRequest;
+  credit?: CreateCreditRequest;
 }

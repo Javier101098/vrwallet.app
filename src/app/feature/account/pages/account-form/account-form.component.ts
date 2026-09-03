@@ -21,8 +21,8 @@ import { InstitutionService } from '@core/services/institution.service';
 import { rxResource, takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormErrorLabelComponent } from '@shared/components/form-error-label/form-error-label.component';
 import { MessageService } from 'primeng/api';
-import { CreateAccountRequest, InvestmentAccount } from '../../interfaces/account-create.interface';
-import { Credit } from '../../interfaces/credit.interface';
+import { CreateAccountRequest } from '../../interfaces/account-create.interface';
+import {CreateCreditRequest} from '../../interfaces/credit.interface';
 import { AccountStore } from '../../services/account-store.service';
 import { Router } from '@angular/router';
 import { ColorPickerModule } from 'primeng/colorpicker';
@@ -40,6 +40,7 @@ import { MinDateValidator } from '@shared/validators/min-date.validator';
 import { creditMaxValidator } from '@shared/validators/credit-max.validator';
 import { creditSumValidator } from '@shared/validators/credit-sum.validator';
 import { Tooltip } from 'primeng/tooltip';
+import {CreateInvestmentRequest} from '../../interfaces/investment.interface';
 
 @Component({
   selector: 'vrw-account-form',
@@ -290,9 +291,9 @@ export default class AccountFormComponent {
         ? ({
           ...investment,
           maturityDate: investment.maturityDate || undefined,
-        } as InvestmentAccount)
+        } as CreateInvestmentRequest)
         : undefined,
-      credit: this.isCredit() ? (credit as Credit) : undefined,
+      credit: this.isCredit() ? (credit as CreateCreditRequest) : undefined,
     };
 
     this.isEdit()

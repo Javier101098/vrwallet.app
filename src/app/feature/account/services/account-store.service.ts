@@ -34,10 +34,27 @@ export const AccountStore = signalStore(
     balance: () : number  => {
       return store
         .accounts()
+        .filter((account)=> account.credit === null || account.credit === undefined)
         .reduce((acc, account) => acc + account.balance, 0);
+    },
+    creditBalance: () : number => {
+      return store
+        .accounts()
+        .filter((account) => account.credit !== null && account.credit !== undefined)
+        .reduce((acc, account) => acc + (account.credit?.creditAvailable ?? 0), 0);
+    },
+    creditBalanceDue: () : number => {
+      return store
+        .accounts()
+        .filter((account) => account.credit !== null && account.credit !== undefined)
+        .reduce((acc, account) => acc + (account.credit?.creditUsed ?? 0), 0);
     },
     count:() : number =>{
       return store.accounts().length;
+    },
+    hasCredit:() : boolean => {
+      return store.accounts()
+        .some((account) => account.credit !== null || true);
     }
   })),
   withMethods(
