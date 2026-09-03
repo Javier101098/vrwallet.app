@@ -1,29 +1,24 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  OnDestroy,
-  signal,
-} from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
-import { AccountStore } from '../../../feature/account/services/account-store.service';
+import {ChangeDetectionStrategy, Component, effect, input, signal} from '@angular/core';
+import {CurrencyPipe} from '@angular/common';
 
 @Component({
-  selector: 'vrw-balance-total-card',
-  imports: [CurrencyPipe],
-  templateUrl: './balance-total-card.component.html',
-  styles: ``,
+  selector: 'vrw-count-up',
+  imports: [
+    CurrencyPipe
+  ],
+  templateUrl: './count-up.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BalanceTotalCardComponent implements OnDestroy {
-  accountStore = inject(AccountStore);
+export class CountUpComponent {
+  readonly value = input<number>(0);
+
   displayBalance = signal(0);
+
   private animationFrameId?: number;
 
   constructor() {
     effect(() => {
-      const target = this.accountStore.balance();
+      const target = this.value();
       this.animateBalance(target);
     });
   }

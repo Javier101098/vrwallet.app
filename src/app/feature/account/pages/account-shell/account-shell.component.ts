@@ -3,8 +3,7 @@ import { AccountListComponent } from '../../components/account-list/account-list
 import { QuickActionsComponent } from '../../components/quick-actions/quick-actions.component';
 import { FormsModule } from '@angular/forms';
 import {AccountStore} from "../../services/account-store.service";
-import {BalanceTotalCardComponent} from "@shared/components/balance-total-card/balance-total-card.component";
-import {TotalAccountsCardComponent} from "../../components/total-accounts-card/total-accounts-card.component";
+import {BalanceCardComponent} from '../../components/balance-card/balance-card.component';
 
 @Component({
   selector: 'vrw-account-shell',
@@ -12,8 +11,7 @@ import {TotalAccountsCardComponent} from "../../components/total-accounts-card/t
     AccountListComponent,
     QuickActionsComponent,
     FormsModule,
-    BalanceTotalCardComponent,
-    TotalAccountsCardComponent,
+    BalanceCardComponent,
   ],
   providers: [],
   templateUrl: './account-shell.component.html',
