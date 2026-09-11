@@ -20,6 +20,7 @@ import {ProjectedBalanceCardComponent} from "../../components/projected-balance-
 import {InputCurrencyComponent} from "@shared/components/input-currency/input-currency.component";
 import {format} from "date-fns";
 import {AccountDetail} from '../../../account/interfaces/account-detail.interface';
+import {CreditUsageCardComponent} from '../../../account/components/credit-usage-card/credit-usage-card.component';
 
 @Component({
   selector: 'vrw-transaction-form',
@@ -34,6 +35,7 @@ import {AccountDetail} from '../../../account/interfaces/account-detail.interfac
     DatePickerModule,
     ProjectedBalanceCardComponent,
     InputCurrencyComponent,
+    CreditUsageCardComponent,
   ],
   templateUrl: './transaction-form.component.html',
   styles: ``,
@@ -61,6 +63,10 @@ export default class TransactionFormComponent {
     return id
       ? this.accountStore.accounts().find((account) => account.id === id) ?? null
       : null;
+  })
+
+  credit = computed(()=>{
+    return this.accountSelected()?.credit ?? null;
   })
 
   typeParam = toSignal(

@@ -1,10 +1,15 @@
 <div class="grid kt-container-fixed grid-cols-3 gap-4">
   <div class="col-span-3 md:col-span-1">
-    <vrw-projected-balance-card
-        [amount]="amount"
-        [account]="accountSelected()"
-        [type]="selectedTransactionType"
-    />
+    @if (credit() != null) {
+      <vrw-credit-usage-card [credit]="credit()" />
+    } @else {
+      <vrw-projected-balance-card
+          [amount]="amount"
+          [account]="accountSelected()"
+          [type]="selectedTransactionType"
+      />
+    }
+
   </div>
   <div class="col-span-3 md:col-span-2">
     <div class="kt-card">
@@ -62,12 +67,12 @@
                 >
                   <ng-template let-account pTemplate="item">
                     <div class="flex items-center justify-between gap-2">
-                    <span>
-                      {{ account.name }}
-                    </span>
+                      <span>
+                        {{ account.name }}
+                      </span>
                       <span class="kt-badge kt-badge-stroke">
-                      {{ account.balance | currency: "MXN" }}
-                    </span>
+                        {{ account.balance | currency: "MXN" }}
+                      </span>
                     </div>
                   </ng-template>
                 </p-autoComplete>
