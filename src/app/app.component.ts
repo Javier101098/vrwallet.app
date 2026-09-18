@@ -1,13 +1,37 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { MetronicInitService } from '@core/services/metronic-init.service';
+import { filter } from 'rxjs';
+import { Toast } from 'primeng/toast';
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
-  selector: 'body[app-root]',
-  imports: [RouterOutlet],
+  selector: '[vrw-root]',
+  imports: [RouterOutlet, Toast],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  standalone: true
+  standalone: true,
 })
 export class AppComponent {
-  title = 'metronic-tailwind-angular';
+  private metronicInitService = inject(MetronicInitService);
+  private router = inject(Router);
+  private updates = inject(SwUpdate);
+
+  constructor() {
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => {
+        setTimeout(() => {
+          this.metronicInitService.init();
+        }, 0);
+      });
+
+    this.updates.versionUpdates.subscribe((evt) => {
+      if (evt.type === 'VERSION_READY') {
+        if (confirm('Nueva versión disponible. ¿Actualizar?')) {
+          location.reload();
+        }
+      }
+    });
+  }
 }

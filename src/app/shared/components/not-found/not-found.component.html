@@ -1,0 +1,19 @@
+<div class="flex flex-col items-center justify-center max-w-md p-8 mx-auto mt-12 text-center  rounded-2xl">
+  <div class="flex items-center justify-center  mb-5 rounded-full">
+    <img ngSrc="assets/media/illustrations/19.svg" alt="Not Found" width="190" height="482">
+  </div>
+
+  <h2 class="mb-2 text-xl font-bold text-gray-900 tracking-tight">
+    <ng-content select="[slot-title]"></ng-content>
+    Cuenta no encontrada
+  </h2>
+
+  <p class="mb-6 text-sm text-gray-500 leading-relaxed">
+    <ng-content select="[slot-description]"></ng-content>
+    No pudimos localizar los detalles de esta cuenta. Es posible que haya sido eliminada o que el enlace sea incorrecto.
+  </p>
+
+  <a routerLink="/" class="inline-flex items-center justify-center w-full px-5 py-2.5 text-sm font-medium text-white transition-all duration-200 bg-blue-600 rounded-xl sm:w-auto hover:bg-blue-700 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-blue-100">
+    Volver
+  </a>
+</div>

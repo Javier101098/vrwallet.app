@@ -1,0 +1,48 @@
+<div
+  class="fixed bottom-0 left-0 right-0 h-20 bg-background/90 backdrop-blur-sm pointer-events-none z-40 mask-gradient"
+></div>
+<nav
+  class="fixed bottom-6 left-5 right-5 z-50 flex bg-background backdrop-blur-md border border-input safe-area-bottom rounded-3xl shadow-xl"
+>
+  <div class="flex w-full justify-around items-center h-16">
+    <a
+      routerLink="/"
+      routerLinkActive="text-primary font-active transition-all"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="flex flex-col items-center justify-center flex-1 py-2 text-muted-foreground hover:text-primary transition-colors text-xl"
+    >
+      <i class="ki-filled ki-home"></i>
+      <span class="text-xs mt-1">Panel</span>
+    </a>
+
+    <a
+      routerLink="/accounts"
+      routerLinkActive="text-primary font-active transition-all"
+      [routerLinkActiveOptions]="{ exact: false }"
+      class="flex flex-col items-center justify-center flex-1 py-2 text-muted-foreground hover:text-primary transition-colors text-xl"
+    >
+      <i class="ki-filled ki-credit-cart"></i>
+      <span class="text-xs mt-1">Cuentas</span>
+    </a>
+
+    <a
+      routerLink="/transactions"
+      routerLinkActive="text-primary font-active transition-all"
+      [routerLinkActiveOptions]="{ exact: false }"
+      class="flex flex-col items-center justify-center flex-1 py-2 text-muted-foreground hover:text-primary transition-colors text-xl"
+    >
+      <i class="ki-filled ki-questionnaire-tablet"></i>
+      <span class="text-xs mt-1">Transacciones</span>
+    </a>
+
+    <a
+      routerLink="/wishlist"
+      routerLinkActive="text-primary font-active transition-all"
+      [routerLinkActiveOptions]="{ exact: false }"
+      class="flex flex-col items-center justify-center flex-1 py-2 text-muted-foreground hover:text-primary transition-colors text-xl"
+    >
+      <i class="ki-filled ki-heart"></i>
+      <span class="text-xs mt-1">Deseos</span>
+    </a>
+  </div>
+</nav>

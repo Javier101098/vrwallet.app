@@ -1,0 +1,40 @@
+<div class="bg-[#F8F9FA] rounded-[32px] p-5 w-full font-sans border border-gray-50 shadow-sm">
+
+  <div class="flex items-center mb-4">
+    <div class="flex items-center gap-3">
+      <div class="bg-[#056839] text-white p-1 rounded-md flex items-center justify-center">
+        <i class="ki-filled ki-chart-simple"></i>
+      </div>
+      <h2 class="text-[#1D2023] text-[18px] font-bold">
+        Projected Balance
+      </h2>
+    </div>
+  </div>
+
+  <div class="w-full">
+    <div class="flex flex-col gap-1">
+      <div class="flex flex-col">
+        <p class="text-sm text-gray-700">
+          Current Balance
+        </p>
+        <span class="text-xs font-semibold">{{currentBalance() | currency:'MXN'}}</span>
+      </div>
+      <p class="text-gray-700 text-[14px] font-medium">New Balance After Transaction</p>
+      <div class="flex justify-between items-center gap-3 w-full">
+        <span class="text-[26px] font-bold">{{projectedBalance() | currency}}</span>
+
+        <div
+            [class]="percentageDifference() < 0 ? 'text-[#C72E2E]' : 'text-green-700'"
+            class="flex items-center text-[15px] font-bold gap-0.5">
+          @if (percentageDifference() < 0) {
+            <i class="ki-filled ki-arrow-down-refraction"></i>
+          } @else if (percentageDifference() > 0) {
+            <i class="ki-filled ki-arrow-up-refraction"></i>
+          }
+          <span>{{percentageDifference() | percent:'1.1-2' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>

@@ -1,73 +1,77 @@
-<form action="#" class="kt-card-content flex flex-col gap-5 p-10" id="sign_in_form" method="get">
+<p-toast position="top-center" [baseZIndex]="5000" />
+<form
+  [formGroup]="form"
+  class="kt-card-content flex flex-col gap-5 p-10"
+  (ngSubmit)="handleSubmit()"
+>
   <div class="text-center mb-2.5">
     <h3 class="text-lg font-medium text-mono leading-none mb-2.5">
       Sign in
     </h3>
     <div class="flex items-center justify-center font-medium">
-       <span class="text-sm text-secondary-foreground me-1.5">
+      <span class="text-sm text-secondary-foreground me-1.5">
         Need an account?
-       </span>
-      <a class="text-sm link" routerLink="/auth/sign-up">
-        Sign up
-      </a>
+      </span>
+      <a class="text-sm link" routerLink="/auth/sign-up"> Sign up </a>
     </div>
   </div>
-  <div class="grid grid-cols-2 gap-2.5">
-    <a class="kt-btn kt-btn-outline justify-center" href="#">
-      <img alt="" class="size-3.5 shrink-0" src="assets/media/brand-logos/google.svg"/>
-      Use Google
-    </a>
-    <a class="kt-btn kt-btn-outline justify-center" href="#">
-      <img alt="" class="size-3.5 shrink-0 dark:hidden" src="assets/media/brand-logos/apple-black.svg"/>
-      <img alt="" class="size-3.5 shrink-0 light:hidden" src="assets/media/brand-logos/apple-white.svg"/>
-      Use Apple
-    </a>
-  </div>
-  <div class="flex items-center gap-2">
-      <span class="border-t border-border w-full">
-      </span>
-    <span class="text-xs text-muted-foreground font-medium uppercase">
-       Or
-      </span>
-    <span class="border-t border-border w-full">
-      </span>
-  </div>
   <div class="flex flex-col gap-1">
-    <label class="kt-form-label font-normal text-mono">
+    <label class="kt-form-label font-normal text-mono" for="email">
       Email
     </label>
-    <input class="kt-input" placeholder="email@email.com" type="text" value=""/>
+    <input
+      class="kt-input"
+      formControlName="email"
+      placeholder="email@email.com"
+      type="text"
+      id="email"
+    />
+    <vrw-form-error-label [control]="form.get('email')" />
   </div>
   <div class="flex flex-col gap-1">
     <div class="flex items-center justify-between gap-1">
-      <label class="kt-form-label font-normal text-mono">
+      <label class="kt-form-label font-normal text-mono" for="password">
         Password
       </label>
-      <a class="text-sm kt-link shrink-0" href="html/demo9/authentication/classic/reset-password/enter-email.html">
-        Forgot Password?
-      </a>
+      <a class="text-sm kt-link shrink-0"> Forgot Password? </a>
     </div>
     <div class="kt-input" data-kt-toggle-password="true">
-      <input name="user_password" placeholder="Enter Password" type="password" value=""/>
-      <button class="kt-btn kt-btn-sm kt-btn-ghost kt-btn-icon bg-transparent! -me-1.5" data-kt-toggle-password-trigger="true" type="button">
+      <input
+        formControlName="password"
+        autocomplete="true"
+        placeholder="Enter Password"
+        type="password"
+        id="password"
+      />
+      <button
+        class="kt-btn kt-btn-sm kt-btn-ghost kt-btn-icon bg-transparent! -me-1.5"
+        data-kt-toggle-password-trigger="true"
+        type="button"
+      >
         <span class="kt-toggle-password-active:hidden">
-         <i class="ki-filled ki-eye text-muted-foreground">
-         </i>
+          <i class="ki-filled ki-eye text-muted-foreground"> </i>
         </span>
         <span class="hidden kt-toggle-password-active:block">
-         <i class="ki-filled ki-eye-slash text-muted-foreground">
-         </i>
+          <i class="ki-filled ki-eye-slash text-muted-foreground"></i>
         </span>
       </button>
     </div>
+    <vrw-form-error-label [control]="form.get('password')" />
   </div>
   <label class="kt-label">
-    <input class="kt-checkbox kt-checkbox-sm" name="check" type="checkbox" value="1"/>
-    <span class="kt-checkbox-label">
-       Remember me
-      </span>
+    <input
+      class="kt-checkbox kt-checkbox-sm"
+      name="check"
+      type="checkbox"
+      value="1"
+    />
+    <span class="kt-checkbox-label"> Remember me </span>
   </label>
-  <button class="kt-btn kt-btn-primary flex justify-center grow">
+  <button
+    type="submit"
+    [disabled]="form.invalid || loading()"
+    class="kt-btn kt-btn-primary flex justify-center grow"
+  >
     Sign In
   </button>
 </form>

@@ -1,0 +1,41 @@
+@if (account() !== null) {
+  <div
+    class="flex items-center justify-between gap-2 py-2 border-b border-border border-dashed last:border-none"
+  >
+    <div class="flex items-center gap-3">
+      <div
+        class="w-[3px] h-8 rounded-full"
+        [style.background-color]="account().color || '#009688'"
+      ></div>
+      <div>
+        <div class="flex flex-col">
+          <a
+            [routerLink]="['/accounts', account().id]"
+            class="text-sm font-medium text-foreground hover:text-primary"
+          >
+            {{ account().name }}
+          </a>
+          <span class="text-xs font-normal text-muted-foreground">
+            {{ account().accountType.name }}
+          </span>
+        </div>
+        <div class="text-sm font-normal text-muted-foreground">
+          {{ account().accountNumber }}
+        </div>
+      </div>
+    </div>
+    <div class="flex items-end gap-1 flex-col">
+      <span class="kt-badge kt-badge-outline kt-badge-primary min-w-[80px]">
+        {{ account().balance | currency }}
+      </span>
+      @if (isCredit()) {
+        <div class="kt-progress" >
+          <div
+            [style.width]="percentageOfCreditUsed() | percent"
+            [style.background-color]="account().color || '#009688'"
+            class="kt-progress-indicator"></div>
+        </div>
+      }
+    </div>
+  </div>
+}

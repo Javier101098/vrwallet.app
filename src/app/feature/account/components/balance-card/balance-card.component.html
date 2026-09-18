@@ -1,0 +1,38 @@
+<div class="flex flex-col gap-4">
+  <div class="kt-card">
+    <div class="kt-card-content flex flex-col gap-2 px-5 lg:px-7.5 pt-5">
+      <span class="text-sm font-normal text-foreground">Saldo Total</span>
+      <span class="text-3xl font-semibold text-mono mb-3">
+        <vrw-count-up [value]="accountStore.balance()" />
+      </span>
+    </div>
+  </div>
+  @if (accountStore.hasCredit()) {
+    <div class="kt-card">
+      <div class="kt-card-content px-5 lg:px-7.5 py-5">
+        <span class="text-sm font-normal text-foreground">
+          Resumen de crédito
+        </span>
+        <div class="flex flex-col mt-4">
+          <div class="flex items-center justify-between py-2">
+            <span class="text-sm text-muted-foreground">
+              Saldo a favor
+            </span>
+            <span class="text-lg font-semibold text-mono">
+              <vrw-count-up [value]="accountStore.creditBalance()" />
+            </span>
+          </div>
+          <div class="border-t border-border"></div>
+          <div class="flex items-center justify-between py-2">
+            <span class="text-sm text-muted-foreground">
+              Saldo a pagar
+            </span>
+            <span class="text-lg font-semibold text-mono">
+              <vrw-count-up [value]="accountStore.creditBalanceDue()" />
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

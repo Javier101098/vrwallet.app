@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 
-// Declare all Metronic and KTUI components
 declare var KTToggle: any;
 declare var KTDrawer: any;
 declare var KTMenu: any;
@@ -22,9 +21,10 @@ declare var KTThemeSwitch: any;
 declare var KTImageInput: any;
 declare var KTTogglePassword: any;
 declare var KTDataTable: any;
-declare var KTDatepicker: any;
+declare var KTDatePicker: any;
 declare var KTSelect: any;
 declare var KTToast: any;
+declare var KTColorPicker: any;
 
 @Injectable({
   providedIn: 'root',
@@ -56,10 +56,15 @@ export class MetronicInitService {
     this.initDatepicker();
     this.initSelect();
     this.initToast();
+    this.initColor();
   }
 
   initDrawers() {
     KTDrawer.init();
+  }
+
+  initColor() {
+    KTColorPicker.init();
   }
 
   initMenus() {
@@ -139,7 +144,7 @@ export class MetronicInitService {
   }
 
   initDatepicker() {
-    KTDatepicker.init();
+    KTDatePicker.init();
   }
 
   initSelect() {

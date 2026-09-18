@@ -1,10 +1,15 @@
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {RouterLink, RouterLinkActive} from "@angular/router";
 
 @Component({
-  selector: '[app-navbar]',
-  imports: [],
+  selector: '[vrw-navbar]',
+  imports: [
+    RouterLink,
+    RouterLinkActive
+  ],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrl: './navbar.component.scss',
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class NavbarComponent {
 

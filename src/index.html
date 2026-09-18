@@ -1,40 +1,56 @@
 <!doctype html>
 <html
-  class="h-full"
+  class="h-full p-dark"
   data-kt-theme="true"
   data-kt-theme-mode="light"
   dir="ltr"
-  lang="en"
+  lang="es"
 >
   <head>
     <meta charset="utf-8" />
+    <meta content="follow, index" name="robots" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=0.86, maximum-scale=0.86"
+    />
+
     <base href="/" />
     <title>vrwallet</title>
-    <meta content="follow, index" name="robots" />
     <link href="/" rel="canonical" />
     <meta
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-      name="viewport"
+      name="description"
+      content="Control your spending in the palm of your hand"
     />
-    <meta content="" name="description" />
-    <meta content="@keenthemes" name="twitter:site" />
-    <meta content="@keenthemes" name="twitter:creator" />
-    <meta content="summary_large_image" name="twitter:card" />
-    <meta content="Metronic - Tailwind CSS " name="twitter:title" />
-    <meta content="" name="twitter:description" />
-    <meta content="assets/media/app/og-image.png" name="twitter:image" />
-    <meta content="/" property="og:url" />
-    <meta content="en_US" property="og:locale" />
-    <meta content="website" property="og:type" />
-    <meta content="@keenthemes" property="og:site_name" />
-    <meta content="Metronic - Tailwind CSS " property="og:title" />
-    <meta content="" property="og:description" />
-    <meta content="assets/media/app/og-image.png" property="og:image" />
-    <link
-      href="assets/media/app/apple-touch-icon.png"
-      rel="apple-touch-icon"
-      sizes="180x180"
+
+    <meta property="og:title" content="VRWallet | Controla tus finanzas" />
+    <meta
+      property="og:description"
+      content="Controla tus gastos desde la palma de tu mano"
     />
+    <meta property="og:image" content="https://vrwallet.d-teach.space/" />
+    <!-- todo:  <meta property="og:url" content="https://tusitio.com"> -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:site_name" content="vrwallet" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="VRWallet | Controla tus finanzas fácilmente"
+    />
+    <meta
+      name="twitter:description"
+      content="Controla tus gastos desde la palma de tu mano 💸"
+    />
+    <!-- todo: <meta name="twitter:image" content="https://tusitio.com/og-image.jpg">-->
+
+    <meta name="theme-color" content="#1976d2" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="vrwallet" />
+
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png" />
     <link
       href="assets/media/app/favicon-32x32.png"
       rel="icon"
@@ -48,16 +64,42 @@
       type="image/png"
     />
     <link href="assets/media/app/favicon.ico" rel="shortcut icon" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.webmanifest" />
   </head>
   <body
-    app-root
+    vrw-root=""
     class="antialiased flex h-full text-base text-foreground bg-background [--header-height:78px]"
-  ></body>
+  >
+    <script>
+     const defaultThemeMode = 'light'; // light|dark|system
+        let themeMode;
+
+        if (document.documentElement) {
+          if (localStorage.getItem('kt-theme')) {
+            themeMode = localStorage.getItem('kt-theme');
+          } else if (
+            document.documentElement.hasAttribute('data-kt-theme-mode')
+          ) {
+            themeMode =
+              document.documentElement.getAttribute('data-kt-theme-mode');
+          } else {
+            themeMode = defaultThemeMode;
+          }
+
+          if (themeMode === 'system') {
+            themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+          }
+
+          document.documentElement.classList.add(themeMode);
+        }
+    </script>
+    <noscript
+      >Please enable JavaScript to continue using this application.</noscript
+    >
+  </body>
 </html>

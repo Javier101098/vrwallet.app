@@ -1,0 +1,35 @@
+<div class="flex items-center justify-between group cursor-pointer w-full">
+  <div class="flex items-center gap-4">
+    <div
+      class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-colors"
+      [class]="colorClasses()"
+    >
+      <i class="ki-filled {{ icon() }}"></i>
+    </div>
+    <div>
+      <p class="text-sm font-medium line-clamp-1">
+        {{ transaction().note || transaction().payer || "Sin descripción" }}
+      </p>
+      <div
+        class="flex flex-col md:flex-row items-start md:items-center md:gap-2 text-xs text-slate-500 mt-0.5"
+      >
+        <span>{{ typeName() }}</span>
+        <span class="hidden md:block">•</span>
+        <span>{{ transaction().date | date: "medium" }}</span>
+      </div>
+    </div>
+  </div>
+  <div
+    class="text-sm font-semibold whitespace-nowrap tracking-wide"
+    [class]="amountColorClass()"
+  >
+    <span class="font-bold text-sm">
+      @if (typeOperation() == 0) {
+        <i class="ki-filled ki-plus"></i>
+      } @else {
+        <i class="ki-filled ki-minus"></i>
+      }
+    </span>
+    {{ transaction().amount | currency: "MXN" }}
+  </div>
+</div>

@@ -5,17 +5,56 @@
 		id="mega_menu">
 		<div class="kt-menu-item active">
 			<a class="kt-menu-link lg:py-3.5 border-b border-b-transparent kt-menu-item-active:border-b-mono text-foreground kt-menu-item-hover:text-mono kt-menu-item-active:text-mono kt-menu-item-here:border-b-mono kt-menu-item-here:text-mono"
-				href="/metronic/tailwind/demo9/">
+         routerLinkActive="kt-menu-item-active:border-b-mono kt-menu-item-active:text-mono"
+         [routerLinkActiveOptions]="{ exact: true }"
+         data-kt-drawer-dismiss="true"
+         routerLink="/">
 				<span class="kt-menu-title font-medium text-foreground text-sm">
 					Panel
 				</span>
 			</a>
 		</div>
 		<div class="kt-menu-item active">
-			<a class="kt-menu-link lg:py-3.5 border-b border-b-transparent kt-menu-item-active:border-b-mono text-foreground kt-menu-item-hover:text-mono kt-menu-item-active:text-mono kt-menu-item-here:border-b-mono kt-menu-item-here:text-mono"
-				href="/metronic/tailwind/demo9/">
+			<a class="kt-menu-link lg:py-3.5 border-b border-b-transparent  text-foreground kt-menu-item-hover:text-mono kt-menu-item-here:border-b-mono kt-menu-item-here:text-mono"
+         routerLinkActive="kt-menu-item-active:border-b-mono kt-menu-item-active:text-mono"
+         [routerLinkActiveOptions]="{ exact: true }"
+         data-kt-drawer-dismiss="true"
+         routerLink="/accounts">
 				<span class="kt-menu-title font-medium text-foreground text-sm">
 					Cuentas
+				</span>
+			</a>
+		</div>
+    <div class="kt-menu-item active">
+			<a class="kt-menu-link lg:py-3.5 border-b border-b-transparent  text-foreground kt-menu-item-hover:text-mono kt-menu-item-here:border-b-mono kt-menu-item-here:text-mono"
+         routerLinkActive="kt-menu-item-active:border-b-mono kt-menu-item-active:text-mono"
+         [routerLinkActiveOptions]="{ exact: true }"
+         data-kt-drawer-dismiss="true"
+         routerLink="/transactions">
+				<span class="kt-menu-title font-medium text-foreground text-sm">
+					Transacciones
+				</span>
+			</a>
+		</div>
+    <div class="kt-menu-item active">
+			<a class="kt-menu-link lg:py-3.5 border-b border-b-transparent  text-foreground kt-menu-item-hover:text-mono kt-menu-item-here:border-b-mono kt-menu-item-here:text-mono"
+         routerLinkActive="kt-menu-item-active:border-b-mono kt-menu-item-active:text-mono"
+         [routerLinkActiveOptions]="{ exact: true }"
+         data-kt-drawer-dismiss="true"
+         routerLink="">
+				<span class="kt-menu-title font-medium text-foreground text-sm">
+					Subscriptions
+				</span>
+			</a>
+		</div>
+    <div class="kt-menu-item active">
+			<a class="kt-menu-link lg:py-3.5 border-b border-b-transparent  text-foreground kt-menu-item-hover:text-mono kt-menu-item-here:border-b-mono kt-menu-item-here:text-mono"
+         routerLinkActive="kt-menu-item-active:border-b-mono kt-menu-item-active:text-mono"
+         [routerLinkActiveOptions]="{ exact: true }"
+         data-kt-drawer-dismiss="true"
+         routerLink="">
+				<span class="kt-menu-title font-medium text-foreground text-sm">
+					Lista de deseos
 				</span>
 			</a>
 		</div>

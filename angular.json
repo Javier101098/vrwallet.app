@@ -7,12 +7,13 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "changeDetection": "OnPush"
         }
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "vrw",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
@@ -32,16 +33,17 @@
               }
             ],
             "styles": [
+              "src/assets/css/styles.css",
               "src/tailwind.css",
               "src/styles.scss",
               "src/assets/vendors/apexcharts/apexcharts.css",
-              "src/assets/vendors/keenicons/styles.bundle.css",
-              "src/assets/css/styles.css"
+              "src/assets/vendors/keenicons/styles.bundle.css"
             ],
             "scripts": [
               "src/assets/js/core.bundle.js",
               "src/assets/vendors/ktui/ktui.min.js",
-              "src/assets/vendors/apexcharts/apexcharts.min.js"
+              "src/assets/vendors/apexcharts/apexcharts.min.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js"
             ]
           },
           "configurations": {
@@ -49,16 +51,17 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2mb",
+                  "maximumError": "4MB"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumError": "10kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "serviceWorker": "ngsw-config.json"
             },
             "development": {
               "optimization": false,
@@ -68,6 +71,17 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.development.ts"
+                }
+              ]
+            },
+            "staging": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
                 }
               ]
             }
@@ -82,6 +96,9 @@
             },
             "development": {
               "buildTarget": "vrwallet:build:development"
+            },
+            "staging": {
+              "buildTarget": "vrwallet:build:staging"
             }
           },
           "defaultConfiguration": "development"

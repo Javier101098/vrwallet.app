@@ -1,0 +1,231 @@
+import {CommonModule, Location} from '@angular/common';
+import {Component, computed, effect, inject, input, signal} from '@angular/core';
+import {FormBuilder, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {InputNumberModule} from 'primeng/inputnumber';
+import {AccountStore} from '../../../account/services/account-store.service';
+import {SelectButtonModule} from 'primeng/selectbutton';
+import {TransactionService} from '../../services/transaction.service';
+import {Expense, Income, Transfer} from '../../interfaces/deposit.interface';
+import {MessageService} from 'primeng/api';
+import {FormErrorLabelComponent} from '@shared/components/form-error-label/form-error-label.component';
+import {Transaction, Type} from '../../interfaces/transaction.interface';
+import {finalize, map, Observable, throwError} from 'rxjs';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {CategoryService} from '@core/services/category.service';
+import {AutoComplete, AutoCompleteCompleteEvent, AutoCompleteSelectEvent,} from 'primeng/autocomplete';
+import {Category} from '@core/Interfaces/category.interface';
+import {DatePickerModule} from 'primeng/datepicker';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ProjectedBalanceCardComponent} from "../../components/projected-balance-card/projected-balance-card.component";
+import {InputCurrencyComponent} from "@shared/components/input-currency/input-currency.component";
+import {format} from "date-fns";
+import {AccountDetail} from '../../../account/interfaces/account-detail.interface';
+
+@Component({
+  selector: 'vrw-transaction-form',
+  imports: [
+    CommonModule,
+    FormsModule,
+    InputNumberModule,
+    SelectButtonModule,
+    ReactiveFormsModule,
+    FormErrorLabelComponent,
+    AutoComplete,
+    DatePickerModule,
+    ProjectedBalanceCardComponent,
+    InputCurrencyComponent,
+  ],
+  templateUrl: './transaction-form.component.html',
+  styles: ``,
+})
+export default class TransactionFormComponent {
+  accountId =  input<string | null>(null);
+
+  private fb = inject(FormBuilder);
+  private transactionService = inject(TransactionService);
+  private categoryService = inject(CategoryService);
+  private messageService = inject(MessageService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  accountStore = inject(AccountStore);
+  protected readonly Type = Type;
+
+  maxDate = signal<Date>(new Date());
+  loading = signal<boolean>(false);
+  accountSelected = signal<AccountDetail | null>(null);
+  filteredCategories = signal<Category[]>([]);
+  filteredAccounts = signal<AccountDetail[]>([]);
+
+  accountParam = computed(()=>{
+    const id = this.accountId();
+    return id
+      ? this.accountStore.accounts().find((account) => account.id === id) ?? null
+      : null;
+  })
+
+  typeParam = toSignal(
+    this.activatedRoute.queryParams.pipe(
+      map(({ type }) => {
+        const parsed = Number(type);
+        return Object.values(Type).includes(parsed)
+          ? (parsed as Type)
+          : Type.Income;
+      }),
+    ),
+    { initialValue: Type.Income },
+  );
+
+  categories = toSignal(this.categoryService.get(), {
+    initialValue: [],
+  });
+
+  form = this.fb.group({
+    accountId: ['', Validators.required],
+    destinationAccountId: [null],
+    categoryId: ['', Validators.required],
+    amount: [0, [Validators.required, Validators.min(1)]],
+    date: [null, Validators.required],
+    note: ['', Validators.maxLength(100)],
+    payer: ['', Validators.maxLength(100)],
+    type: [this.typeParam(), Validators.required],
+  });
+
+  stateOptions: { label: string; value: Type }[] = [
+    { label: 'Expense', value: Type.Expense },
+    { label: 'Income', value: Type.Income },
+    { label: 'Transfer', value: Type.Transfer },
+  ];
+
+  get amount() : number {
+    return this.form.get('amount')?.value ?? 0;
+  }
+
+  get selectedTransactionType() : Type {
+    return this.form.get('type')?.value as Type;
+  }
+
+  get buttonClass(): string {
+    const type: Type = this.form.get('type')?.value!;
+
+    const statusClasses: Record<Type, string> = {
+      [Type.Expense]: 'kt-btn-destructive',
+      [Type.Income]: 'bg-green-600',
+      [Type.Transfer]: 'kt-btn-primary',
+      [Type.Yield]: 'bg-green-600',
+    };
+
+    return statusClasses[type] || 'kt-btn-default';
+  }
+
+  constructor(private location: Location) {
+    effect(() => {
+      const accountByParam = this.accountParam();
+      if (accountByParam){
+        this.accountSelected.set(this.accountParam());
+        this.form.get('accountId')?.setValue(accountByParam.id);
+      }else{
+        this.accountSelected.set(null);
+        this.form.get('accountId')?.setValue('');
+      }
+      this.form.updateValueAndValidity();
+    });
+  }
+
+  filterCategory(event: AutoCompleteCompleteEvent) {
+    const query = event.query.toLowerCase();
+
+    const filter = this.categories().filter((category) =>
+      category.name.toLowerCase().includes(query),
+    );
+
+    this.filteredCategories.set(filter);
+  }
+
+  filterAccount(
+    event: AutoCompleteCompleteEvent,
+    isDestination: boolean = false,
+  ) {
+    const query = event.query.toLowerCase();
+    const {type,accountId,destinationAccountId} = this.form.getRawValue();
+
+    const accounts = this.accountStore.accounts();
+    const filtered = accounts.filter((account) => {
+      const matchesQuery = account.name.toLowerCase().includes(query);
+
+      const isDuplicated = isDestination
+        ? account.id !== accountId
+        : account.id !== destinationAccountId
+
+      return matchesQuery && (type !== Type.Transfer || isDuplicated);
+    });
+
+    this.filteredAccounts.set(filtered);
+  }
+
+  handleChangeAccount(account: AutoCompleteSelectEvent) {
+    this.accountSelected.set(account.value);
+  }
+
+  handleChangeTypeOperation({ value } : any) {
+    const destControl = this.form.get('destinationAccountId');
+    const categoryControl = this.form.get('categoryId');
+
+    if (value === Type.Transfer) {
+      destControl?.setValidators([Validators.required]);
+      categoryControl?.clearValidators();
+      categoryControl?.setValue(null);
+    } else {
+      categoryControl?.setValidators([Validators.required]);
+      destControl?.clearValidators();
+      destControl?.setValue(null);
+    }
+    destControl?.updateValueAndValidity();
+    categoryControl?.updateValueAndValidity();
+  }
+
+  private payload<T> (){
+    const rawValue = this.form.getRawValue();
+
+   return {
+      ...rawValue,
+      date: format(rawValue.date ?? Date.now(),  "yyyy-MM-dd'T'HH:mm:ss")
+    } as T
+  }
+
+  handleSubmit(): void {
+    if (this.form.invalid) return;
+
+    this.loading.set(true);
+
+    const request$: Record<Type, () => Observable<Transaction>> = {
+      [Type.Expense]: () => this.transactionService.expense(this.payload<Expense>()),
+      [Type.Income]: () => this.transactionService.add(this.payload<Income>()),
+      [Type.Transfer]: () => this.transactionService.transfer(this.payload<Transfer>()),
+      [Type.Yield]: () => throwError(() => new Error('Transacción de tipo rendimiento aún no implementada'))
+    };
+
+    request$[this.form.get('type')?.value!]()
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: (transaction: Transaction) => {
+          this.messageService.add({
+            severity: 'success',
+            detail: 'La transacción se ha llevado acabo con éxito.',
+          });
+          this.accountStore.loadAccounts();
+          this.router.navigate(['/accounts', transaction.accountId]).then();
+        },
+        error: () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Hubo problemas al realizar la transacción',
+          });
+        },
+      });
+  }
+
+  handleCancel() {
+    this.location.back();
+  }
+}
